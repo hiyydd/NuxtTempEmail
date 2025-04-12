@@ -6,13 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-// 更详细的日志
+// 简化日志
 function logInfo(message, data = {}) {
-  console.log(`[INFO] ${message}`, data);
+  console.log(`[INFO] ${message}`);
 }
 
 function logError(message, error) {
-  console.error(`[ERROR] ${message}`, error);
+  console.error(`[ERROR] ${message}`);
 }
 
 // KV namespace binding name: tempEmail
@@ -34,10 +34,9 @@ async function generateEmailAddress(env) {
     const domain = env.EMAIL_DOMAIN || "liaoxiang.fun";
     const emailAddress = `${username}@${domain}`;
     
-    logInfo(`生成邮箱地址: ${emailAddress}`, { domain });
     return emailAddress;
   } catch (error) {
-    logError("生成邮箱地址失败", error);
+    logError("生成邮箱地址失败");
     throw error;
   }
 }
@@ -48,19 +47,8 @@ async function handleNewEmail(request, env) {
     const timestamp = new Date().getTime();
     const emailId = `email:${timestamp}`;
     
-    // 详细记录收到的邮件内容
-    logInfo('收到新邮件', {
-      from: email.from,
-      to: email.to,
-      subject: email.subject,
-      hasText: !!email.text,
-      textLength: email.text?.length || 0,
-      contentLength: email.content?.length || 0
-    });
-    
     // 验证必要的邮件字段
     if (!email.from || !email.to || !email.subject) {
-      logError('邮件缺少必要字段', { email });
       return new Response(JSON.stringify({ error: "缺少必要的邮件字段" }), {
         status: 400,
         headers: {
@@ -73,7 +61,6 @@ async function handleNewEmail(request, env) {
     // 确保 text 字段存在 - 如果没有，使用 content 或空字符串
     if (!email.text) {
       email.text = email.content || '';
-      logInfo('自动添加 text 字段', { text: email.text.substring(0, 50) });
     }
 
     // 创建邮件索引
@@ -85,9 +72,6 @@ async function handleNewEmail(request, env) {
     const existingEmails = await env["temp-email"].get(recipientKey);
     if (existingEmails) {
       emailIds = JSON.parse(existingEmails);
-      logInfo('找到现有邮件索引', { recipient, count: emailIds.length });
-    } else {
-      logInfo('为收件人创建新索引', { recipient });
     }
     
     // 添加新邮件ID到列表
@@ -97,22 +81,20 @@ async function handleNewEmail(request, env) {
     await env["temp-email"].put(emailId, JSON.stringify(email), {
       expirationTtl: 86400 // 24小时
     });
-    logInfo('邮件保存成功', { emailId });
     
     // 更新收件人索引
     await env["temp-email"].put(recipientKey, JSON.stringify(emailIds), {
       expirationTtl: 86400 // 24小时
     });
-    logInfo('收件人索引更新成功', { recipient, totalEmails: emailIds.length });
 
-    return new Response(JSON.stringify({ success: true, emailId }), {
+    return new Response(JSON.stringify({ success: true }), {
       headers: {
         'Content-Type': 'application/json',
         ...corsHeaders
       }
     });
   } catch (error) {
-    logError('处理新邮件失败', error);
+    logError('处理新邮件失败');
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: {
@@ -129,7 +111,6 @@ async function getEmails(request, env) {
     const address = searchParams.get('address');
     
     if (!address) {
-      logError('获取邮件时缺少地址参数');
       return new Response(JSON.stringify({ error: "需要提供邮箱地址" }), {
         status: 400,
         headers: {
@@ -139,14 +120,10 @@ async function getEmails(request, env) {
       });
     }
     
-    logInfo(`获取邮件列表`, { address });
-    
-    // 直接列出所有邮件，不依赖收件人索引
-    logInfo(`列出所有邮件以查找收件人 ${address} 的邮件`);
+    const normalizedAddress = address.toLowerCase().trim();
     
     try {
       const allEmails = await env["temp-email"].list({ prefix: 'email:' });
-      logInfo(`找到 ${allEmails.keys.length} 封邮件记录`);
       
       // 检查是否有任何邮件是发给这个地址的
       const emails = [];
@@ -156,9 +133,9 @@ async function getEmails(request, env) {
           const emailData = await env["temp-email"].get(key.name);
           if (emailData) {
             const parsedEmail = JSON.parse(emailData);
+            
             // 使用不区分大小写的比较
-            if (parsedEmail.to && parsedEmail.to.toLowerCase() === address.toLowerCase()) {
-              logInfo(`找到匹配的邮件`, { id: key.name, subject: parsedEmail.subject });
+            if (parsedEmail.to && parsedEmail.to.toLowerCase().trim() === normalizedAddress) {
               emails.push({
                 id: key.name.split(':')[1],
                 ...parsedEmail
@@ -166,27 +143,8 @@ async function getEmails(request, env) {
             }
           }
         } catch (emailError) {
-          logError(`解析邮件 ${key.name} 失败`, emailError);
+          logError(`解析邮件失败`);
         }
-      }
-      
-      // 尝试重建索引
-      if (emails.length > 0) {
-        logInfo(`找到 ${emails.length} 封邮件，重建索引`, { address });
-        const recipientKey = `recipient:${address}`;
-        
-        try {
-          // 重建索引
-          const emailIds = emails.map(e => `email:${e.id}`);
-          await env["temp-email"].put(recipientKey, JSON.stringify(emailIds), {
-            expirationTtl: 86400 // 24小时
-          });
-          logInfo(`索引重建成功: ${recipientKey}`, { count: emailIds.length });
-        } catch (indexError) {
-          logError(`重建索引失败`, indexError);
-        }
-      } else {
-        logInfo(`未找到收件人 ${address} 的邮件`);
       }
       
       // 按时间排序（最新的在前）
@@ -199,9 +157,8 @@ async function getEmails(request, env) {
         }
       });
     } catch (listError) {
-      logError(`列出所有邮件失败`, listError);
+      logError(`列出邮件失败`);
       
-      // 出错时返回空数组
       return new Response(JSON.stringify([]), {
         headers: {
           'Content-Type': 'application/json',
@@ -210,7 +167,7 @@ async function getEmails(request, env) {
       });
     }
   } catch (error) {
-    logError(`获取邮件列表失败`, error);
+    logError(`获取邮件列表失败`);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: {
@@ -224,11 +181,6 @@ async function getEmails(request, env) {
 async function handleRequest(request, env) {
   const url = new URL(request.url);
   const path = url.pathname;
-  
-  logInfo(`收到请求: ${request.method} ${path}`, { 
-    url: url.toString(),
-    headers: Object.fromEntries(request.headers)
-  });
 
   if (request.method === 'OPTIONS') {
     return handleOptions(request);
@@ -238,7 +190,6 @@ async function handleRequest(request, env) {
     switch (path) {
       case '/generate':
         const address = await generateEmailAddress(env);
-        logInfo(`生成邮箱成功: ${address}`);
         return new Response(JSON.stringify({ address }), {
           headers: {
             'Content-Type': 'application/json',
@@ -246,17 +197,14 @@ async function handleRequest(request, env) {
           }
         });
       case '/emails':
-        logInfo(`获取邮件`, { query: url.search });
         return getEmails(request, env);
       case '/email':
-        logInfo(`接收新邮件`);
         return handleNewEmail(request, env);
       default:
-        logInfo(`未找到路径: ${path}`);
         return new Response('Not found', { status: 404 });
     }
   } catch (err) {
-    logError(`请求处理错误: ${path}`, err);
+    logError(`请求处理错误`);
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
       headers: {

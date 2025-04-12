@@ -206,7 +206,8 @@ async function fetchEmails() {
   
   while (retries < MAX_RETRIES) {
     try {
-      const response = await fetch(`/api/email/emails?address=${emailAddress.value}`);
+      const url = `/api/email/emails?address=${encodeURIComponent(emailAddress.value.trim())}`;
+      const response = await fetch(url);
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -214,14 +215,19 @@ async function fetchEmails() {
       }
       
       const data = await response.json();
-      emails.value = data;
-      if (data.length > 0 && !selectedEmail.value) {
-        selectedEmail.value = data[0];
+      
+      if (data && Array.isArray(data)) {
+        emails.value = data;
+        
+        if (data.length > 0 && !selectedEmail.value) {
+          selectedEmail.value = data[0];
+        }
+      } else {
+        throw new Error('返回数据格式不正确');
       }
       
       return; // 成功获取
     } catch (error) {
-      console.error(`获取邮件失败 (尝试 ${retries + 1}/${MAX_RETRIES}):`, error);
       retries++;
       
       if (retries >= MAX_RETRIES) {
@@ -263,12 +269,20 @@ async function refreshEmail() {
 // 检查新邮件
 async function checkNewMails() {
   isChecking.value = true
+  
+  if (!emailAddress.value) {
+    showNotification('请先创建邮箱地址', 'error')
+    isChecking.value = false
+    return
+  }
+  
   try {
     await fetchEmails()
+    
     if (emails.value.length > 0) {
       showNotification(`找到 ${emails.value.length} 封邮件`)
     } else {
-      showNotification('未找到邮件', 'error')
+      showNotification('未找到邮件，请确认邮箱地址并稍后再试', 'error')
     }
   } catch (err) {
     showNotification('检查邮件失败', 'error')

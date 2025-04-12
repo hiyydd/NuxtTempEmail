@@ -13,18 +13,20 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // 规范化地址
+  const normalizedAddress = address.toLowerCase().trim();
+
   // 添加重试机制
   const MAX_RETRIES = 2;
   
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
-      console.log(`尝试获取邮件 (尝试 ${attempt + 1}/${MAX_RETRIES + 1}): ${WORKER_URL}/emails?address=${address}`);
+      const url = `${WORKER_URL}/emails?address=${encodeURIComponent(normalizedAddress)}`;
       
-      const response = await fetch(`${WORKER_URL}/emails?address=${address}`);
+      const response = await fetch(url);
       
       if (response.ok) {
         const data = await response.json();
-        console.log(`获取到 ${data.length} 封邮件`);
         
         // 邮件按时间排序 - 确保最新邮件在前
         if (data && data.length > 0) {
@@ -38,9 +40,6 @@ export default defineEventHandler(async (event) => {
         
         return data;
       } else {
-        const errorText = await response.text();
-        console.warn(`获取邮件失败 (尝试 ${attempt + 1}): ${response.status} - ${errorText}`);
-        
         // 如果不是最后一次尝试，等待后重试
         if (attempt < MAX_RETRIES) {
           await new Promise(resolve => setTimeout(resolve, 1000));
@@ -48,8 +47,6 @@ export default defineEventHandler(async (event) => {
         }
       }
     } catch (error: any) {
-      console.error(`获取邮件出错 (尝试 ${attempt + 1}):`, error.message);
-      
       // 如果不是最后一次尝试，等待后重试
       if (attempt < MAX_RETRIES) {
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -59,6 +56,5 @@ export default defineEventHandler(async (event) => {
   }
   
   // 所有尝试都失败，返回空数组
-  console.log('所有获取邮件尝试均失败，返回空数组');
   return [];
 });

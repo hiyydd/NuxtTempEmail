@@ -64,84 +64,24 @@ export default {
         htmlLength: htmlContent?.length || 0
       });
 
-      // 直接保存到 KV 的测试代码
+      // 尝试直接保存到 KV
       try {
         if (env["temp-email"]) {
           const timestamp = Date.now();
-          const emailId = `email:${timestamp}`;
-          const recipientKey = `recipient:${to}`;
+          const emailAddress = to.toLowerCase().trim();
+          const emailKey = `${emailAddress}:${timestamp}`;
           
-          console.log('======= 开始直接将邮件保存到 KV =======');
-          console.log('保存邮件，ID:', emailId);
-          console.log('收件人索引:', recipientKey);
+          console.log('直接将邮件保存到 KV:', emailKey);
           
-          // 测试 KV 写入权限
-          try {
-            await env["temp-email"].put('test-key', 'test-value');
-            console.log('KV 写入测试成功');
-            
-            // 删除测试键
-            await env["temp-email"].delete('test-key');
-            console.log('KV 测试键删除成功');
-          } catch (testError) {
-            console.error('KV 写入测试失败:', testError);
-          }
+          // 直接保存邮件
+          await env["temp-email"].put(emailKey, JSON.stringify(email), {
+            expirationTtl: 86400 // 24小时
+          });
           
-          // 获取现有邮件 ID
-          let emailIds = [];
-          try {
-            const existingEmails = await env["temp-email"].get(recipientKey);
-            console.log('获取现有邮件索引:', existingEmails ? '成功' : '未找到');
-            
-            if (existingEmails) {
-              emailIds = JSON.parse(existingEmails);
-              console.log(`找到收件人现有索引，包含 ${emailIds.length} 封邮件`);
-            }
-          } catch (getError) {
-            console.error('获取现有邮件索引失败:', getError);
-          }
-          
-          // 添加新邮件
-          emailIds.push(emailId);
-          console.log('添加新邮件到索引，当前索引长度:', emailIds.length);
-          
-          // 保存邮件
-          try {
-            await env["temp-email"].put(emailId, JSON.stringify(email), {
-              expirationTtl: 86400 // 24小时
-            });
-            console.log('邮件数据已保存到 KV');
-          } catch (putEmailError) {
-            console.error('保存邮件数据失败:', putEmailError);
-          }
-          
-          // 更新索引
-          try {
-            await env["temp-email"].put(recipientKey, JSON.stringify(emailIds), {
-              expirationTtl: 86400 // 24小时
-            });
-            console.log('收件人索引更新成功');
-          } catch (putIndexError) {
-            console.error('更新收件人索引失败:', putIndexError);
-          }
-          
-          // 检查是否成功保存
-          try {
-            const savedEmail = await env["temp-email"].get(emailId);
-            console.log('验证邮件保存:', savedEmail ? '成功' : '失败');
-            
-            const savedIndex = await env["temp-email"].get(recipientKey);
-            console.log('验证索引保存:', savedIndex ? '成功' : '失败');
-          } catch (verifyError) {
-            console.error('验证保存失败:', verifyError);
-          }
-          
-          console.log('======= 直接保存到 KV 完成 =======');
-        } else {
-          console.error('ERROR: env["temp-email"] 不存在');
+          console.log('邮件已直接保存到 KV');
         }
       } catch (kvError) {
-        console.error('直接保存到 KV 过程中发生错误:', kvError);
+        console.error('直接保存到 KV 失败:', kvError);
       }
       
       // 重试策略

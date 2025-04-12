@@ -45,7 +45,6 @@ async function handleNewEmail(request, env) {
   try {
     const email = await request.json();
     const timestamp = new Date().getTime();
-    const emailId = `email:${timestamp}`;
     
     // 验证必要的邮件字段
     if (!email.from || !email.to || !email.subject) {
@@ -63,27 +62,12 @@ async function handleNewEmail(request, env) {
       email.text = email.content || '';
     }
 
-    // 创建邮件索引
-    const recipient = email.to;
-    const recipientKey = `recipient:${recipient}`;
-    
-    // 获取当前收件人的邮件列表
-    let emailIds = [];
-    const existingEmails = await env["temp-email"].get(recipientKey);
-    if (existingEmails) {
-      emailIds = JSON.parse(existingEmails);
-    }
-    
-    // 添加新邮件ID到列表
-    emailIds.push(emailId);
+    // 使用邮箱地址作为键的一部分，确保唯一性
+    const emailAddress = email.to.toLowerCase().trim();
+    const emailKey = `${emailAddress}:${timestamp}`;
     
     // 保存邮件数据，24小时过期
-    await env["temp-email"].put(emailId, JSON.stringify(email), {
-      expirationTtl: 86400 // 24小时
-    });
-    
-    // 更新收件人索引
-    await env["temp-email"].put(recipientKey, JSON.stringify(emailIds), {
+    await env["temp-email"].put(emailKey, JSON.stringify(email), {
       expirationTtl: 86400 // 24小时
     });
 
@@ -123,9 +107,10 @@ async function getEmails(request, env) {
     const normalizedAddress = address.toLowerCase().trim();
     
     try {
-      const allEmails = await env["temp-email"].list({ prefix: 'email:' });
+      // 直接使用邮箱地址前缀列出所有相关邮件
+      const allEmails = await env["temp-email"].list({ prefix: `${normalizedAddress}:` });
       
-      // 检查是否有任何邮件是发给这个地址的
+      // 处理所有匹配邮件
       const emails = [];
       
       for (const key of allEmails.keys) {
@@ -133,14 +118,12 @@ async function getEmails(request, env) {
           const emailData = await env["temp-email"].get(key.name);
           if (emailData) {
             const parsedEmail = JSON.parse(emailData);
-            
-            // 使用不区分大小写的比较
-            if (parsedEmail.to && parsedEmail.to.toLowerCase().trim() === normalizedAddress) {
-              emails.push({
-                id: key.name.split(':')[1],
-                ...parsedEmail
-              });
-            }
+            // 添加ID，使用时间戳部分
+            const timestamp = key.name.split(':')[1];
+            emails.push({
+              id: timestamp,
+              ...parsedEmail
+            });
           }
         } catch (emailError) {
           logError(`解析邮件失败`);

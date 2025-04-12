@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
   
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
+      // 确保地址正确编码
       const url = `${WORKER_URL}/emails?address=${encodeURIComponent(normalizedAddress)}`;
       
       const response = await fetch(url);

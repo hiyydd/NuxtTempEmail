@@ -14,18 +14,18 @@ async function handleOptions(request) {
   });
 }
 
-async function generateEmailAddress() {
+async function generateEmailAddress(env) {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let username = '';
   for (let i = 0; i < 8; i++) {
     username += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  // 使用环境变量或配置中的域名
-  const domain = EMAIL_DOMAIN || "liaoxiang.fun";
+  // 使用环境变量中的域名
+  const domain = env.EMAIL_DOMAIN || "liaoxiang.fun";
   return `${username}@${domain}`;
 }
 
-async function handleNewEmail(request) {
+async function handleNewEmail(request, env) {
   try {
     const email = await request.json();
     const timestamp = new Date().getTime();
@@ -48,7 +48,7 @@ async function handleNewEmail(request) {
     
     // 获取当前收件人的邮件列表
     let emailIds = [];
-    const existingEmails = await tempEmail.get(recipientKey);
+    const existingEmails = await env["temp-email"].get(recipientKey);
     if (existingEmails) {
       emailIds = JSON.parse(existingEmails);
     }
@@ -57,12 +57,12 @@ async function handleNewEmail(request) {
     emailIds.push(emailId);
     
     // 保存邮件数据，24小时过期
-    await tempEmail.put(emailId, JSON.stringify(email), {
+    await env["temp-email"].put(emailId, JSON.stringify(email), {
       expirationTtl: 86400 // 24小时
     });
     
     // 更新收件人索引
-    await tempEmail.put(recipientKey, JSON.stringify(emailIds), {
+    await env["temp-email"].put(recipientKey, JSON.stringify(emailIds), {
       expirationTtl: 86400 // 24小时
     });
 
@@ -83,7 +83,7 @@ async function handleNewEmail(request) {
   }
 }
 
-async function getEmails(request) {
+async function getEmails(request, env) {
   try {
     const { searchParams } = new URL(request.url);
     const address = searchParams.get('address');
@@ -100,7 +100,7 @@ async function getEmails(request) {
     
     // 使用收件人索引快速查找
     const recipientKey = `recipient:${address}`;
-    const emailIdsStr = await tempEmail.get(recipientKey);
+    const emailIdsStr = await env["temp-email"].get(recipientKey);
     
     if (!emailIdsStr) {
       return new Response(JSON.stringify([]), {
@@ -116,7 +116,7 @@ async function getEmails(request) {
     
     // 批量获取邮件
     for (const emailId of emailIds) {
-      const emailData = await tempEmail.get(emailId);
+      const emailData = await env["temp-email"].get(emailId);
       if (emailData) {
         const parsedEmail = JSON.parse(emailData);
         if (parsedEmail.to === address) {  // 二次验证地址匹配
@@ -148,7 +148,7 @@ async function getEmails(request) {
   }
 }
 
-async function handleRequest(request) {
+async function handleRequest(request, env) {
   if (request.method === 'OPTIONS') {
     return handleOptions(request);
   }
@@ -159,7 +159,7 @@ async function handleRequest(request) {
   try {
     switch (path) {
       case '/generate':
-        const address = await generateEmailAddress();
+        const address = await generateEmailAddress(env);
         return new Response(JSON.stringify({ address }), {
           headers: {
             'Content-Type': 'application/json',
@@ -167,9 +167,9 @@ async function handleRequest(request) {
           }
         });
       case '/emails':
-        return getEmails(request);
+        return getEmails(request, env);
       case '/email':
-        return handleNewEmail(request);
+        return handleNewEmail(request, env);
       default:
         return new Response('Not found', { status: 404 });
     }
@@ -185,5 +185,5 @@ async function handleRequest(request) {
 }
 
 addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
+  event.respondWith(handleRequest(event.request, event.env));
 });

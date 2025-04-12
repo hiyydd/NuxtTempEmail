@@ -8,11 +8,11 @@ const corsHeaders = {
 
 // 简化日志
 function logInfo(message, data = {}) {
-  console.log(`[INFO] ${message}`);
+  console.log(`[INFO] ${message}`, data);
 }
 
 function logError(message, error) {
-  console.error(`[ERROR] ${message}`);
+  console.error(`[ERROR] ${message}`, error);
 }
 
 // KV namespace binding name: tempEmail
@@ -95,6 +95,7 @@ async function getEmails(request, env) {
     const address = searchParams.get('address');
     
     if (!address) {
+      logError('获取邮件时缺少地址参数');
       return new Response(JSON.stringify({ error: "需要提供邮箱地址" }), {
         status: 400,
         headers: {
@@ -105,18 +106,23 @@ async function getEmails(request, env) {
     }
     
     const normalizedAddress = address.toLowerCase().trim();
+    logInfo(`查询邮件，地址: ${normalizedAddress}`);
     
     try {
       // 直接使用邮箱地址前缀列出所有相关邮件
+      logInfo(`开始查询KV，前缀: ${normalizedAddress}:`);
       const allEmails = await env["temp-email"].list({ prefix: `${normalizedAddress}:` });
+      logInfo(`KV查询结果，找到 ${allEmails.keys.length} 个键`, { keys: allEmails.keys.map(k => k.name) });
       
       // 处理所有匹配邮件
       const emails = [];
       
       for (const key of allEmails.keys) {
         try {
+          logInfo(`获取邮件内容: ${key.name}`);
           const emailData = await env["temp-email"].get(key.name);
           if (emailData) {
+            logInfo(`成功获取邮件内容, 大小: ${emailData.length}`);
             const parsedEmail = JSON.parse(emailData);
             // 添加ID，使用时间戳部分
             const timestamp = key.name.split(':')[1];
@@ -124,14 +130,17 @@ async function getEmails(request, env) {
               id: timestamp,
               ...parsedEmail
             });
+          } else {
+            logError(`未找到邮件内容: ${key.name}`);
           }
         } catch (emailError) {
-          logError(`解析邮件失败`);
+          logError(`解析邮件失败: ${key.name}`, emailError);
         }
       }
       
       // 按时间排序（最新的在前）
       emails.sort((a, b) => b.id - a.id);
+      logInfo(`返回 ${emails.length} 封邮件`);
       
       return new Response(JSON.stringify(emails), {
         headers: {
@@ -140,7 +149,7 @@ async function getEmails(request, env) {
         }
       });
     } catch (listError) {
-      logError(`列出邮件失败`);
+      logError(`列出邮件失败`, listError);
       
       return new Response(JSON.stringify([]), {
         headers: {
@@ -150,7 +159,7 @@ async function getEmails(request, env) {
       });
     }
   } catch (error) {
-    logError(`获取邮件列表失败`);
+    logError(`获取邮件列表失败`, error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: {

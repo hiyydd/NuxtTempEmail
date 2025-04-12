@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
   const address = query.address as string;
 
   if (!address) {
+    console.error('邮箱地址为空');
     throw createError({
       statusCode: 400,
       message: '邮箱地址不能为空'
@@ -15,6 +16,7 @@ export default defineEventHandler(async (event) => {
 
   // 规范化地址
   const normalizedAddress = address.toLowerCase().trim();
+  console.log(`获取邮件: 原始地址=${address}, 规范化地址=${normalizedAddress}`);
 
   // 添加重试机制
   const MAX_RETRIES = 2;
@@ -23,11 +25,13 @@ export default defineEventHandler(async (event) => {
     try {
       // 确保地址正确编码
       const url = `${WORKER_URL}/emails?address=${encodeURIComponent(normalizedAddress)}`;
+      console.log(`发送请求到Worker (尝试 ${attempt + 1}): ${url}`);
       
       const response = await fetch(url);
       
       if (response.ok) {
         const data = await response.json();
+        console.log(`Worker返回数据: ${JSON.stringify(data).slice(0, 200)}${JSON.stringify(data).length > 200 ? '...' : ''}`);
         
         // 邮件按时间排序 - 确保最新邮件在前
         if (data && data.length > 0) {
@@ -41,6 +45,9 @@ export default defineEventHandler(async (event) => {
         
         return data;
       } else {
+        const errorText = await response.text();
+        console.error(`Worker返回错误 (尝试 ${attempt + 1}): ${response.status} - ${errorText}`);
+        
         // 如果不是最后一次尝试，等待后重试
         if (attempt < MAX_RETRIES) {
           await new Promise(resolve => setTimeout(resolve, 1000));
@@ -48,6 +55,8 @@ export default defineEventHandler(async (event) => {
         }
       }
     } catch (error: any) {
+      console.error(`请求Worker出错 (尝试 ${attempt + 1}):`, error.message);
+      
       // 如果不是最后一次尝试，等待后重试
       if (attempt < MAX_RETRIES) {
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -57,5 +66,6 @@ export default defineEventHandler(async (event) => {
   }
   
   // 所有尝试都失败，返回空数组
+  console.log('所有获取邮件尝试均失败，返回空数组');
   return [];
 });

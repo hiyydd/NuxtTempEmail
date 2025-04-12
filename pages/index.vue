@@ -207,14 +207,18 @@ async function fetchEmails() {
   while (retries < MAX_RETRIES) {
     try {
       const url = `/api/email/emails?address=${encodeURIComponent(emailAddress.value.trim())}`;
+      console.log('发送请求:', url);
+      
       const response = await fetch(url);
       
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('API错误:', response.status, errorText);
         throw new Error(`获取邮件失败: ${response.status} ${errorText}`);
       }
       
       const data = await response.json();
+      console.log('API返回数据:', data);
       
       if (data && Array.isArray(data)) {
         emails.value = data;
@@ -223,11 +227,13 @@ async function fetchEmails() {
           selectedEmail.value = data[0];
         }
       } else {
+        console.error('返回数据格式不正确:', data);
         throw new Error('返回数据格式不正确');
       }
       
       return; // 成功获取
     } catch (error) {
+      console.error('获取邮件失败:', error);
       retries++;
       
       if (retries >= MAX_RETRIES) {

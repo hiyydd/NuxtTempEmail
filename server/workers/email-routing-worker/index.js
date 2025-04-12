@@ -71,17 +71,31 @@ export default {
           const emailAddress = to.toLowerCase().trim();
           const emailKey = `${emailAddress}:${timestamp}`;
           
-          console.log('直接将邮件保存到 KV:', emailKey);
+          console.log('准备存储邮件到KV，键:', emailKey);
+          console.log('邮件内容:', JSON.stringify({
+            to: email.to,
+            from: email.from,
+            subject: email.subject,
+            receivedAt: email.receivedAt
+          }));
           
           // 直接保存邮件
           await env["temp-email"].put(emailKey, JSON.stringify(email), {
             expirationTtl: 86400 // 24小时
           });
           
-          console.log('邮件已直接保存到 KV');
+          // 验证存储
+          const stored = await env["temp-email"].get(emailKey);
+          if (stored) {
+            console.log('邮件成功存储到KV，键:', emailKey);
+          } else {
+            console.error('邮件存储验证失败，未找到:', emailKey);
+          }
+        } else {
+          console.error('KV绑定不存在: temp-email');
         }
       } catch (kvError) {
-        console.error('直接保存到 KV 失败:', kvError);
+        console.error('直接保存到KV失败:', kvError);
       }
       
       // 重试策略

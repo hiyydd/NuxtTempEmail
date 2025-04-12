@@ -1,0 +1,14 @@
+{
+  "name": "email-worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "wrangler": "^4.10.0"
+  }
+}

@@ -73,3 +73,21 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+
+# 部署 email-worker
+# 进入 email-worker 目录
+cd server/workers/email-worker
+
+# 登录 Cloudflare（如果尚未登录）
+npx wrangler login
+
+# 创建 KV 命名空间（如果尚未创建）
+npx wrangler kv:namespace create "tempEmail"
+
+# 修改 wrangler.toml 文件
+# 将 KV 绑定名修改为 "tempEmail"（当前配置是 "temp-email"）
+# 使用刚才创建的 KV 命名空间 ID
+
+# 部署 Worker
+npx wrangler deploy

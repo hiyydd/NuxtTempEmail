@@ -89,7 +89,11 @@
                   <span>{{ selectedEmail.time }}</span>
                 </div>
               </div>
-              <div class="flex-1 overflow-y-auto prose prose-sm max-w-none" v-html="selectedEmail.content"></div>
+              <div class="flex-1 overflow-y-auto prose prose-sm max-w-none" v-if="selectedEmail">
+                <!-- 使用安全的方式渲染HTML内容 -->
+                <div v-if="isSafeHtml" v-html="sanitizedHtml"></div>
+                <pre v-else>{{ selectedEmail.content }}</pre>
+              </div>
             </div>
             <div v-else class="h-full flex items-center justify-center text-gray-400 text-center">
               <div>
@@ -128,65 +132,9 @@ interface Email {
 }
 
 // 状态管理
-const emailAddress = ref(generateRandomEmail())
-const emails = ref<Email[]>([
-  {
-    id: 1,
-    sender: '系统通知',
-    senderEmail: 'system@tempmail.com',
-    time: '10:30',
-    subject: '欢迎使用临时邮箱服务',
-    preview: '感谢您使用我们的临时邮箱服务，这是一封自动发送的欢迎邮件...',
-    content: `
-      <p>尊敬的用户：</p>
-      <br>
-      <p>感谢您使用我们的临时邮箱服务！</p>
-      <br>
-      <p>这是一封自动发送的欢迎邮件，用于确认您的临时邮箱已成功创建并可以正常接收邮件。</p>
-      <br>
-      <p>临时邮箱的主要特点：</p>
-      <ul>
-        <li>无需注册，即开即用</li>
-        <li>完全免费，没有任何隐藏费用</li>
-        <li>保护您的隐私，避免垃圾邮件骚扰</li>
-        <li>适用于临时注册、一次性验证等场景</li>
-      </ul>
-      <br>
-      <p>如何使用：</p>
-      <ol>
-        <li>复制您的临时邮箱地址</li>
-        <li>在需要验证邮箱的网站使用此地址</li>
-        <li>等待邮件自动显示在您的收件箱中</li>
-        <li>查看邮件内容</li>
-      </ol>
-      <br>
-      <p>请注意，临时邮箱的有效期为24小时，过期后邮箱地址将被释放，所有邮件将被永久删除。</p>
-      <br>
-      <p>祝您使用愉快！</p>
-      <br>
-      <p>临时邮箱团队</p>
-    `
-  },
-  {
-    id: 2,
-    sender: '网站注册',
-    senderEmail: 'noreply@example.com',
-    time: '昨天',
-    subject: '您的账号注册验证码',
-    preview: '您的验证码是：123456，有效期为5分钟，请勿泄露给他人...',
-    content: '验证码邮件内容...'
-  },
-  {
-    id: 3,
-    sender: '订阅服务',
-    senderEmail: 'subscribe@example.com',
-    time: '2天前',
-    subject: '感谢您订阅我们的服务',
-    preview: '您已成功订阅我们的服务，我们将定期向您发送最新资讯...',
-    content: '订阅确认邮件内容...'
-  }
-])
-const selectedEmail = ref<Email | null>(emails.value[0])
+const emailAddress = ref('')
+const emails = ref<Email[]>([])
+const selectedEmail = ref<Email | null>(null)
 const isChecking = ref(false)
 const notification = reactive({
   show: false,
@@ -194,14 +142,89 @@ const notification = reactive({
   type: 'success' as 'success' | 'error'
 })
 
-// 生成随机邮箱地址
-function generateRandomEmail() {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
-  let username = ''
-  for (let i = 0; i < 8; i++) {
-    username += chars.charAt(Math.floor(Math.random() * chars.length))
+// HTML 安全相关
+const isSafeHtml = ref(false)
+const sanitizedHtml = ref('')
+
+// 监听选中邮件的变化，处理HTML内容
+watch(selectedEmail, (email) => {
+  if (email) {
+    // 检查内容是否为HTML
+    const isHtml = email.content.trim().startsWith('<') && email.content.includes('</');
+    isSafeHtml.value = isHtml;
+    
+    if (isHtml) {
+      // 简单的HTML净化，移除危险标签和属性
+      sanitizedHtml.value = sanitizeHtml(email.content);
+    } else {
+      sanitizedHtml.value = '';
+    }
   }
-  return `${username}@tempmail.com`
+});
+
+// 简单的HTML净化函数
+function sanitizeHtml(html: string): string {
+  // 移除脚本和危险属性
+  let sanitized = html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/onerror=/gi, '')
+    .replace(/onclick=/gi, '')
+    .replace(/onload=/gi, '')
+    .replace(/onmouseover=/gi, '');
+  
+  return sanitized;
+}
+
+// 获取新的临时邮箱地址
+async function generateNewEmail() {
+  try {
+    const response = await fetch('/api/email/generate')
+    const data = await response.json()
+    return data.address
+  } catch (error) {
+    console.error('Error generating email:', error)
+    throw error
+  }
+}
+
+// 获取邮件列表
+async function fetchEmails() {
+  const MAX_RETRIES = 3;
+  let retries = 0;
+  
+  while (retries < MAX_RETRIES) {
+    try {
+      const response = await fetch(`/api/email/emails?address=${emailAddress.value}`);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`获取邮件失败: ${response.status} ${errorText}`);
+      }
+      
+      const data = await response.json();
+      emails.value = data;
+      if (data.length > 0 && !selectedEmail.value) {
+        selectedEmail.value = data[0];
+      }
+      
+      return; // 成功获取
+    } catch (error) {
+      console.error(`获取邮件失败 (尝试 ${retries + 1}/${MAX_RETRIES}):`, error);
+      retries++;
+      
+      if (retries >= MAX_RETRIES) {
+        showNotification('获取邮件失败，请稍后重试', 'error');
+        break;
+      }
+      
+      // 等待一段时间后重试
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
 }
 
 // 复制邮箱地址
@@ -215,18 +238,25 @@ async function copyEmail() {
 }
 
 // 刷新邮箱地址
-function refreshEmail() {
-  emailAddress.value = generateRandomEmail()
-  showNotification('已生成新的临时邮箱地址')
+async function refreshEmail() {
+  try {
+    emailAddress.value = await generateNewEmail()
+    emails.value = []
+    selectedEmail.value = null
+    showNotification('已生成新的临时邮箱地址')
+  } catch (err) {
+    showNotification('生成新邮箱失败', 'error')
+  }
 }
 
 // 检查新邮件
 async function checkNewMails() {
   isChecking.value = true
   try {
-    // 模拟网络请求
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    showNotification('没有新邮件')
+    await fetchEmails()
+    showNotification('邮件已更新')
+  } catch (err) {
+    showNotification('检查邮件失败', 'error')
   } finally {
     isChecking.value = false
   }

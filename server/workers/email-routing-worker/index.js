@@ -17,12 +17,21 @@ export default {
       subject: subject,
       sender: from.split('<')[0].trim() || 'Unknown',
       senderEmail: from.match(/<(.+)>/)?.[1] || from,
-      text: textContent || '',
+      text: textContent || '', // 必须字段，email-worker 需要验证
       time: new Date().toLocaleString(),
       preview: textContent ? textContent.slice(0, 100) : '(无内容预览)',
       content: htmlContent || textContent || '(无内容)',
       receivedAt: Date.now()
     };
+
+    // 记录邮件内容以便调试
+    console.log('收到邮件:', {
+      to: to,
+      from: from,
+      subject: subject,
+      textLength: textContent?.length || 0,
+      htmlLength: htmlContent?.length || 0
+    });
 
     // 重试策略
     const MAX_RETRIES = 3;
@@ -31,6 +40,42 @@ export default {
     // 发送邮件数据到处理Worker（带重试）
     let retries = 0;
     let lastError = null;
+    
+    // 尝试直接保存到 KV
+    try {
+      if (env["temp-email"]) {
+        const timestamp = Date.now();
+        const emailId = `email:${timestamp}`;
+        const recipientKey = `recipient:${to}`;
+        
+        console.log('直接将邮件保存到 KV');
+        
+        // 获取现有邮件 ID
+        let emailIds = [];
+        const existingEmails = await env["temp-email"].get(recipientKey);
+        if (existingEmails) {
+          emailIds = JSON.parse(existingEmails);
+          console.log(`找到收件人现有索引，包含 ${emailIds.length} 封邮件`);
+        }
+        
+        // 添加新邮件
+        emailIds.push(emailId);
+        
+        // 保存邮件
+        await env["temp-email"].put(emailId, JSON.stringify(email), {
+          expirationTtl: 86400 // 24小时
+        });
+        
+        // 更新索引
+        await env["temp-email"].put(recipientKey, JSON.stringify(emailIds), {
+          expirationTtl: 86400 // 24小时
+        });
+        
+        console.log('邮件已直接保存到 KV');
+      }
+    } catch (kvError) {
+      console.error('直接保存到 KV 失败:', kvError);
+    }
     
     while (retries < MAX_RETRIES) {
       try {
@@ -78,10 +123,10 @@ export default {
     });
     
     // 尝试保存失败的邮件到 KV（如果有）
-    if (env.tempEmail) {
+    if (env["temp-email"]) {
       try {
         const failedKey = `failed:${Date.now()}`;
-        await env.tempEmail.put(failedKey, JSON.stringify(email), {
+        await env["temp-email"].put(failedKey, JSON.stringify(email), {
           expirationTtl: 86400 * 7 // 保存 7 天
         });
         console.log('失败的邮件已保存到 KV:', failedKey);

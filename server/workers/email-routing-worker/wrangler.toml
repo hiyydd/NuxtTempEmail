@@ -5,6 +5,11 @@ main = "index.js"
 compatibility_date = "2024-01-01"
 workers_dev = true
 
+# KV Namespace binding - 必须与 email-worker 使用相同的 KV
+kv_namespaces = [
+  { binding = "temp-email", id = "24945969b1da45bc80a18e4acdf94e9a" }
+]
+
 [build]
 command = "npm run build"
 

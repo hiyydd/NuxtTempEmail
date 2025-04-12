@@ -14,15 +14,25 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    console.log(`尝试获取邮件: ${WORKER_URL}/emails?address=${address}`);
     const response = await fetch(`${WORKER_URL}/emails?address=${address}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch emails');
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`获取到 ${data.length} 封邮件`);
+      return data;
+    } else {
+      const errorText = await response.text();
+      console.warn(`获取邮件失败: ${response.status} - ${errorText}`);
+      // 在 Worker 失败时返回空列表
+      console.log('返回空邮件列表');
+      return [];
     }
-    return await response.json();
-  } catch (error) {
-    throw createError({
-      statusCode: 500,
-      message: '获取邮件列表失败'
-    });
+  } catch (error: any) {
+    console.error('获取邮件列表失败:', error);
+    
+    // 出错时返回空列表而不是抛出错误
+    console.log('返回空邮件列表');
+    return [];
   }
 });

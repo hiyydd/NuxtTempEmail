@@ -12,8 +12,8 @@
         <section class="bg-white rounded-lg shadow-sm p-6 space-y-4">
           <h2 class="text-xl font-semibold text-gray-700">您的临时邮箱地址</h2>
           <div class="flex items-center gap-3">
-            <div class="flex-1 bg-gray-50 px-4 py-3 rounded-md border border-gray-200 font-medium text-gray-900 truncate">
-              {{ emailAddress }}
+            <div class="flex-1 bg-gray-50 px-4 py-3 rounded-md border border-gray-200 font-medium text-gray-900 truncate flex items-center min-h-[42px]">
+              {{ emailAddress || '等待生成邮箱...' }}
             </div>
             <button
               @click="copyEmail"
@@ -27,11 +27,18 @@
             <button
               @click="refreshEmail"
               class="w-32 flex items-center justify-center gap-1 px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-colors"
+              :disabled="isCreatingEmail"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              刷新邮箱
+              <span v-if="!isCreatingEmail" class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                创建邮箱
+              </span>
+              <span v-else class="flex items-center justify-center gap-1">
+                <span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                创建中...
+              </span>
             </button>
             <button
               @click="checkNewMails"
@@ -136,6 +143,7 @@ const emailAddress = ref('')
 const emails = ref<Email[]>([])
 const selectedEmail = ref<Email | null>(null)
 const isChecking = ref(false)
+const isCreatingEmail = ref(false)
 const notification = reactive({
   show: false,
   message: '',
@@ -239,6 +247,7 @@ async function copyEmail() {
 
 // 刷新邮箱地址
 async function refreshEmail() {
+  isCreatingEmail.value = true
   try {
     emailAddress.value = await generateNewEmail()
     emails.value = []
@@ -246,6 +255,8 @@ async function refreshEmail() {
     showNotification('已生成新的临时邮箱地址')
   } catch (err) {
     showNotification('生成新邮箱失败', 'error')
+  } finally {
+    isCreatingEmail.value = false
   }
 }
 

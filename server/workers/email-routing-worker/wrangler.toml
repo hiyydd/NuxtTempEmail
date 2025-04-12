@@ -13,6 +13,6 @@ format = "service-worker"
 
 # Email routing rules
 [[email_routing]]
-pattern = "*@temp-email.2668812066.workers.dev"
+pattern = "*@liaoxiang.fun"
 action = "forward"
 destination = "email-worker"

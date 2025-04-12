@@ -20,7 +20,9 @@ async function generateEmailAddress() {
   for (let i = 0; i < 8; i++) {
     username += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return `${username}@2668812066.workers.dev`;
+  // 使用环境变量或配置中的域名
+  const domain = EMAIL_DOMAIN || "liaoxiang.fun";
+  return `${username}@${domain}`;
 }
 
 async function handleNewEmail(request) {

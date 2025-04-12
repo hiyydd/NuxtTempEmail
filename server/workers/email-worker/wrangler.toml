@@ -7,6 +7,7 @@ workers_dev = true
 
 [vars]
 WORKER_URL = "https://email-worker.2668812066.workers.dev"
+EMAIL_DOMAIN = "liaoxiang.fun"
 
 # KV Namespace binding
 kv_namespaces = [

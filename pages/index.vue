@@ -265,7 +265,11 @@ async function checkNewMails() {
   isChecking.value = true
   try {
     await fetchEmails()
-    showNotification('邮件已更新')
+    if (emails.value.length > 0) {
+      showNotification(`找到 ${emails.value.length} 封邮件`)
+    } else {
+      showNotification('未找到邮件', 'error')
+    }
   } catch (err) {
     showNotification('检查邮件失败', 'error')
   } finally {

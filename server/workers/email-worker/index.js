@@ -141,66 +141,67 @@ async function getEmails(request, env) {
     
     logInfo(`获取邮件列表`, { address });
     
-    // 使用收件人索引快速查找
-    const recipientKey = `recipient:${address}`;
-    logInfo(`查询收件人索引`, { recipientKey });
+    // 直接列出所有邮件，不依赖收件人索引
+    logInfo(`列出所有邮件以查找收件人 ${address} 的邮件`);
     
-    const emailIdsStr = await env["temp-email"].get(recipientKey);
-    
-    if (!emailIdsStr) {
-      logInfo(`未找到收件人索引`, { address });
+    try {
+      const allEmails = await env["temp-email"].list({ prefix: 'email:' });
+      logInfo(`找到 ${allEmails.keys.length} 封邮件记录`);
       
-      // 尝试直接查找所有 email: 前缀的键
-      logInfo(`尝试列出所有邮件`);
+      // 检查是否有任何邮件是发给这个地址的
+      const emails = [];
       
-      try {
-        const allEmails = await env["temp-email"].list({ prefix: 'email:' });
-        logInfo(`找到 ${allEmails.keys.length} 封邮件记录`);
-        
-        // 检查是否有任何邮件是发给这个地址的
-        const emails = [];
-        
-        for (const key of allEmails.keys) {
-          try {
-            const emailData = await env["temp-email"].get(key.name);
-            if (emailData) {
-              const parsedEmail = JSON.parse(emailData);
-              if (parsedEmail.to && parsedEmail.to.toLowerCase() === address.toLowerCase()) {
-                logInfo(`找到匹配的邮件`, { id: key.name });
-                emails.push({
-                  id: key.name.split(':')[1],
-                  ...parsedEmail
-                });
-              }
+      for (const key of allEmails.keys) {
+        try {
+          const emailData = await env["temp-email"].get(key.name);
+          if (emailData) {
+            const parsedEmail = JSON.parse(emailData);
+            // 使用不区分大小写的比较
+            if (parsedEmail.to && parsedEmail.to.toLowerCase() === address.toLowerCase()) {
+              logInfo(`找到匹配的邮件`, { id: key.name, subject: parsedEmail.subject });
+              emails.push({
+                id: key.name.split(':')[1],
+                ...parsedEmail
+              });
             }
-          } catch (emailError) {
-            logError(`解析邮件 ${key.name} 失败`, emailError);
           }
+        } catch (emailError) {
+          logError(`解析邮件 ${key.name} 失败`, emailError);
         }
+      }
+      
+      // 尝试重建索引
+      if (emails.length > 0) {
+        logInfo(`找到 ${emails.length} 封邮件，重建索引`, { address });
+        const recipientKey = `recipient:${address}`;
         
-        if (emails.length > 0) {
-          logInfo(`找到 ${emails.length} 封邮件但索引丢失，重建索引`, { address });
-          
+        try {
           // 重建索引
           const emailIds = emails.map(e => `email:${e.id}`);
           await env["temp-email"].put(recipientKey, JSON.stringify(emailIds), {
             expirationTtl: 86400 // 24小时
           });
-          
-          // 按时间排序（最新的在前）
-          emails.sort((a, b) => b.id - a.id);
-          return new Response(JSON.stringify(emails), {
-            headers: {
-              'Content-Type': 'application/json',
-              ...corsHeaders
-            }
-          });
+          logInfo(`索引重建成功: ${recipientKey}`, { count: emailIds.length });
+        } catch (indexError) {
+          logError(`重建索引失败`, indexError);
         }
-      } catch (listError) {
-        logError(`列出所有邮件失败`, listError);
+      } else {
+        logInfo(`未找到收件人 ${address} 的邮件`);
       }
       
-      // 如果找不到任何匹配的邮件，返回空数组
+      // 按时间排序（最新的在前）
+      emails.sort((a, b) => b.id - a.id);
+      
+      return new Response(JSON.stringify(emails), {
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    } catch (listError) {
+      logError(`列出所有邮件失败`, listError);
+      
+      // 出错时返回空数组
       return new Response(JSON.stringify([]), {
         headers: {
           'Content-Type': 'application/json',
@@ -208,45 +209,6 @@ async function getEmails(request, env) {
         }
       });
     }
-    
-    const emailIds = JSON.parse(emailIdsStr);
-    logInfo(`找到收件人索引`, { count: emailIds.length });
-    
-    const emails = [];
-    
-    // 批量获取邮件
-    for (const emailId of emailIds) {
-      try {
-        const emailData = await env["temp-email"].get(emailId);
-        if (emailData) {
-          const parsedEmail = JSON.parse(emailData);
-          if (parsedEmail.to === address) {  // 二次验证地址匹配
-            emails.push({
-              id: emailId.split(':')[1],
-              ...parsedEmail
-            });
-          } else {
-            logInfo(`邮件地址不匹配`, { expected: address, actual: parsedEmail.to });
-          }
-        } else {
-          logInfo(`未找到邮件`, { emailId });
-        }
-      } catch (emailError) {
-        logError(`解析邮件 ${emailId} 失败`, emailError);
-      }
-    }
-    
-    logInfo(`找到 ${emails.length} 封邮件`, { address });
-    
-    // 按时间排序（最新的在前）
-    emails.sort((a, b) => b.id - a.id);
-
-    return new Response(JSON.stringify(emails), {
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
-      }
-    });
   } catch (error) {
     logError(`获取邮件列表失败`, error);
     return new Response(JSON.stringify({ error: error.message }), {

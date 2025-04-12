@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>临时邮箱 - 快速安全的一次性邮箱服务</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #818cf8;
+            --background-color: #f9fafb;
+            --card-color: #ffffff;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+
+        .email-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .email-address-card {
+            background-color: var(--card-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .email-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .email-address {
+            flex-grow: 1;
+            padding: 12px 15px;
+            background-color: #f3f4f6;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .primary-button {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .primary-button:hover {
+            background-color: #4338ca;
+        }
+
+        .secondary-button {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .secondary-button:hover {
+            background-color: #f9fafb;
+        }
+
+        .success-button {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .success-button:hover {
+            background-color: #059669;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .inbox-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .email-list-card, .email-content-card {
+            background-color: var(--card-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            height: 500px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .email-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .email-list-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .email-list-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .email-list-item.active {
+            background-color: #e0e7ff;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .email-list-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .email-sender {
+            font-weight: 600;
+        }
+
+        .email-time {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .email-subject {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .email-preview {
+            color: #6b7280;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .email-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .email-content-header {
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .email-content-subject {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .email-content-info {
+            display: flex;
+            justify-content: space-between;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .email-content-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            line-height: 1.7;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #9ca3af;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--success-color);
+            color: white;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .inbox-container {
+                grid-template-columns: 1fr;
+            }
+
+            .email-list-card, .email-content-card {
+                height: auto;
+            }
+
+            .email-list-card {
+                height: 300px;
+            }
+
+            .email-content-card {
+                min-height: 400px;
+            }
+
+            .button-group {
+                flex-wrap: wrap;
+            }
+
+            .button {
+                flex: 1 0 calc(50% - 5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>临时邮箱</h1>
+            <p>快速、安全、一次性的临时邮箱服务</p>
+        </header>
+
+        <main class="email-container">
+            <section class="email-address-card">
+                <h2 class="card-title">您的临时邮箱地址</h2>
+                <div class="email-display">
+                    <div class="email-address" id="email-address">user12345@tempmail.com</div>
+                    <button class="button success-button" id="copy-button">复制</button>
+                </div>
+                <div class="button-group">
+                    <button class="button primary-button" id="refresh-button">
+                        <span>刷新邮箱</span>
+                    </button>
+                    <button class="button secondary-button" id="check-mail-button">
+                        <span>检查新邮件</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="inbox-container">
+                <div class="email-list-card">
+                    <h2 class="card-title">收件箱</h2>
+                    <ul class="email-list" id="email-list">
+                        <!-- 示例邮件列表项 -->
+                        <li class="email-list-item active">
+                            <div class="email-list-item-header">
+                                <span class="email-sender">系统通知</span>
+                                <span class="email-time">10:30</span>
+                            </div>
+                            <div class="email-subject">欢迎使用临时邮箱服务</div>
+                            <div class="email-preview">感谢您使用我们的临时邮箱服务，这是一封自动发送的欢迎邮件...</div>
+                        </li>
+                        <li class="email-list-item">
+                            <div class="email-list-item-header">
+                                <span class="email-sender">网站注册</span>
+                                <span class="email-time">昨天</span>
+                            </div>
+                            <div class="email-subject">您的账号注册验证码</div>
+                            <div class="email-preview">您的验证码是：123456，有效期为5分钟，请勿泄露给他人...</div>
+                        </li>
+                        <li class="email-list-item">
+                            <div class="email-list-item-header">
+                                <span class="email-sender">订阅服务</span>
+                                <span class="email-time">2天前</span>
+                            </div>
+                            <div class="email-subject">感谢您订阅我们的服务</div>
+                            <div class="email-preview">您已成功订阅我们的服务，我们将定期向您发送最新资讯...</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="email-content-card">
+                    <div class="email-content" id="email-content">
+                        <div class="email-content-header">
+                            <h3 class="email-content-subject">欢迎使用临时邮箱服务</h3>
+                            <div class="email-content-info">
+                                <span>发件人: 系统通知 &lt;system@tempmail.com&gt;</span>
+                                <span>今天 10:30</span>
+                            </div>
+                        </div>
+                        <div class="email-content-body">
+                            <p>尊敬的用户：</p>
+                            <br>
+                            <p>感谢您使用我们的临时邮箱服务！</p>
+                            <br>
+                            <p>这是一封自动发送的欢迎邮件，用于确认您的临时邮箱已成功创建并可以正常接收邮件。</p>
+                            <br>
+                            <p>临时邮箱的主要特点：</p>
+                            <ul style="margin-left: 20px;">
+                                <li>无需注册，即开即用</li>
+                                <li>完全免费，没有任何隐藏费用</li>
+                                <li>保护您的隐私，避免垃圾邮件骚扰</li>
+                                <li>适用于临时注册、一次性验证等场景</li>
+                            </ul>
+                            <br>
+                            <p>如何使用：</p>
+                            <ol style="margin-left: 20px;">
+                                <li>复制您的临时邮箱地址</li>
+                                <li>在需要验证邮箱的网站使用此地址</li>
+                                <li>等待邮件自动显示在您的收件箱中</li>
+                                <li>查看邮件内容</li>
+                            </ol>
+                            <br>
+                            <p>请注意，临时邮箱的有效期为24小时，过期后邮箱地址将被释放，所有邮件将被永久删除。</p>
+                            <br>
+                            <p>祝您使用愉快！</p>
+                            <br>
+                            <p>临时邮箱团队</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="notification" id="notification">邮箱地址已复制到剪贴板</div>
+
+    <script>
+        // 获取DOM元素
+        const emailAddressElement = document.getElementById('email-address');
+        const copyButton = document.getElementById('copy-button');
+        const refreshButton = document.getElementById('refresh-button');
+        const checkMailButton = document.getElementById('check-mail-button');
+        const emailListElement = document.getElementById('email-list');
+        const emailContentElement = document.getElementById('email-content');
+        const notificationElement = document.getElementById('notification');
+
+        // 随机生成邮箱地址
+        function generateRandomEmail() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let username = '';
+            for (let i = 0; i < 8; i++) {
+                username += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return `${username}@tempmail.com`;
+        }
+
+        // 初始化随机邮箱地址
+        emailAddressElement.textContent = generateRandomEmail();
+
+        // 复制邮箱地址到剪贴板
+        copyButton.addEventListener('click', () => {
+            const emailAddress = emailAddressElement.textContent;
+            navigator.clipboard.writeText(emailAddress).then(() => {
+                showNotification('邮箱地址已复制到剪贴板');
+            }).catch(err => {
+                console.error('无法复制到剪贴板:', err);
+                showNotification('复制失败，请手动复制', 'error');
+            });
+        });
+
+        // 刷新邮箱地址
+        refreshButton.addEventListener('click', () => {
+            emailAddressElement.textContent = generateRandomEmail();
+            showNotification('已生成新的临时邮箱地址');
+        });
+
+        // 检查新邮件（模拟）
+        checkMailButton.addEventListener('click', () => {
+            const button = checkMailButton;
+            const originalText = button.innerHTML;
+            
+            // 显示加载状态
+            button.innerHTML = '<span class="loading"></span> 检查中...';
+            button.disabled = true;
+            
+            // 模拟网络请求延迟
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                showNotification('没有新邮件');
+            }, 1500);
+        });
+
+        // 邮件列表项点击事件
+        const emailItems = document.querySelectorAll('.email-list-item');
+        emailItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // 移除所有活动状态
+                emailItems.forEach(i => i.classList.remove('active'));
+                // 添加当前项的活动状态
+                item.classList.add('active');
+                
+                // 这里可以添加加载对应邮件内容的逻辑
+                // 目前只是简单的演示，实际应用中需要从服务器获取邮件内容
+            });
+        });
+
+        // 显示通知
+        function showNotification(message, type = 'success') {
+            notificationElement.textContent = message;
+            notificationElement.className = 'notification show';
+            
+            if (type === 'error') {
+                notificationElement.style.backgroundColor = 'var(--danger-color)';
+            } else {
+                notificationElement.style.backgroundColor = 'var(--success-color)';
+            }
+            
+            setTimeout(() => {
+                notificationElement.className = 'notification';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

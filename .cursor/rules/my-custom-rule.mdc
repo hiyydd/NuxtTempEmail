@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+- 生成代码需要注意以下几点:
+1. 默认参考项目中原有的代码风格和格式
+2. 不要私自乱改代码,尤其是我没有让你改的时候
+3. 你自己想添加新功能时提前询问我的意见

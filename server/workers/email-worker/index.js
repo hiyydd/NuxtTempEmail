@@ -66,6 +66,18 @@ async function handleNewEmail(request, env) {
     const emailAddress = email.to.toLowerCase().trim();
     const emailKey = `${emailAddress}:${timestamp}`;
     
+    // 检查 KV 绑定是否存在
+    if (!env["temp-email"]) {
+      logError('KV 绑定不存在: temp-email');
+      return new Response(JSON.stringify({ error: 'KV 绑定不存在' }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    }
+    
     // 保存邮件数据，24小时过期
     await env["temp-email"].put(emailKey, JSON.stringify(email), {
       expirationTtl: 86400 // 24小时
@@ -98,6 +110,18 @@ async function getEmails(request, env) {
       logError('获取邮件时缺少地址参数');
       return new Response(JSON.stringify({ error: "需要提供邮箱地址" }), {
         status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    }
+    
+    // 检查 KV 绑定是否存在
+    if (!env || !env["temp-email"]) {
+      logError('KV 绑定不存在: temp-email', { env: !!env });
+      return new Response(JSON.stringify({ error: 'KV 绑定不存在', details: 'temp-email binding not found' }), {
+        status: 500,
         headers: {
           'Content-Type': 'application/json',
           ...corsHeaders
@@ -171,6 +195,18 @@ async function getEmails(request, env) {
 }
 
 async function handleRequest(request, env) {
+  // 检查 env 对象是否存在
+  if (!env) {
+    logError('环境变量对象不存在');
+    return new Response(JSON.stringify({ error: '服务器配置错误' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
+    });
+  }
+
   const url = new URL(request.url);
   const path = url.pathname;
 
@@ -207,6 +243,14 @@ async function handleRequest(request, env) {
   }
 }
 
+// 使用新的模块格式导出处理函数
+export default {
+  async fetch(request, env, ctx) {
+    return handleRequest(request, env);
+  }
+};
+
+// 保留原有的事件监听器，以兼容旧版本
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request, event.env));
 });

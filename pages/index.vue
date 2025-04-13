@@ -258,14 +258,21 @@ async function copyEmail() {
 }
 
 // 刷新邮箱地址
-async function refreshEmail() {
+async function refreshEmail() {        
   isCreatingEmail.value = true
   try {
-    emailAddress.value = await generateNewEmail()
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let username = '';
+    for (let i = 0; i < 8; i++) {
+      username += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const address = `${username}@liaoxiang.fun`;
+    emailAddress.value = address
+    
     emails.value = []
     selectedEmail.value = null
     showNotification('已生成新的临时邮箱地址')
-  } catch (err) {
+  } catch (error: any) {
     showNotification('生成新邮箱失败', 'error')
   } finally {
     isCreatingEmail.value = false

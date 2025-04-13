@@ -2,6 +2,7 @@
 
 export default {
   async email(message, env, ctx) {
+    console.log('message-------', message)
     try {
       // 正确获取邮件内容 - 使用正确的API
       const rawEmail = await message.raw.text();

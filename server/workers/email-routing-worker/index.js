@@ -1,120 +1,49 @@
 // Cloudflare Email Routing Worker
+import * as PostalMime from 'postal-mime';
 
 export default {
   async email(message, env, ctx) {
-    console.log('message-----', message)
     console.log('message.from:', message.from)
     console.log('message.to:', message.to)
     console.log('message.headers:', message.headers)
     
     try {
-      // 完全避免使用message.raw方法，转而使用更可靠的方法
-      let emailString = '';
+      // 使用message.raw()获取原始邮件数据并通过PostalMime解析
+      const rawEmail = await message.raw();
+      const parser = new PostalMime.default();
+      const parsedEmail = await parser.parse(rawEmail);
       
-      try {
-        // 检查message对象上可用的属性和方法
-        const messageKeys = Object.keys(message);
-        console.log('message对象可用的属性:', messageKeys);
-        
-        const messageProto = Object.getPrototypeOf(message);
-        const messageMethods = Object.getOwnPropertyNames(messageProto);
-        console.log('message对象可用的方法:', messageMethods);
-      } catch (e) {
-        console.log('无法检查message对象结构:', e.message);
+      console.log('成功解析邮件，主题:', parsedEmail.subject);
+      
+      // 提取邮件内容
+      let textContent = parsedEmail.text || '';
+      let htmlContent = parsedEmail.html || '';
+      
+      console.log('文本内容长度:', textContent.length);
+      console.log('HTML内容长度:', htmlContent.length);
+      
+      if (textContent.length > 0) {
+        console.log('文本内容前200字符:', textContent.substring(0, 200) + '...');
       }
       
-      // 尝试各种可能的方法获取邮件内容
-      if (typeof message.text === 'function') {
-        console.log('使用message.text()获取内容');
-        emailString = await message.text();
-      } else if (typeof message.content === 'function') {
-        console.log('使用message.content()获取内容');
-        emailString = await message.content();
-      } else if (typeof message.plainText === 'function') {
-        console.log('使用message.plainText()获取内容');
-        emailString = await message.plainText();
-      } else if (typeof message.body === 'function') {
-        console.log('使用message.body()获取内容');
-        emailString = await message.body();
-      } else if (message.rawContent) {
-        console.log('使用message.rawContent获取内容');
-        emailString = typeof message.rawContent === 'function' 
-          ? await message.rawContent()
-          : message.rawContent.toString();
-      } else {
-        // 最后的备选方案：尝试从message直接获取信息
-        console.log('尝试直接获取基本邮件信息');
-        
-        // 构建包含基本信息的字符串
-        emailString = `From: ${message.from}\nTo: ${message.to}\n`;
-        
-        // 尝试获取主题
-        if (message.headers && typeof message.headers.get === 'function') {
-          const subject = message.headers.get('subject') || '(无主题)';
-          emailString += `Subject: ${subject}\n\n`;
-        }
-        
-        // 尝试将整个message对象序列化为JSON
-        try {
-          emailString += "Full message: " + JSON.stringify(message);
-        } catch (e) {
-          console.log('无法序列化message对象:', e.message);
-        }
+      if (htmlContent.length > 0) {
+        console.log('HTML内容前200字符:', htmlContent.substring(0, 200) + '...');
       }
       
-      console.log('获取到的邮件内容长度:', emailString.length);
-      if (emailString.length > 0) {
-        console.log('邮件内容前200字符:', emailString.substring(0, 200) + '...');
-      } else {
-        console.log('警告: 未能获取到任何邮件内容');
-      }
+      // 获取附件信息
+      const attachments = parsedEmail.attachments || [];
+      console.log('附件数量:', attachments.length);
       
-      // 解析邮件内容
-      let textContent = emailString; // 默认使用获取到的内容作为文本内容
-      let htmlContent = '';
-      
-      // 尝试从邮件中提取HTML内容
-      try {
-        // 方法1: 通过MIME标记查找HTML部分
-        const htmlMarker = "Content-Type: text/html";
-        let htmlStart = emailString.indexOf(htmlMarker);
-        if (htmlStart > -1) {
-          htmlStart = emailString.indexOf("\r\n\r\n", htmlStart) + 4;
-          let htmlEnd = emailString.indexOf("--", htmlStart);
-          if (htmlEnd === -1) {
-            htmlEnd = emailString.length;
-          }
-          if (htmlStart > 0 && htmlEnd > htmlStart) {
-            htmlContent = emailString.substring(htmlStart, htmlEnd).trim();
-            console.log('通过MIME标记找到HTML内容');
-          }
-        }
-        
-        // 方法2: 如果方法1失败，尝试直接查找HTML标签
-        if (!htmlContent) {
-          const htmlStartIndex = emailString.indexOf('<html');
-          if (htmlStartIndex > -1) {
-            const htmlEndIndex = emailString.lastIndexOf('</html>');
-            if (htmlEndIndex > -1 && htmlEndIndex > htmlStartIndex) {
-              htmlContent = emailString.substring(htmlStartIndex, htmlEndIndex + 7);
-              console.log('通过HTML标签找到HTML内容');
-            }
-          }
-        }
-      } catch (e) {
-        console.log('解析HTML内容失败:', e.message);
-      }
-      
-      // 保存基本邮件信息和内容
+      // 保存完整的邮件信息
       const email = {
-        from: message.from,
+        from: parsedEmail.from.value[0]?.address || message.from,
         to: message.to,
-        subject: message.headers && typeof message.headers.get === 'function' 
-                ? message.headers.get('subject') || '(无主题)' 
-                : '(无主题)',
+        subject: parsedEmail.subject || '(无主题)',
         content: htmlContent || textContent || '(无内容)',
-        textContent: textContent || '',
-        htmlContent: htmlContent || '',
+        textContent: textContent,
+        htmlContent: htmlContent,
+        hasAttachments: attachments.length > 0,
+        attachmentsCount: attachments.length,
         receivedAt: Date.now()
       };
 

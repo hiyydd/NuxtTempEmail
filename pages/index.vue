@@ -17,7 +17,7 @@
             </div>
             <button
               @click="copyEmail"
-              class="w-32 flex items-center justify-center gap-1 px-2 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors"
+              class="min-h-[42px] w-32 flex items-center justify-center gap-1 px-2 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors"
             >
               复制
             </button
@@ -41,8 +41,8 @@
               </span>
             </button>
             <button
-              @click="checkNewMails"
-              class="w-32 flex items-center justify-center gap-1 px-2 py-2 border border-indigo-600 text-indigo-600 hover:bg-gray-50 rounded-md transition-colors"
+              @click="startAutoCheck"
+              class="w-40 flex items-center justify-center gap-1 px-2 py-2 border border-indigo-600 text-indigo-600 hover:bg-gray-50 rounded-md transition-colors"
               :disabled="isChecking"
             >
               <span v-if="!isChecking" class="flex items-center gap-1">
@@ -53,7 +53,7 @@
               </span>
               <span v-else class="flex items-center justify-center gap-1">
                 <span class="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
-                检查中...
+                正在检查邮件
               </span>
             </button>
           </div>
@@ -63,8 +63,17 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <!-- 邮件列表 -->
           <section class="md:col-span-1 bg-white rounded-lg shadow-sm p-6 h-[500px] flex flex-col">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">收件箱</h2>
-            <ul class="flex-1 overflow-y-auto space-y-2">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-semibold text-gray-700">收件箱</h2>
+              <button 
+                @click="clearEmails" 
+                class="text-sm px-2 py-1 text-red-600 border border-red-600 rounded hover:bg-red-50 transition-colors"
+                :disabled="emails.length === 0"
+              >
+                清空收件箱
+              </button>
+            </div>
+            <ul v-if="emails.length > 0" class="flex-1 overflow-y-auto space-y-2">
               <li
                 v-for="email in emails"
                 :key="email.id"
@@ -77,13 +86,19 @@
                 ]"
               >
                 <div class="flex justify-between mb-1">
-                  <span class="font-semibold text-gray-900">{{ email.sender }}</span>
-                  <span class="text-sm text-gray-500">{{ email.time }}</span>
+                  <span class="font-semibold text-gray-900">{{ email.from }}</span>
+                  <span class="text-sm text-gray-500">{{ email.receivedAt }}</span>
                 </div>
                 <div class="font-medium text-gray-900 truncate">{{ email.subject }}</div>
                 <div class="text-sm text-gray-500 truncate">{{ email.preview }}</div>
               </li>
             </ul>
+            <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-center">
+              <div>
+                <div class="text-6xl mb-4">📭</div>
+                <div>收件箱中没有邮件</div>
+              </div>
+            </div>
           </section>
 
           <!-- 邮件内容 -->
@@ -92,7 +107,7 @@
               <div class="border-b border-gray-200 pb-4 mb-4">
                 <h3 class="text-2xl font-semibold text-gray-900 mb-2">{{ selectedEmail.subject }}</h3>
                 <div class="flex justify-between text-sm text-gray-500">
-                  <span>发件人: {{ selectedEmail.sender }} &lt;{{ selectedEmail.senderEmail }}&gt;</span>
+                  <span>发件人: {{ selectedEmail.from }} &lt;</span>
                   <span>{{ selectedEmail.time }}</span>
                 </div>
               </div>
@@ -136,6 +151,8 @@ interface Email {
   subject: string
   preview: string
   content: string
+  from: string
+  receivedAt: number
 }
 
 // 状态管理
@@ -144,6 +161,8 @@ const emails = ref<Email[]>([])
 const selectedEmail = ref<Email | null>(null)
 const isChecking = ref(false)
 const isCreatingEmail = ref(false)
+const autoCheckTimer = ref<number | null>(null)
+const autoCheckEndTimer = ref<number | null>(null)
 const notification = reactive({
   show: false,
   message: '',
@@ -169,6 +188,21 @@ watch(selectedEmail, (email) => {
     }
   }
 });
+
+onMounted(() => {
+  // 尝试从 localStorage 读取上次生成的邮件地址
+  const savedEmail = localStorage.getItem('tempEmailAddress')
+  
+  if (savedEmail) {
+    // 如果本地存在邮件地址，则使用它
+    emailAddress.value = savedEmail
+    // 尝试获取该邮箱的邮件
+    checkNewMails()
+  } else {
+    // 如果本地没有存储邮件地址，则创建一个新的
+    refreshEmail()
+  }
+})
 
 // 简单的HTML净化函数
 function sanitizeHtml(html: string): string {
@@ -203,13 +237,26 @@ async function generateNewEmail() {
 async function fetchEmails() {
   const MAX_RETRIES = 3;
   let retries = 0;
-  
+  const WORKER_URL = 'https://email-worker.2668812066.workers.dev';
   while (retries < MAX_RETRIES) {
     try {
-      const url = `/api/email/emails?address=${encodeURIComponent(emailAddress.value.trim())}`;
+      const url = `${WORKER_URL}/emails?address=${encodeURIComponent(emailAddress.value.trim())}`;
       console.log('发送请求:', url);
       
-      const response = await fetch(url);
+      // 创建一个 AbortController 用于超时取消请求
+      const controller = new AbortController();
+      const signal = controller.signal;
+      
+      // 设置5秒超时
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        console.warn('请求超时，已取消');
+      }, 5000);
+      
+      const response = await fetch(url, { signal });
+      
+      // 清除超时定时器
+      clearTimeout(timeoutId);
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -233,11 +280,21 @@ async function fetchEmails() {
       
       return; // 成功获取
     } catch (error) {
+      // 检查是否是超时错误
+      if ((error as Error).name === 'AbortError') {
+        console.error('请求超时');
+        // 不再重试，直接进入下一轮检查
+        break;
+      }
+      
       console.error('获取邮件失败:', error);
       retries++;
       
       if (retries >= MAX_RETRIES) {
-        showNotification('获取邮件失败，请稍后重试', 'error');
+        // 只在界面手动点击检查时显示错误通知，自动轮询时不显示
+        if (!isChecking.value) {
+          showNotification('获取邮件失败，请稍后重试', 'error');
+        }
         break;
       }
       
@@ -269,6 +326,9 @@ async function refreshEmail() {
     const address = `${username}@liaoxiang.fun`;
     emailAddress.value = address
     
+    // 保存新生成的邮件地址到 localStorage
+    localStorage.setItem('tempEmailAddress', address)
+    
     emails.value = []
     selectedEmail.value = null
     showNotification('已生成新的临时邮箱地址')
@@ -281,28 +341,75 @@ async function refreshEmail() {
 
 // 检查新邮件
 async function checkNewMails() {
-  isChecking.value = true
-  
   if (!emailAddress.value) {
     showNotification('请先创建邮箱地址', 'error')
-    isChecking.value = false
+    stopAutoCheck()
     return
   }
   
   try {
     await fetchEmails()
-    
-    if (emails.value.length > 0) {
-      showNotification(`找到 ${emails.value.length} 封邮件`)
-    } else {
-      showNotification('未找到邮件，请确认邮箱地址并稍后再试', 'error')
-    }
   } catch (err) {
-    showNotification('检查邮件失败', 'error')
-  } finally {
-    isChecking.value = false
+    console.error('邮件检查错误:', err);
+    
+    // 仅在手动检查邮件时显示错误提示，自动轮询时不显示
+    if (!isChecking.value) {
+      showNotification('检查邮件失败', 'error')
+    }
   }
 }
+
+// 开始自动检查邮件
+function startAutoCheck() {
+  isChecking.value = true
+  
+  // 立即执行一次检查
+  checkNewMails()
+  
+  // 清除可能存在的旧定时器
+  if (autoCheckTimer.value !== null) {
+    clearInterval(autoCheckTimer.value)
+  }
+  
+  // 清除可能存在的旧的结束定时器
+  if (autoCheckEndTimer.value !== null) {
+    clearTimeout(autoCheckEndTimer.value)
+    autoCheckEndTimer.value = null
+  }
+  
+  // 设置每5秒自动检查一次
+  autoCheckTimer.value = window.setInterval(() => {
+    checkNewMails()
+  }, 5000)
+  
+  // 设置1分钟后自动停止检查
+  autoCheckEndTimer.value = window.setTimeout(() => {
+    stopAutoCheck()
+    showNotification('自动检查已完成')
+  }, 60000) // 60秒 = 1分钟
+}
+
+// 停止自动检查
+function stopAutoCheck() {
+  // 清除检查邮件定时器
+  if (autoCheckTimer.value !== null) {
+    clearInterval(autoCheckTimer.value)
+    autoCheckTimer.value = null
+  }
+  
+  // 清除结束定时器
+  if (autoCheckEndTimer.value !== null) {
+    clearTimeout(autoCheckEndTimer.value)
+    autoCheckEndTimer.value = null
+  }
+  
+  isChecking.value = false
+}
+
+// 在组件卸载时清除定时器
+onUnmounted(() => {
+  stopAutoCheck()
+})
 
 // 选择邮件
 function selectEmail(email: Email) {
@@ -317,5 +424,14 @@ function showNotification(message: string, type: 'success' | 'error' = 'success'
   setTimeout(() => {
     notification.show = false
   }, 3000)
+}
+
+// 清空收件箱
+function clearEmails() {
+  if (emails.value.length === 0) return;
+  
+  emails.value = [];
+  selectedEmail.value = null;
+  showNotification('收件箱已清空');
 }
 </script>

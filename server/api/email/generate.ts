@@ -14,7 +14,7 @@ export default defineEventHandler(async () => {
     for (let i = 0; i < 8; i++) {
       username += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    const address = `${username}@liaoxiang.fun`;
+    const address = `${username}@220901.xyz`;
     console.log('本地生成邮箱地址成功:', address);
     return { address };
   } catch (error: any) {

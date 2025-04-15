@@ -18,6 +18,6 @@ format = "service-worker"
 
 # Email routing rules
 [[email_routing]]
-pattern = "*@liaoxiang.fun"
+pattern = "*@220901.xyz"
 action = "forward"
 destination = "email-worker"

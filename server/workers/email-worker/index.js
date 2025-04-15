@@ -31,7 +31,7 @@ async function generateEmailAddress(env) {
       username += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     // 使用环境变量中的域名
-    const domain = env.EMAIL_DOMAIN || "liaoxiang.fun";
+    const domain = env.EMAIL_DOMAIN || "220901.xyz";
     const emailAddress = `${username}@${domain}`;
     
     return emailAddress;

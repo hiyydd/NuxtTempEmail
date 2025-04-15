@@ -13,7 +13,7 @@ kv_namespaces = [
 
 [vars]
 WORKER_URL = "https://email-worker.2668812066.workers.dev"
-EMAIL_DOMAIN = "liaoxiang.fun"
+EMAIL_DOMAIN = "220901.xyz"
 
 
 [build]

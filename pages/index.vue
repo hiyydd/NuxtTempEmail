@@ -1,14 +1,15 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 relative">
+    <!-- 背景动效 Canvas -->
+    <canvas ref="backgroundCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+    
     <!-- 导航栏 -->
     <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
-            <div class="flex-shrink-0 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
+            <div class="flex-shrink-0 flex items-center cursor-pointer" @click="scrollToTop">
+              <UIcon name="mdi:email" class="h-8 w-8 text-indigo-600" />
               <span class="ml-2 text-xl font-bold text-indigo-600">临时邮箱</span>
             </div>
             <!-- 桌面端导航链接 -->
@@ -23,10 +24,8 @@
           <!-- 移动导航按钮 -->
           <div class="flex items-center md:hidden">
             <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path v-if="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <UIcon v-if="!isMobileMenuOpen" name="mdi:menu" class="h-6 w-6" />
+              <UIcon v-else name="mdi:close" class="h-6 w-6" />
             </button>
           </div>
         </div>
@@ -82,9 +81,7 @@
                 @click="copyEmail"
                 class="sm:min-h-[42px] w-full sm:w-32 flex items-center justify-center gap-1 px-3 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
+                <UIcon name="mdi:content-copy" class="h-4 w-4" />
                 复制
               </button>
             </div>
@@ -96,9 +93,7 @@
                 :class="{'opacity-70 cursor-not-allowed': isCreatingEmail}"
               >
                 <span v-if="!isCreatingEmail" class="flex items-center gap-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
+                  <UIcon name="mdi:refresh" class="h-4 w-4" />
                   创建新邮箱
                 </span>
                 <span v-else class="flex items-center justify-center gap-1">
@@ -113,9 +108,7 @@
                 :class="{'opacity-70 cursor-not-allowed': isChecking}"
               >
                 <span v-if="!isChecking" class="flex items-center gap-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+                  <UIcon name="mdi:email" class="h-4 w-4" />
                   检查新邮件
                 </span>
                 <span v-else class="flex items-center justify-center gap-1">
@@ -132,46 +125,46 @@
             <section class="lg:col-span-1 bg-white rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100">
               <div class="flex justify-between items-center mb-5">
                 <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                  </svg>
+                  <UIcon name="mdi:inbox" class="text-indigo-500 w-5 h-5" />
                   收件箱
                 </h2>
-                <button 
-                  @click="clearEmails" 
-                  class="text-sm px-3 py-1.5 text-red-600 border border-red-600 rounded-lg hover:bg-red-50 transition-colors focus:ring-2 focus:ring-red-500 focus:ring-opacity-30"
-                  :disabled="emails.length === 0"
-                  :class="{'opacity-50 cursor-not-allowed': emails.length === 0}"
+                <UButton
+                  v-if="emails.length > 0"
+                  color="error"
+                  variant="soft"
+                  icon="mdi:delete"
+                  size="sm"
+                  @click="clearEmails"
                 >
-                  清空收件箱
-                </button>
+                  清空
+                </UButton>
               </div>
-              <ul v-if="emails.length > 0" class="flex-1 overflow-y-auto space-y-3 pr-1 -mr-1">
-                <li
-                  v-for="email in emails"
-                  :key="email.id"
-                  @click="selectEmail(email)"
-                  :class="[
-                    'p-4 rounded-lg cursor-pointer transition-all duration-200 border',
-                    selectedEmail?.id === email.id
-                      ? 'bg-indigo-50 border-indigo-300 shadow-sm'
-                      : 'hover:bg-gray-50 border-transparent hover:border-gray-200'
-                  ]"
-                >
-                  <div class="flex justify-between mb-1.5">
-                    <span class="font-semibold text-gray-900 truncate max-w-[70%]">{{ email.from }}</span>
-                    <span class="text-xs text-gray-500">{{ email.receivedAt }}</span>
-                  </div>
-                  <div class="font-medium text-gray-900 truncate">{{ email.subject }}</div>
-                  <div class="text-sm text-gray-500 truncate mt-1">{{ email.preview }}</div>
-                </li>
-              </ul>
-              <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-center">
-                <div>
-                  <div class="text-6xl mb-4">📭</div>
-                  <div>收件箱中没有邮件</div>
-                  <p class="text-sm text-gray-400 mt-2 max-w-xs">创建邮箱后，所有发送到该地址的邮件将显示在这里</p>
-                </div>
+              <UScrollbar v-if="emails.length > 0" class="flex-1 -mx-2 px-2">
+                <ul class="space-y-2">
+                  <li
+                    v-for="email in emails"
+                    :key="email.id"
+                    @click="selectEmail(email)"
+                    class="p-3 rounded-lg cursor-pointer transition-all duration-200 border"
+                    :class="selectedEmail?.id === email.id
+                      ? 'bg-indigo-50 border-indigo-300 ring-1 ring-indigo-500 shadow-sm'
+                      : 'hover:bg-gray-50 border-transparent hover:border-gray-200'"
+                  >
+                    <div class="flex justify-between items-start gap-2 mb-1">
+                      <span class="font-medium text-gray-900 truncate flex-1">{{ email.from }}</span>
+                      <span class="text-xs text-gray-500 whitespace-nowrap">{{ formatDate(email.receivedAt) }}</span>
+                    </div>
+                    <div class="font-medium text-gray-800 truncate">{{ email.subject }}</div>
+                    <div class="text-sm text-gray-500 truncate mt-1">{{ email.preview }}</div>
+                  </li>
+                </ul>
+              </UScrollbar>
+              <div v-else class="flex-1 flex items-center justify-center">
+                <UEmpty
+                  icon="mdi:inbox-outline"
+                  name="暂无邮件"
+                  description="创建邮箱后，所有发送到该地址的邮件将显示在这里"
+                />
               </div>
             </section>
 
@@ -181,22 +174,29 @@
                 <div class="border-b border-gray-200 pb-4 mb-4">
                   <h3 class="text-2xl font-semibold text-gray-900 mb-2 break-words">{{ selectedEmail.subject }}</h3>
                   <div class="flex flex-wrap justify-between text-sm text-gray-500 gap-2">
-                    <span class="truncate max-w-full sm:max-w-[70%]">发件人: {{ selectedEmail.from }}</span>
-                    <span class="text-gray-400">{{ selectedEmail.time }}</span>
+                    <span class="truncate max-w-full sm:max-w-[70%] flex items-center gap-1">
+                      <UIcon name="mdi:account-circle" class="w-4 h-4" />
+                      {{ selectedEmail.from }}
+                    </span>
+                    <span class="text-gray-400 flex items-center gap-1">
+                      <UIcon name="mdi:clock-outline" class="w-4 h-4" />
+                      {{ formatDate(selectedEmail.receivedAt) || selectedEmail.time }}
+                    </span>
                   </div>
                 </div>
-                <div class="flex-1 overflow-y-auto prose prose-sm max-w-none pr-2 -mr-2" v-if="selectedEmail">
-                  <!-- 使用安全的方式渲染HTML内容 -->
-                  <div v-if="isSafeHtml" v-html="sanitizedHtml" class="prose-indigo"></div>
-                  <pre v-else class="whitespace-pre-wrap text-gray-700 bg-gray-50 p-3 rounded-lg">{{ selectedEmail.content }}</pre>
+                <div class="flex-1 overflow-auto">
+                  <div class="prose prose-sm max-w-none">
+                    <div v-if="isSafeHtml" v-html="sanitizedHtml" class="prose-indigo"></div>
+                    <pre v-else class="whitespace-pre-wrap text-gray-700 bg-gray-50 p-3 rounded-lg">{{ selectedEmail.content }}</pre>
+                  </div>
                 </div>
               </div>
-              <div v-else class="h-full flex items-center justify-center text-gray-400 text-center">
-                <div>
-                  <div class="text-6xl mb-4">📨</div>
-                  <div>选择一封邮件查看详情</div>
-                  <p class="text-sm text-gray-400 mt-2 max-w-xs">从左侧收件箱选择邮件以查看内容</p>
-                </div>
+              <div v-else class="h-full flex items-center justify-center">
+                <UEmpty
+                  icon="mdi:email-outline"
+                  name="选择邮件"
+                  description="从左侧收件箱选择邮件以查看内容"
+                />
               </div>
             </section>
           </div>
@@ -275,14 +275,6 @@
           </div>
         </div>
         
-        <div class="mt-16 text-center">
-          <button
-            @click="scrollToSection('app')"
-            class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
-          >
-            立即体验
-          </button>
-        </div>
       </section>
 
       <!-- 使用说明部分 -->
@@ -347,14 +339,6 @@
           </ul>
         </div>
         
-        <div class="mt-16 text-center">
-          <button
-            @click="scrollToSection('app')"
-            class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
-          >
-            开始使用临时邮箱
-          </button>
-        </div>
       </section>
 
       <!-- 常见问题部分 -->
@@ -401,7 +385,7 @@
         
         <div class="mt-16 text-center">
           <button
-            @click="scrollToSection('app')"
+            @click="scrollToTop"
             class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
           >
             立即使用临时邮箱
@@ -414,9 +398,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div class="md:col-span-2">
             <div class="flex items-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
+              <UIcon name="mdi:email" class="h-8 w-8 text-indigo-600" />
               <span class="ml-2 text-xl font-bold text-indigo-600">临时邮箱</span>
             </div>
             <p class="text-gray-500 mb-4">提供快速、安全的临时邮箱服务，保护您的隐私，远离垃圾邮件骚扰。</p>
@@ -512,6 +494,158 @@ const faqRef = ref<HTMLElement | null>(null)
 const isSafeHtml = ref(false)
 const sanitizedHtml = ref('')
 
+// 背景动效相关
+const backgroundCanvas = ref<HTMLCanvasElement | null>(null)
+const animationFrame = ref<number | null>(null)
+
+// 初始化背景动效
+function initBackgroundAnimation() {
+  const canvas = backgroundCanvas.value
+  if (!canvas) return
+
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  // 设置画布尺寸
+  const resizeCanvas = () => {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+  }
+  
+  // 初始调整大小
+  resizeCanvas()
+  
+  // 监听窗口大小变化
+  window.addEventListener('resize', resizeCanvas)
+
+  // 粒子数组
+  const particles: Particle[] = []
+  const particleCount = 50
+
+  // 粒子类
+  class Particle {
+    x: number
+    y: number
+    size: number
+    speedX: number
+    speedY: number
+    color: string
+
+    constructor() {
+      // 计算中心区域左右两侧的位置
+      const centerWidth = canvas!.width * 0.6 // 中心区域宽度，占总宽度的60%
+      const sideWidth = (canvas!.width - centerWidth) / 2 // 每侧的宽度
+      
+      // 随机决定是左侧还是右侧
+      const isLeftSide = Math.random() > 0.5
+      
+      if (isLeftSide) {
+        // 左侧区域
+        this.x = Math.random() * sideWidth
+      } else {
+        // 右侧区域
+        this.x = canvas!.width - (Math.random() * sideWidth)
+      }
+      
+      this.y = Math.random() * canvas!.height
+      this.size = Math.random() * 4 + 1
+      this.speedX = (Math.random() - 0.5) * 0.5
+      this.speedY = (Math.random() - 0.5) * 0.5
+      
+      // 加深颜色 - 使用更高的不透明度值(0.5-0.7)
+      const colors = [
+        'rgba(79, 70, 229, 0.6)', // 靛青色
+        'rgba(99, 102, 241, 0.7)', // 蓝色
+        'rgba(129, 140, 248, 0.6)', // 浅蓝色
+        'rgba(67, 56, 202, 0.7)'  // 深靛青色
+      ]
+      this.color = colors[Math.floor(Math.random() * colors.length)]
+    }
+
+    update() {
+      this.x += this.speedX
+      this.y += this.speedY
+
+      // 边界检查 - 循环
+      const centerWidth = canvas!.width * 0.6
+      const sideWidth = (canvas!.width - centerWidth) / 2
+      
+      // 如果粒子进入中心区域，将其移到另一侧
+      if (this.x > sideWidth && this.x < (canvas!.width - sideWidth)) {
+        // 如果来自左侧，则移到右侧
+        if (this.speedX > 0) {
+          this.x = canvas!.width - sideWidth
+        } else {
+          // 如果来自右侧，则移到左侧
+          this.x = sideWidth
+        }
+      }
+      
+      // 顶部和底部边界仍然循环
+      if (this.y > canvas!.height) this.y = 0
+      else if (this.y < 0) this.y = canvas!.height
+    }
+
+    draw() {
+      if (!ctx) return
+      ctx.beginPath()
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+      ctx.fillStyle = this.color
+      ctx.fill()
+    }
+  }
+
+  // 创建粒子
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle())
+  }
+
+  // 连接粒子的函数
+  function connectParticles() {
+    if (!ctx) return
+    
+    const maxDistance = 150
+    
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x
+        const dy = particles[i].y - particles[j].y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        
+        if (distance < maxDistance) {
+          const opacity = 1 - (distance / maxDistance)
+          // 增加连接线的不透明度
+          ctx.beginPath()
+          ctx.strokeStyle = `rgba(99, 102, 241, ${opacity * 0.35})`
+          ctx.lineWidth = 1
+          ctx.moveTo(particles[i].x, particles[i].y)
+          ctx.lineTo(particles[j].x, particles[j].y)
+          ctx.stroke()
+        }
+      }
+    }
+  }
+
+  // 动画函数
+  function animate() {
+    if (!ctx || !canvas) return
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    for (const particle of particles) {
+      particle.update()
+      particle.draw()
+    }
+    
+    connectParticles()
+    
+    animationFrame.value = requestAnimationFrame(animate)
+  }
+
+  // 开始动画
+  animate()
+}
+
 // 滚动到指定部分
 function scrollToSection(section: string): void {
   currentSection.value = section
@@ -597,6 +731,9 @@ onMounted(() => {
   
   // 添加滚动监听，根据滚动位置更新当前部分
   window.addEventListener('scroll', handleScroll)
+
+  // 初始化背景动效
+  initBackgroundAnimation()
 })
 
 onUnmounted(() => {
@@ -604,6 +741,10 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   // 清除邮件检查定时器
   stopAutoCheck()
+  // 清除动画定时器
+  if (animationFrame.value) {
+    cancelAnimationFrame(animationFrame.value)
+  }
 })
 
 // 处理滚动，自动更新当前部分
@@ -733,7 +874,7 @@ async function refreshEmail() {
     for (let i = 0; i < 8; i++) {
       username += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    const address = `${username}@liaoxiang.fun`;
+    const address = `${username}@220901.xyz`;
     emailAddress.value = address
     
     // 保存新生成的邮件地址到 localStorage
@@ -838,5 +979,44 @@ function clearEmails() {
   emails.value = [];
   selectedEmail.value = null;
   showNotification('收件箱已清空');
+}
+
+// 滚动到页面顶部
+function scrollToTop(): void {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+  currentSection.value = 'hero'
+}
+
+// 格式化邮件接收时间
+function formatDate(timestamp: number | string): string {
+  if (!timestamp) return '';
+  
+  let date;
+  if (typeof timestamp === 'number') {
+    date = new Date(timestamp);
+  } else {
+    // 如果是字符串，尝试转换为日期
+    date = new Date(timestamp);
+  }
+  
+  // 检查日期是否有效
+  if (isNaN(date.getTime())) {
+    return timestamp as string; // 如果无法解析为日期，直接返回原始字符串
+  }
+  
+  // 如果是今天的日期，只显示时间
+  const today = new Date();
+  if (date.getDate() === today.getDate() && 
+      date.getMonth() === today.getMonth() && 
+      date.getFullYear() === today.getFullYear()) {
+    return date.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
+  }
+  
+  // 其他日期显示日期和时间
+  return date.toLocaleDateString('zh-CN', {month: 'numeric', day: 'numeric'}) + ' ' + 
+         date.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
 }
 </script>

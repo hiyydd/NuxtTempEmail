@@ -14,7 +14,6 @@
             </div>
             <!-- 桌面端导航链接 -->
             <div class="hidden md:ml-8 md:flex md:space-x-8">
-              <a @click="scrollToSection('hero')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 hover:text-gray-700 cursor-pointer">首页</a>
               <a @click="scrollToSection('features')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 hover:text-gray-700 cursor-pointer">功能特点</a>
               <a @click="scrollToSection('how-to')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 hover:text-gray-700 cursor-pointer">使用说明</a>
               <a @click="scrollToSection('faq')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 hover:text-gray-700 cursor-pointer">常见问题</a>
@@ -33,9 +32,6 @@
       <!-- 移动菜单 -->
       <div v-show="isMobileMenuOpen" class="md:hidden bg-white">
         <div class="pt-2 pb-3 space-y-1">
-          <a @click="scrollToSection('hero'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer">
-            首页
-          </a>
           <a @click="scrollToSection('features'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer">
             功能特点
           </a>
@@ -352,30 +348,100 @@
             <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">1</div>
             <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-2">生成邮箱地址</h3>
             <p class="text-gray-600 mb-4">点击"创建新邮箱"按钮，系统会立即为您生成一个随机的临时邮箱地址。</p>
-            <div class="bg-indigo-50 p-4 rounded-lg">
-              <p class="text-indigo-800 text-sm">提示：您可以随时点击复制按钮将邮箱地址复制到剪贴板。</p>
-            </div>
           </div>
           
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 relative">
             <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">2</div>
             <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-2">使用该地址注册</h3>
             <p class="text-gray-600 mb-4">使用生成的临时邮箱地址进行网站注册、订阅或其他需要验证的场景。</p>
-            <div class="bg-indigo-50 p-4 rounded-lg">
-              <p class="text-indigo-800 text-sm">建议：对于重要账号，请勿使用临时邮箱，应使用您的真实邮箱。</p>
-            </div>
           </div>
           
           <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 relative">
             <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">3</div>
             <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-2">接收和查看邮件</h3>
             <p class="text-gray-600 mb-4">点击"检查新邮件"按钮或开启自动检查，接收到的邮件将显示在收件箱中。</p>
-            <div class="bg-indigo-50 p-4 rounded-lg">
-              <p class="text-indigo-800 text-sm">注意：临时邮箱中的邮件会在浏览器关闭后清除，请及时保存重要信息。</p>
-            </div>
+          
           </div>
         </div>
         
+      </section>
+
+       <!-- 用户评价部分 -->
+       <section id="testimonials" class="py-12 border-t border-gray-100 mt-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">用户 <span class="text-green-600">评价</span></h2>
+        <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+          来看看我们的用户如何评价 Temp Mail 临时邮箱服务，以及它如何帮助他们保护隐私和提高效率。
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <!-- 用户评价1 -->
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+            <div class="text-green-500 mb-4">
+              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+            </div>
+            <p class="text-gray-700 text-lg mb-6">
+              Temp Mail 彻底改变了我的在线体验。再也不用担心垃圾邮件了！
+            </p>
+            <div class="flex items-center">
+              <img src="https://i.pravatar.cc/150?img=32" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <div>
+                <h4 class="font-semibold text-gray-900">约翰</h4>
+                <p class="text-gray-500 text-sm">自由职业者</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 用户评价2 -->
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+            <div class="text-green-500 mb-4">
+              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+            </div>
+            <p class="text-gray-700 text-lg mb-6">
+              作为开发者，Temp Mail 让我的测试工作变得更加轻松。强烈推荐！
+            </p>
+            <div class="flex items-center">
+              <img src="https://i.pravatar.cc/150?img=59" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <div>
+                <h4 class="font-semibold text-gray-900">莎拉</h4>
+                <p class="text-gray-500 text-sm">软件工程师</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 用户评价3 -->
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+            <div class="text-green-500 mb-4">
+              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+            </div>
+            <p class="text-gray-700 text-lg mb-6">
+              简单、快速、高效。Temp Mail 是我见过最好的临时邮箱服务。
+            </p>
+            <div class="flex items-center">
+              <img src="https://i.pravatar.cc/150?img=68" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <div>
+                <h4 class="font-semibold text-gray-900">卡洛斯</h4>
+                <p class="text-gray-500 text-sm">数字营销专家</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 用户评价4（新增） -->
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+            <div class="text-green-500 mb-4">
+              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+            </div>
+            <p class="text-gray-700 text-lg mb-6">
+              保护隐私从未如此简单，Temp Mail 让我在各类网站注册时更有安全感。
+            </p>
+            <div class="flex items-center">
+              <img src="https://i.pravatar.cc/150?img=47" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <div>
+                <h4 class="font-semibold text-gray-900">丽娜</h4>
+                <p class="text-gray-500 text-sm">网络安全顾问</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- 常见问题部分 -->
@@ -704,9 +770,18 @@ function scrollToSection(section: string): void {
       break
   }
   
-  // 滚动到目标位置
+  // 滚动到目标位置，并考虑导航栏的高度
   if (targetRef) {
-    targetRef.scrollIntoView({
+    // 获取目标元素的位置
+    const targetPosition = targetRef.getBoundingClientRect().top + window.pageYOffset
+    // 获取导航栏高度（16 * 4 = 64px，根据导航栏的h-16计算）
+    const navHeight = 64
+    // 添加一些额外的空间，使内容不会紧贴导航栏底部
+    const offset = navHeight + 16 // 16px的额外空间
+    
+    // 使用scrollTo代替scrollIntoView，以便应用偏移量
+    window.scrollTo({
+      top: targetPosition - offset,
       behavior: 'smooth'
     })
   }

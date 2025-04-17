@@ -524,7 +524,7 @@
               <li><a href="#" class="text-gray-500 hover:text-indigo-600">隐私政策</a></li>
               <li><a href="#" class="text-gray-500 hover:text-indigo-600">服务条款</a></li>
               <li><a href="#" class="text-gray-500 hover:text-indigo-600">免责声明</a></li>
-              <li><a href="#" class="text-gray-500 hover:text-indigo-600">联系我们</a></li>
+              <li><a @click="showContactModal" class="text-gray-500 hover:text-indigo-600 cursor-pointer">联系我们</a></li>
             </ul>
           </div>
         </div>
@@ -547,6 +547,62 @@
       <UIcon v-if="notification.type === 'success'" name="solar:check-circle-bold" class="size-5" />
       <UIcon v-else name="solar:danger-circle-bold" class="size-5" />
       {{ notification.message }}
+    </div>
+
+    <!-- 联系我们模态框 -->
+    <div
+      v-if="isContactModalOpen"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click="isContactModalOpen = false"
+    >
+      <div 
+        class="bg-white rounded-xl shadow-xl p-6 max-w-md w-full m-4 transform transition-all"
+        @click.stop
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <UIcon name="solar:user-speak-bold" class="text-indigo-600 size-6" />
+            联系我们
+          </h3>
+          <button @click="isContactModalOpen = false" class="text-gray-500 hover:text-gray-700">
+            <UIcon name="solar:close-circle-bold" class="size-6" />
+          </button>
+        </div>
+        
+        <div class="space-y-4 py-2">
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors">
+            <UIcon name="i-heroicons-chat-bubble-left-right" class="text-indigo-600 size-8 flex-shrink-0" />
+            <div>
+              <div class="font-medium text-gray-900">QQ</div>
+              <div class="text-gray-600 group flex items-center gap-1">
+                <span>2668812066</span>
+                <button 
+                  @click="copyText('2668812066')" 
+                  class="ml-2 text-indigo-600 hover:text-indigo-800 opacity-70 hover:opacity-100"
+                >
+                  <UIcon name="solar:copy-bold" class="size-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors">
+            <UIcon name="ic:baseline-email" class="text-indigo-600 size-8 flex-shrink-0" />
+            <div>
+              <div class="font-medium text-gray-900">邮箱</div>
+              <div class="text-gray-600 group flex items-center gap-1">
+                <span>2668812066@qq.com</span>
+                <button 
+                  @click="copyText('2668812066@qq.com')" 
+                  class="ml-2 text-indigo-600 hover:text-indigo-800 opacity-70 hover:opacity-100"
+                >
+                  <UIcon name="solar:copy-bold" class="size-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -596,6 +652,9 @@ const sanitizedHtml = ref('')
 // 背景动效相关
 const backgroundCanvas = ref<HTMLCanvasElement | null>(null)
 const animationFrame = ref<number | null>(null)
+
+// 模态框状态
+const isContactModalOpen = ref(false)
 
 // 初始化背景动效
 function initBackgroundAnimation() {
@@ -1154,5 +1213,20 @@ function formatDate(timestamp: number | string): string {
   // 其他日期显示日期和时间
   return date.toLocaleDateString('zh-CN', {month: 'numeric', day: 'numeric'}) + ' ' + 
          date.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
+}
+
+// 显示联系我们模态框
+function showContactModal() {
+  isContactModalOpen.value = true
+}
+
+// 复制文本
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text)
+    showNotification('已复制到剪贴板')
+  } catch (err) {
+    showNotification('复制失败，请手动复制', 'error')
+  }
 }
 </script>

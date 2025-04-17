@@ -2,7 +2,7 @@
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
@@ -194,6 +194,96 @@ async function getEmails(request, env) {
   }
 }
 
+/**
+ * 清空指定邮箱的所有邮件
+ * 处理 DELETE 请求，删除KV存储中特定邮箱的所有数据
+ */
+async function clearEmails(request, env) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const address = searchParams.get('address');
+    
+    if (!address) {
+      logError('清空邮件时缺少地址参数');
+      return new Response(JSON.stringify({ error: "需要提供邮箱地址" }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    }
+    
+    // 检查 KV 绑定是否存在
+    if (!env || !env["temp-email"]) {
+      logError('KV 绑定不存在: temp-email', { env: !!env });
+      return new Response(JSON.stringify({ error: 'KV 绑定不存在', details: 'temp-email binding not found' }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    }
+    
+    const normalizedAddress = address.toLowerCase().trim();
+    logInfo(`准备清空邮件，地址: ${normalizedAddress}`);
+    
+    try {
+      // 使用邮箱地址前缀列出所有相关邮件
+      logInfo(`查询待删除邮件，前缀: ${normalizedAddress}:`);
+      const allEmails = await env["temp-email"].list({ prefix: `${normalizedAddress}:` });
+      logInfo(`查询结果，找到 ${allEmails.keys.length} 个待删除键`);
+      
+      if (allEmails.keys.length === 0) {
+        return new Response(JSON.stringify({ 
+          success: true,
+          message: "没有找到需要删除的邮件",
+          count: 0
+        }), {
+          headers: {
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          }
+        });
+      }
+      
+      // 批量删除所有匹配的键
+      const deletePromises = allEmails.keys.map(key => {
+        logInfo(`删除邮件: ${key.name}`);
+        return env["temp-email"].delete(key.name);
+      });
+      
+      await Promise.all(deletePromises);
+      
+      logInfo(`成功删除 ${allEmails.keys.length} 封邮件`);
+      
+      return new Response(JSON.stringify({ 
+        success: true,
+        message: `成功删除 ${allEmails.keys.length} 封邮件`,
+        count: allEmails.keys.length
+      }), {
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    } catch (listError) {
+      logError(`列出或删除邮件失败`, listError);
+      throw listError;
+    }
+  } catch (error) {
+    logError(`清空邮件失败`, error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
+    });
+  }
+}
+
 async function handleRequest(request, env) {
   // 检查 env 对象是否存在
   if (!env) {
@@ -215,6 +305,12 @@ async function handleRequest(request, env) {
   }
 
   try {
+    // 处理 DELETE 请求清空邮件
+    if (request.method === 'DELETE' && path === '/emails/clear') {
+      return clearEmails(request, env);
+    }
+
+    // 其他请求方法
     switch (path) {
       case '/generate':
         const address = await generateEmailAddress(env);

@@ -1060,12 +1060,62 @@ function showNotification(message: string, type: 'success' | 'error' = 'success'
 }
 
 // 清空收件箱
-function clearEmails() {
+async function clearEmails() {
   if (emails.value.length === 0) return;
   
+  // 先清空前端显示，提供即时反馈
+  const emailsBackup = [...emails.value]; // 备份以便出错时可以恢复
   emails.value = [];
   selectedEmail.value = null;
-  showNotification('收件箱已清空');
+  
+  // 显示正在处理的通知
+  showNotification('正在清空收件箱...', 'success');
+  
+  // 调用Worker API删除KV存储中的邮件
+  try {
+    const WORKER_URL = 'https://email-worker.2668812066.workers.dev';
+    const url = `${WORKER_URL}/emails/clear?address=${encodeURIComponent(emailAddress.value.trim())}`;
+    
+    const controller = new AbortController();
+    const signal = controller.signal;
+    
+    // 设置10秒超时
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+      console.warn('清空邮件请求超时，已取消');
+    }, 10000);
+    
+    const response = await fetch(url, { 
+      method: 'DELETE',
+      signal 
+    });
+    
+    // 清除超时定时器
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API错误:', response.status, errorText);
+      throw new Error(`清空邮件失败: ${response.status} ${errorText}`);
+    }
+    
+    const data = await response.json();
+    console.log('清空邮件返回数据:', data);
+    
+    // 成功清空
+    showNotification('收件箱已清空', 'success');
+  } catch (error) {
+    console.error('清空邮件失败:', error);
+    
+    // 恢复邮件列表
+    emails.value = emailsBackup;
+    if (emailsBackup.length > 0) {
+      selectedEmail.value = emailsBackup[0];
+    }
+    
+    // 显示错误通知
+    showNotification('清空邮件失败，请稍后重试', 'error');
+  }
 }
 
 // 滚动到页面顶部

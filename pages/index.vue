@@ -245,7 +245,7 @@
           <!-- 免费试用服务 -->
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
             <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="solar:flash-bolt-bold" class="text-indigo-600 size-8" />
+              <UIcon name="i-heroicons-gift" class="text-indigo-600 size-8" />
             </div>
             <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">免费试用服务</h3>
             <p class="text-gray-600">
@@ -256,7 +256,7 @@
           <!-- 一次性验证 -->
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
             <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="solar:wifi-bold" class="text-indigo-600 size-8" />
+              <UIcon name="ic:outline-check-box" class="text-indigo-600 size-8" />
             </div>
             <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">一次性验证</h3>
             <p class="text-gray-600">
@@ -303,7 +303,7 @@
           <!-- 功能卡片3：简洁易用 -->
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
             <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:flash-bold" class="text-indigo-600 size-6" />
+              <UIcon name="openmoji:simple" class="text-indigo-600 size-6" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-2">简洁易用</h3>
             <p class="text-gray-600">界面清晰直观，操作简单，适合所有年龄段和技术水平的用户使用。</p>
@@ -458,7 +458,7 @@
           <!-- FAQ 2 -->
           <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h3 class="text-xl font-semibold text-gray-900 mb-3">邮件可以保存多久？</h3>
-            <p class="text-gray-600">临时邮箱中的邮件仅在当前浏览器会话中保存。当您关闭页面或刷新浏览器后，所有邮件将会被清除。如果您需要保存重要信息，请在关闭页面前手动复制或保存。</p>
+            <p class="text-gray-600">临时邮箱中的邮件一般保存24小时，到期后会自动删除。如果您需要保存重要信息，请在过期前手动复制或保存邮件内容。</p>
           </div>
           
           <!-- FAQ 3 -->
@@ -608,6 +608,17 @@
 </template>
 
 <script setup lang="ts">
+// 首页特定的SEO设置
+useSeoMeta({
+  title: '临时邮箱 - 免费、安全的一次性电子邮箱服务',
+  description: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
+  ogImage: '/email-logo.png',
+  ogUrl: 'https://your-domain.com'
+})
+
+// 引入Schema.org结构化数据组件
+const { default: SchemaOrg } = await import('~/components/SchemaOrg.vue')
+
 interface Email {
   id: number
   sender: string
@@ -1094,7 +1105,7 @@ function stopAutoCheck() {
     autoCheckTimer.value = null
   }
   
-  // 清除结束定时器
+ // 清除结束定时器
   if (autoCheckEndTimer.value !== null) {
     clearTimeout(autoCheckEndTimer.value)
     autoCheckEndTimer.value = null

@@ -4,7 +4,7 @@
     <SchemaOrg />
     
     <!-- 背景动效 Canvas -->
-    <canvas ref="backgroundCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+    <!-- <canvas ref="backgroundCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas> -->
     
     <!-- 导航栏 -->
     <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
@@ -691,161 +691,8 @@ const faqRef = ref<HTMLElement | null>(null)
 const isSafeHtml = ref(false)
 const sanitizedHtml = ref('')
 
-// 背景动效相关
-const backgroundCanvas = ref<HTMLCanvasElement | null>(null)
-const animationFrame = ref<number | null>(null)
-
 // 模态框状态
 const isContactModalOpen = ref(false)
-
-// 初始化背景动效
-function initBackgroundAnimation() {
-  const canvas = backgroundCanvas.value
-  if (!canvas) return
-
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  // 设置画布尺寸
-  const resizeCanvas = () => {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
-  
-  // 初始调整大小
-  resizeCanvas()
-  
-  // 监听窗口大小变化
-  window.addEventListener('resize', resizeCanvas)
-
-  // 粒子数组
-  const particles: Particle[] = []
-  const particleCount = 50
-
-  // 粒子类
-  class Particle {
-    x: number
-    y: number
-    size: number
-    speedX: number
-    speedY: number
-    color: string
-
-    constructor() {
-      // 计算中心区域左右两侧的位置
-      const centerWidth = canvas!.width * 0.6 // 中心区域宽度，占总宽度的60%
-      const sideWidth = (canvas!.width - centerWidth) / 2 // 每侧的宽度
-      
-      // 随机决定是左侧还是右侧
-      const isLeftSide = Math.random() > 0.5
-      
-      if (isLeftSide) {
-        // 左侧区域
-        this.x = Math.random() * sideWidth
-      } else {
-        // 右侧区域
-        this.x = canvas!.width - (Math.random() * sideWidth)
-      }
-      
-      this.y = Math.random() * canvas!.height
-      // 减小粒子大小，从原来的 1-5 改为 0.5-2.5
-      this.size = Math.random() * 2 + 0.5
-      this.speedX = (Math.random() - 0.5) * 0.5
-      this.speedY = (Math.random() - 0.5) * 0.5
-      
-      // 加深颜色 - 使用更高的不透明度值
-      const colors = [
-        'rgba(79, 70, 229, 0.7)', // 靛青色
-        'rgba(99, 102, 241, 0.8)', // 蓝色
-        'rgba(129, 140, 248, 0.7)', // 浅蓝色
-        'rgba(67, 56, 202, 0.8)'  // 深靛青色
-      ]
-      this.color = colors[Math.floor(Math.random() * colors.length)]
-    }
-
-    update() {
-      this.x += this.speedX
-      this.y += this.speedY
-
-      // 边界检查 - 循环
-      const centerWidth = canvas!.width * 0.6
-      const sideWidth = (canvas!.width - centerWidth) / 2
-      
-      // 如果粒子进入中心区域，将其移到另一侧
-      if (this.x > sideWidth && this.x < (canvas!.width - sideWidth)) {
-        // 如果来自左侧，则移到右侧
-        if (this.speedX > 0) {
-          this.x = canvas!.width - sideWidth
-        } else {
-          // 如果来自右侧，则移到左侧
-          this.x = sideWidth
-        }
-      }
-      
-      // 顶部和底部边界仍然循环
-      if (this.y > canvas!.height) this.y = 0
-      else if (this.y < 0) this.y = canvas!.height
-    }
-
-    draw() {
-      if (!ctx) return
-      ctx.beginPath()
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-      ctx.fillStyle = this.color
-      ctx.fill()
-    }
-  }
-
-  // 创建粒子
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle())
-  }
-
-  // 连接粒子的函数
-  function connectParticles() {
-    if (!ctx) return
-    
-    const maxDistance = 150
-    
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x
-        const dy = particles[i].y - particles[j].y
-        const distance = Math.sqrt(dx * dx + dy * dy)
-        
-        if (distance < maxDistance) {
-          const opacity = 1 - (distance / maxDistance)
-          // 增加连接线的不透明度和减小线宽，使线条更清晰
-          ctx.beginPath()
-          ctx.strokeStyle = `rgba(99, 102, 241, ${opacity * 0.5})` // 增加不透明度
-          ctx.lineWidth = 0.6 // 减小线宽，使线条更细腻清晰
-          ctx.moveTo(particles[i].x, particles[i].y)
-          ctx.lineTo(particles[j].x, particles[j].y)
-          ctx.stroke()
-        }
-      }
-    }
-  }
-
-  // 动画函数
-  function animate() {
-    if (!ctx || !canvas) return
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    
-    for (const particle of particles) {
-      particle.update()
-      particle.draw()
-    }
-    
-    connectParticles()
-    
-    animationFrame.value = requestAnimationFrame(animate)
-  }
-
-  // 开始动画
-  animate()
-}
 
 // 滚动到指定部分
 function scrollToSection(section: string): void {
@@ -939,9 +786,6 @@ onMounted(() => {
   
   // 添加滚动监听，根据滚动位置更新当前部分
   window.addEventListener('scroll', handleScroll)
-
-  // 初始化背景动效
-  initBackgroundAnimation()
 })
 
 onUnmounted(() => {
@@ -949,10 +793,6 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   // 清除邮件检查定时器
   stopAutoCheck()
-  // 清除动画定时器
-  if (animationFrame.value) {
-    cancelAnimationFrame(animationFrame.value)
-  }
 })
 
 // 处理滚动，自动更新当前部分

@@ -5,6 +5,10 @@
 </template>
 
 <script setup lang="ts">
+// 获取网站配置
+const config = useRuntimeConfig()
+const siteUrl = 'https://temp-email.top'
+
 // SEO 优化配置
 useSeoMeta({
   // 基本SEO
@@ -18,7 +22,7 @@ useSeoMeta({
   ogTitle: '临时邮箱 - 保护您的在线隐私',
   ogDescription: '获取免费临时邮箱地址，即时收发邮件，保护个人信息安全，远离垃圾邮件骚扰',
   ogImage: '/email-logo.png',
-  ogUrl: 'https://your-domain.com',
+  ogUrl: siteUrl,
   ogType: 'website',
   ogSiteName: '临时邮箱服务',
   
@@ -29,18 +33,28 @@ useSeoMeta({
   twitterImage: '/email-logo.png',
 })
 
-// 设置网站语言和额外的头部信息
+// 设置动态标题模板
 useHead({
+  // 使用函数形式的titleTemplate，更加灵活
+  titleTemplate: (pageTitle) => {
+    return pageTitle ? `${pageTitle} - 临时邮箱服务` : '临时邮箱 - 快速安全的一次性电子邮箱服务';
+  },
   htmlAttrs: {
     lang: 'zh-CN',
+    dir: 'ltr'
   },
   link: [
-    { rel: 'canonical', href: 'https://your-domain.com' }
+    { rel: 'canonical', href: siteUrl },
+    { rel: 'icon', type: 'image/png', href: '/email-logo.png' },
+    { rel: 'apple-touch-icon', href: '/email-logo.png' }
   ],
   meta: [
     { name: 'author', content: 'x-thence' },
     { name: 'theme-color', content: '#4f46e5' }, // 使用网站主题色
-    { name: 'robots', content: 'index, follow' }
+    { name: 'robots', content: 'index, follow' },
+    { name: 'format-detection', content: 'telephone=no' },
+    { name: 'apple-mobile-web-app-capable', content: 'yes' },
+    { property: 'og:locale', content: 'zh_CN' }
   ]
 })
 </script>

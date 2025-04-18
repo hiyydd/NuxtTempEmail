@@ -3,6 +3,10 @@
 </template>
 
 <script setup lang="ts">
+// 获取网站URL (实际域名)
+const siteUrl = 'https://temp-email.top';
+const siteName = '临时邮箱';
+
 // 使用useHead来添加JSON-LD结构化数据
 useHead({
   script: [
@@ -11,8 +15,8 @@ useHead({
       innerHTML: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "临时邮箱服务",
-        "url": "https://your-domain.com",
+        "name": siteName,
+        "url": siteUrl,
         "description": "免费、安全、即时可用的临时邮箱服务，保护您的隐私免受垃圾邮件骚扰，无需注册即可使用",
         "applicationCategory": "WebApplication",
         "operatingSystem": "All",
@@ -21,11 +25,11 @@ useHead({
           "price": "0",
           "priceCurrency": "CNY"
         },
-        "screenshot": "https://your-domain.com/email-logo.png",
+        "screenshot": `${siteUrl}/email-logo.png`,
         "featureList": "即时可用,隐私保护,简洁易用,安全可靠,完全免费,自动检查",
         "potentialAction": {
           "@type": "UseAction",
-          "target": "https://your-domain.com"
+          "target": siteUrl
         }
       })
     },
@@ -66,8 +70,61 @@ useHead({
               "@type": "Answer",
               "text": "大多数邮件会在几秒到几分钟内收到。如果您在等待重要邮件，建议使用'检查新邮件'按钮或启用自动检查功能，系统会每5秒自动检查一次新邮件。"
             }
+          },
+          {
+            "@type": "Question", 
+            "name": "为什么有些网站不接受临时邮箱？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "一些网站和服务为了防止垃圾注册或滥用，会屏蔽临时邮箱域名。这是正常的安全措施，特别是对于金融、社交媒体等重要平台。对于这些服务，我们建议使用您的真实邮箱进行注册。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "使用临时邮箱有什么限制？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "我们的临时邮箱服务没有使用次数限制，您可以生成多个邮箱地址。但请注意合理使用，避免滥用服务进行垃圾邮件发送或违法活动。我们保留对滥用行为限制服务的权利。"
+            }
           }
         ]
+      })
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": siteUrl
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "临时邮箱服务",
+            "item": `${siteUrl}/temp-mail`
+          }
+        ]
+      })
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": siteName,
+        "url": siteUrl,
+        "logo": `${siteUrl}/email-logo.png`,
+        "description": "提供免费、安全的临时邮箱服务，保护用户隐私，远离垃圾邮件骚扰。",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "2668812066@qq.com"
+        }
       })
     }
   ]

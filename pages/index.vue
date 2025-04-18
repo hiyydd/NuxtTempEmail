@@ -1,5 +1,8 @@
 <template>
   <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 relative">
+    <!-- 结构化数据 -->
+    <SchemaOrg />
+    
     <!-- 背景动效 Canvas -->
     <canvas ref="backgroundCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
     
@@ -608,12 +611,40 @@
 </template>
 
 <script setup lang="ts">
+// 定义页面元数据
+definePageMeta({
+  title: '临时邮箱服务'
+})
+
 // 首页特定的SEO设置
 useSeoMeta({
   title: '临时邮箱 - 免费、安全的一次性电子邮箱服务',
+  ogTitle: '临时邮箱 - 免费、安全的一次性电子邮箱服务',
   description: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
+  ogDescription: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
   ogImage: '/email-logo.png',
-  ogUrl: 'https://your-domain.com'
+  ogUrl: 'https://your-domain.com',
+  ogType: 'website',
+  ogLocale: 'zh_CN',
+  twitterCard: 'summary_large_image',
+  twitterTitle: '临时邮箱 - 免费、安全的一次性电子邮箱服务',
+  twitterDescription: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
+  twitterImage: '/email-logo.png',
+  keywords: '临时邮箱,一次性邮箱,匿名邮箱,隐私保护,垃圾邮件过滤',
+})
+
+// 使用useHead添加其他标签
+useHead({
+  htmlAttrs: {
+    lang: 'zh-CN'
+  },
+  link: [
+    { rel: 'canonical', href: 'https://your-domain.com' },
+    { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+  ],
+  meta: [
+    { name: 'robots', content: 'index, follow' }
+  ]
 })
 
 // 引入Schema.org结构化数据组件

@@ -386,7 +386,7 @@
               Temp Mail 彻底改变了我的在线体验。再也不用担心垃圾邮件了！
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=32" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <img src="https://i.pravatar.cc/150?img=32" alt="约翰用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
                 <h4 class="font-semibold text-gray-900">约翰</h4>
                 <p class="text-gray-500 text-sm">自由职业者</p>
@@ -403,7 +403,7 @@
               作为开发者，Temp Mail 让我的测试工作变得更加轻松。强烈推荐！
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=59" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <img src="https://i.pravatar.cc/150?img=59" alt="莎拉用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
                 <h4 class="font-semibold text-gray-900">莎拉</h4>
                 <p class="text-gray-500 text-sm">软件工程师</p>
@@ -420,7 +420,7 @@
               简单、快速、高效。Temp Mail 是我见过最好的临时邮箱服务。
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=68" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <img src="https://i.pravatar.cc/150?img=68" alt="卡洛斯用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
                 <h4 class="font-semibold text-gray-900">卡洛斯</h4>
                 <p class="text-gray-500 text-sm">数字营销专家</p>
@@ -437,7 +437,7 @@
               保护隐私从未如此简单，Temp Mail 让我在各类网站注册时更有安全感。
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=47" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
+              <img src="https://i.pravatar.cc/150?img=47" alt="丽娜用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
                 <h4 class="font-semibold text-gray-900">丽娜</h4>
                 <p class="text-gray-500 text-sm">网络安全顾问</p>
@@ -643,7 +643,9 @@ useHead({
     { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
   ],
   meta: [
-    { name: 'robots', content: 'index, follow' }
+    { name: 'robots', content: 'index, follow' },
+    { name: 'description', content: '临时邮箱，免费、安全、一次性邮箱服务，无需注册即可获得邮箱地址，保护隐私，防止垃圾邮件。' },
+    { name: 'keywords', content: '临时邮箱,一次性邮箱,匿名邮箱,隐私保护,垃圾邮件过滤,邮箱注册,验证码邮箱,测试邮箱,邮箱防护,邮箱安全,邮箱工具,邮箱临时,邮箱匿名,邮箱防骚扰' }
   ]
 })
 
@@ -786,6 +788,7 @@ onMounted(() => {
   
   // 添加滚动监听，根据滚动位置更新当前部分
   window.addEventListener('scroll', handleScroll)
+  document.addEventListener('visibilitychange', handleVisibilityChange)
 })
 
 onUnmounted(() => {
@@ -793,12 +796,21 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   // 清除邮件检查定时器
   stopAutoCheck()
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
 })
 
 // 处理滚动，自动更新当前部分
 function handleScroll() {
   // 由于我们已经移除了菜单高亮，这个函数可以简化或移除
   // 如果将来需要基于滚动位置执行其他操作，可以在此处添加
+}
+
+function handleVisibilityChange() {
+  if (document.visibilityState === 'hidden') {
+    stopAutoCheck()
+  } else if (document.visibilityState === 'visible') {
+    startAutoCheck()
+  }
 }
 
 // 获取新的临时邮箱地址
@@ -962,11 +974,11 @@ function startAutoCheck() {
     checkNewMails()
   }, 5000)
   
-  // 设置1分钟后自动停止检查
+  // 设置2分钟后自动停止检查
   autoCheckEndTimer.value = window.setTimeout(() => {
     stopAutoCheck()
     showNotification('自动检查已完成')
-  }, 60000) // 60秒 = 1分钟
+  }, 120000) // 120秒 = 2分钟
 }
 
 // 停止自动检查

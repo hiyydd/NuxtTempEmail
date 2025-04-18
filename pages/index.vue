@@ -717,16 +717,17 @@ function initBackgroundAnimation() {
       }
       
       this.y = Math.random() * canvas!.height
-      this.size = Math.random() * 4 + 1
+      // 减小粒子大小，从原来的 1-5 改为 0.5-2.5
+      this.size = Math.random() * 2 + 0.5
       this.speedX = (Math.random() - 0.5) * 0.5
       this.speedY = (Math.random() - 0.5) * 0.5
       
-      // 加深颜色 - 使用更高的不透明度值(0.5-0.7)
+      // 加深颜色 - 使用更高的不透明度值
       const colors = [
-        'rgba(79, 70, 229, 0.6)', // 靛青色
-        'rgba(99, 102, 241, 0.7)', // 蓝色
-        'rgba(129, 140, 248, 0.6)', // 浅蓝色
-        'rgba(67, 56, 202, 0.7)'  // 深靛青色
+        'rgba(79, 70, 229, 0.7)', // 靛青色
+        'rgba(99, 102, 241, 0.8)', // 蓝色
+        'rgba(129, 140, 248, 0.7)', // 浅蓝色
+        'rgba(67, 56, 202, 0.8)'  // 深靛青色
       ]
       this.color = colors[Math.floor(Math.random() * colors.length)]
     }
@@ -783,10 +784,10 @@ function initBackgroundAnimation() {
         
         if (distance < maxDistance) {
           const opacity = 1 - (distance / maxDistance)
-          // 增加连接线的不透明度
+          // 增加连接线的不透明度和减小线宽，使线条更清晰
           ctx.beginPath()
-          ctx.strokeStyle = `rgba(99, 102, 241, ${opacity * 0.35})`
-          ctx.lineWidth = 1
+          ctx.strokeStyle = `rgba(99, 102, 241, ${opacity * 0.5})` // 增加不透明度
+          ctx.lineWidth = 0.6 // 减小线宽，使线条更细腻清晰
           ctx.moveTo(particles[i].x, particles[i].y)
           ctx.lineTo(particles[j].x, particles[j].y)
           ctx.stroke()

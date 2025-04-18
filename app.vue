@@ -1,5 +1,15 @@
 <template>
-  <UApp>
+  <UApp 
+    :ui="{ 
+      colorMode: { 
+        preference: 'system', 
+        fallback: 'light',
+        cookie: {
+          maxAge: 60 * 60 * 24 * 7 // 保存7天
+        }
+      } 
+    }"
+  >
     <NuxtPage />
   </UApp>
 </template>
@@ -63,5 +73,22 @@ useHead({
 html, body {
   margin: 0;
   padding: 0;
+}
+
+/* 增加颜色过渡效果 */
+:root {
+  --ui-background: var(--color-white);
+  --ui-text: var(--color-gray-900);
+}
+
+.dark {
+  --ui-background: var(--color-gray-900);
+  --ui-text: var(--color-white);
+}
+
+body {
+  color: var(--ui-text);
+  background-color: var(--ui-background);
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 </style>

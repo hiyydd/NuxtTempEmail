@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 relative">
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative">
     <!-- 结构化数据 -->
     <SchemaOrg />
     
@@ -7,41 +7,47 @@
     <!-- <canvas ref="backgroundCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas> -->
     
     <!-- 导航栏 -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0 flex items-center cursor-pointer" @click="scrollToTop">
-              <UIcon name="solar:letter-bold" class="text-indigo-600 size-12" />
-              <span class="ml-2 text-xl font-bold text-indigo-600">临时邮箱</span>
+              <UIcon name="solar:letter-bold" class="text-indigo-600 dark:text-indigo-400 size-12" />
+              <span class="ml-2 text-xl font-bold text-indigo-600 dark:text-indigo-400">临时邮箱</span>
             </div>
             <!-- 桌面端导航链接 -->
             <div class="hidden md:ml-8 md:flex md:space-x-8">
-              <a @click="scrollToSection('features')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 hover:text-gray-700 cursor-pointer">功能特点</a>
-              <a @click="scrollToSection('how-to')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 hover:text-gray-700 cursor-pointer">使用说明</a>
-              <a @click="scrollToSection('faq')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 hover:text-gray-700 cursor-pointer">常见问题</a>
+              <a @click="scrollToSection('features')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer">功能特点</a>
+              <a @click="scrollToSection('how-to')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer">使用说明</a>
+              <a @click="scrollToSection('faq')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer">常见问题</a>
             </div>
           </div>
-          <!-- 移动导航按钮 -->
-          <div class="flex items-center md:hidden">
-            <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
-              <UIcon v-if="!isMobileMenuOpen" name="solar:hamburger-menu-bold" class="h-6 w-6" />
-              <UIcon v-else name="solar:close-circle-bold" class="h-6 w-6" />
-            </button>
+          
+          <!-- 添加主题切换按钮 -->
+          <div class="flex items-center">
+            <ThemeSwitcher class="mr-4" />
+            
+            <!-- 移动导航按钮 -->
+            <div class="md:hidden">
+              <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                <UIcon v-if="!isMobileMenuOpen" name="solar:hamburger-menu-bold" class="h-6 w-6" />
+                <UIcon v-else name="solar:close-circle-bold" class="h-6 w-6" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
       
       <!-- 移动菜单 -->
-      <div v-show="isMobileMenuOpen" class="md:hidden bg-white">
+      <div v-show="isMobileMenuOpen" class="md:hidden bg-white dark:bg-gray-800">
         <div class="pt-2 pb-3 space-y-1">
-          <a @click="scrollToSection('features'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer">
+          <a @click="scrollToSection('features'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer">
             功能特点
           </a>
-          <a @click="scrollToSection('how-to'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer">
+          <a @click="scrollToSection('how-to'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer">
             使用说明
           </a>
-          <a @click="scrollToSection('faq'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer">
+          <a @click="scrollToSection('faq'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer">
             常见问题
           </a>
         </div>
@@ -52,10 +58,10 @@
       <!-- 英雄区域 - Hero Section -->
       <section ref="heroRef" id="hero" class="py-4">
         <header class="text-center mb-4 mt-2">
-          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 mb-4 tracking-tight leading-tight">
-            快速安全的<span class="text-indigo-600">临时邮箱</span><br>保护您的隐私
+          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
+            快速安全的<span class="text-indigo-600 dark:text-indigo-400">临时邮箱</span><br>保护您的隐私
           </h1>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto text-center">
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-center">
             无需注册，即可获得一个临时邮箱地址。保护您的真实邮箱免受垃圾邮件的侵扰，适用于测试、注册和一次性使用场景。
           </p>
         </header>
@@ -66,10 +72,10 @@
         <!-- 应用界面包装器 -->
         <div class="space-y-8">
           <!-- 邮箱地址卡片 -->
-          <section class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800">您的临时邮箱地址</h2>
+          <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100 dark:border-gray-700">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">您的临时邮箱地址</h2>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <div class="flex-1 bg-gray-50 px-4 py-3 rounded-lg border border-gray-200 font-medium text-gray-900 truncate flex items-center min-h-[42px] select-all group hover:border-indigo-300 transition-colors">
+              <div class="flex-1 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 font-medium text-gray-900 dark:text-gray-100 truncate flex items-center min-h-[42px] select-all group hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
                 <span class="truncate">{{ emailAddress || '等待生成邮箱...' }}</span>
               </div>
               <button
@@ -117,10 +123,10 @@
           <!-- 收件箱区域 -->
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- 邮件列表 -->
-            <section class="lg:col-span-1 bg-white rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100">
+            <section class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700">
               <div class="flex justify-between items-center mb-5">
-                <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                  <UIcon name="solar:inbox-bold" class="text-indigo-500 size-8" />
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                  <UIcon name="solar:inbox-bold" class="text-indigo-500 dark:text-indigo-400 size-8" />
                   收件箱
                 </h2>
                 <UButton
@@ -142,59 +148,59 @@
                     @click="selectEmail(email)"
                     class="p-3 rounded-lg cursor-pointer transition-all duration-200 border"
                     :class="selectedEmail?.id === email.id
-                      ? 'bg-indigo-50 border-indigo-300 ring-1 ring-indigo-500 shadow-sm'
-                      : 'hover:bg-gray-50 border-transparent hover:border-gray-200'"
+                      ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700 ring-1 ring-indigo-500 shadow-sm'
+                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-transparent hover:border-gray-200 dark:hover:border-gray-600'"
                   >
                     <div class="flex justify-between items-start gap-2 mb-1">
-                      <span class="font-medium text-gray-900 truncate flex-1">{{ email.from }}</span>
-                      <span class="text-xs text-gray-500 whitespace-nowrap">{{ formatDate(email.receivedAt) }}</span>
+                      <span class="font-medium text-gray-900 dark:text-gray-100 truncate flex-1">{{ email.from }}</span>
+                      <span class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ formatDate(email.receivedAt) }}</span>
                     </div>
-                    <div class="font-medium text-gray-800 truncate">{{ email.subject }}</div>
-                    <div class="text-sm text-gray-500 truncate mt-1">{{ email.preview }}</div>
+                    <div class="font-medium text-gray-800 dark:text-gray-200 truncate">{{ email.subject }}</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">{{ email.preview }}</div>
                   </li>
                 </ul>
               </UScrollbar>
               <div v-else class="flex-1 flex items-center justify-center">
                 <div class="text-center max-w-xs py-6">
                   <div class="flex justify-center mb-4">
-                    <UIcon name="solar:letter-broken" class="text-indigo-300 size-16" />
+                    <UIcon name="solar:letter-broken" class="text-indigo-300 dark:text-indigo-400 size-16" />
                   </div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-3">暂无邮件</h3>
-                  <p class="text-gray-500">创建邮箱后，所有发送到该地址的邮件将显示在这里</p>
+                  <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">暂无邮件</h3>
+                  <p class="text-gray-500 dark:text-gray-400">创建邮箱后，所有发送到该地址的邮件将显示在这里</p>
                 </div>
               </div>
             </section>
 
             <!-- 邮件内容 -->
-            <section class="lg:col-span-2 bg-white rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100">
+            <section class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700">
               <div v-if="selectedEmail" class="h-full flex flex-col">
-                <div class="border-b border-gray-200 pb-4 mb-4">
-                  <h3 class="text-2xl font-semibold text-gray-900 mb-2 break-words">{{ selectedEmail.subject }}</h3>
-                  <div class="flex flex-wrap justify-between text-sm text-gray-500 gap-2">
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+                  <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2 break-words">{{ selectedEmail.subject }}</h3>
+                  <div class="flex flex-wrap justify-between text-sm text-gray-500 dark:text-gray-400 gap-2">
                     <span class="truncate max-w-full sm:max-w-[70%] flex items-center gap-1">
                       <UIcon name="solar:user-circle-bold" class="w-4 h-4" />
                       {{ selectedEmail.from }}
                     </span>
-                    <span class="text-gray-400 flex items-center gap-1">
+                    <span class="text-gray-400 dark:text-gray-500 flex items-center gap-1">
                       <UIcon name="solar:clock-circle-bold" class="w-4 h-4" />
                       {{ formatDate(selectedEmail.receivedAt) || selectedEmail.time }}
                     </span>
                   </div>
                 </div>
                 <div class="flex-1 overflow-auto">
-                  <div class="prose prose-sm max-w-none">
-                    <div v-if="isSafeHtml" v-html="sanitizedHtml" class="prose-indigo"></div>
-                    <pre v-else class="whitespace-pre-wrap text-gray-700 bg-gray-50 p-3 rounded-lg">{{ selectedEmail.content }}</pre>
+                  <div class="prose prose-sm dark:prose-invert max-w-none">
+                    <div v-if="isSafeHtml" v-html="sanitizedHtml" class="prose-indigo dark:prose-indigo"></div>
+                    <pre v-else class="whitespace-pre-wrap text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">{{ selectedEmail.content }}</pre>
                   </div>
                 </div>
               </div>
               <div v-else class="h-full flex items-center justify-center">
                 <div class="text-center max-w-xs py-6">
                   <div class="flex justify-center mb-4">
-                    <UIcon name="solar:inbox-paper-broken" class="text-indigo-300 size-16" />
+                    <UIcon name="solar:inbox-paper-broken" class="text-indigo-300 dark:text-indigo-400 size-16" />
                   </div>
-                  <h3 class="text-lg font-semibold text-gray-800 mb-3">选择邮件</h3>
-                  <p class="text-gray-500">从左侧收件箱选择邮件以查看内容</p>
+                  <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">选择邮件</h3>
+                  <p class="text-gray-500 dark:text-gray-400">从左侧收件箱选择邮件以查看内容</p>
                 </div>
               </div>
             </section>
@@ -203,42 +209,42 @@
       </section>
 
       <!-- 应用场景部分 -->
-      <section id="use-cases" class="py-12 border-t border-gray-100 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Temp Mail 应用场景</h2>
-        <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+      <section id="use-cases" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">Temp Mail 应用场景</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto mb-12">
           临时邮箱服务适用于各种在线场景，以下是一些常见的使用案例，帮您保护隐私的同时享受网络便利。
         </p>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- 网络购物 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="solar:cart-large-bold" class="text-indigo-600 size-8" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
+              <UIcon name="solar:cart-large-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">网络购物</h3>
-            <p class="text-gray-600">
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">网络购物</h3>
+            <p class="text-gray-600 dark:text-gray-300">
               在电商网站注册时使用临时邮箱，避免不断收到促销邮件。保持您的主邮箱整洁，只接收真正重要的信息。
             </p>
           </div>
           
           <!-- 社交媒体注册 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="solar:users-group-rounded-bold" class="text-indigo-600 size-8" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
+              <UIcon name="solar:users-group-rounded-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">社交媒体注册</h3>
-            <p class="text-gray-600">
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">社交媒体注册</h3>
+            <p class="text-gray-600 dark:text-gray-300">
               保护您的真实身份，同时安全地探索各种社交平台。避免个人数据泄露和不必要的社交邮件通知。
             </p>
           </div>
           
           <!-- 论坛参与 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="solar:chat-round-dots-bold" class="text-indigo-600 size-8" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
+              <UIcon name="solar:chat-round-dots-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">论坛参与</h3>
-            <p class="text-gray-600">
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">论坛参与</h3>
+            <p class="text-gray-600 dark:text-gray-300">
               在各类在线论坛和社区自由发表意见，无需担心隐私泄露。保持匿名性的同时参与有意义的讨论。
             </p>
           </div>
@@ -246,34 +252,34 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
           <!-- 免费试用服务 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="i-heroicons-gift" class="text-indigo-600 size-8" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
+              <UIcon name="i-heroicons-gift" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">免费试用服务</h3>
-            <p class="text-gray-600">
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">免费试用服务</h3>
+            <p class="text-gray-600 dark:text-gray-300">
               注册各种在线服务的试用版，无需担心订阅提醒。当试用期结束后，您不会收到任何促销电子邮件。
             </p>
           </div>
           
           <!-- 一次性验证 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="ic:outline-check-box" class="text-indigo-600 size-8" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
+              <UIcon name="ic:outline-check-box" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">一次性验证</h3>
-            <p class="text-gray-600">
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">一次性验证</h3>
+            <p class="text-gray-600 dark:text-gray-300">
               接收一次性验证码或确认邮件，例如公共 Wi-Fi 登录。快速简单地完成身份验证过程，不留任何痕迹。
             </p>
           </div>
           
           <!-- 软件测试 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-5 mx-auto">
-              <UIcon name="solar:code-bold" class="text-indigo-600 size-8" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
+              <UIcon name="solar:code-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 mb-3 text-center">软件测试</h3>
-            <p class="text-gray-600">
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">软件测试</h3>
+            <p class="text-gray-600 dark:text-gray-300">
               开发人员可以使用临时邮箱进行多用户测试，无需创建多个真实账户。简化测试流程，提高开发效率。
             </p>
           </div>
@@ -281,88 +287,88 @@
       </section>
 
       <!-- 功能特点部分 -->
-      <section ref="featuresRef" id="features" class="py-12 border-t border-gray-100 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">为什么选择我们的临时邮箱服务？</h2>
+      <section ref="featuresRef" id="features" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">为什么选择我们的临时邮箱服务？</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- 功能卡片1：即时可用 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:clock-circle-bold" class="text-indigo-600 size-6" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
+              <UIcon name="solar:clock-circle-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">即时可用</h3>
-            <p class="text-gray-600">无需注册或登录，一键生成临时邮箱地址，立即开始使用，节省您的宝贵时间。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">即时可用</h3>
+            <p class="text-gray-600 dark:text-gray-300">无需注册或登录，一键生成临时邮箱地址，立即开始使用，节省您的宝贵时间。</p>
           </div>
           
           <!-- 功能卡片2：隐私保护 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:shield-keyhole-bold" class="text-indigo-600 size-6" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
+              <UIcon name="solar:shield-keyhole-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">隐私保护</h3>
-            <p class="text-gray-600">保护您的真实邮箱地址免受垃圾邮件骚扰，不会泄露您的个人身份信息。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">隐私保护</h3>
+            <p class="text-gray-600 dark:text-gray-300">保护您的真实邮箱地址免受垃圾邮件骚扰，不会泄露您的个人身份信息。</p>
           </div>
           
           <!-- 功能卡片3：简洁易用 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="openmoji:simple" class="text-indigo-600 size-6" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
+              <UIcon name="openmoji:simple" class="text-indigo-600 dark:text-indigo-400 size-6" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">简洁易用</h3>
-            <p class="text-gray-600">界面清晰直观，操作简单，适合所有年龄段和技术水平的用户使用。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">简洁易用</h3>
+            <p class="text-gray-600 dark:text-gray-300">界面清晰直观，操作简单，适合所有年龄段和技术水平的用户使用。</p>
           </div>
           
           <!-- 功能卡片4：安全可靠 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:shield-check-bold" class="text-indigo-600 size-6" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
+              <UIcon name="solar:shield-check-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">安全可靠</h3>
-            <p class="text-gray-600">所有邮件内容都经过安全处理，移除危险代码，确保您的设备安全。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">安全可靠</h3>
+            <p class="text-gray-600 dark:text-gray-300">所有邮件内容都经过安全处理，移除危险代码，确保您的设备安全。</p>
           </div>
           
           <!-- 功能卡片5：完全免费 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:dollar-bold" class="text-indigo-600 size-6" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
+              <UIcon name="solar:dollar-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">完全免费</h3>
-            <p class="text-gray-600">我们的临时邮箱服务对所有用户完全免费，没有任何隐藏费用或广告干扰。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">完全免费</h3>
+            <p class="text-gray-600 dark:text-gray-300">我们的临时邮箱服务对所有用户完全免费，没有任何隐藏费用或广告干扰。</p>
           </div>
           
           <!-- 功能卡片6：自动检查 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:refresh-bold" class="text-indigo-600 size-6" />
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
+              <UIcon name="solar:refresh-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">自动检查</h3>
-            <p class="text-gray-600">自动轮询检查新邮件，无需手动刷新页面，即时接收重要信息。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">自动检查</h3>
+            <p class="text-gray-600 dark:text-gray-300">自动轮询检查新邮件，无需手动刷新页面，即时接收重要信息。</p>
           </div>
         </div>
         
       </section>
 
       <!-- 使用说明部分 -->
-      <section ref="howToRef" id="how-to" class="py-12 border-t border-gray-100 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">如何使用临时邮箱</h2>
+      <section ref="howToRef" id="how-to" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">如何使用临时邮箱</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 relative">
-            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">1</div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-2">生成邮箱地址</h3>
-            <p class="text-gray-600 mb-4">点击"创建新邮箱"按钮，系统会立即为您生成一个随机的临时邮箱地址。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
+            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg">1</div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">生成邮箱地址</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">点击"创建新邮箱"按钮，系统会立即为您生成一个随机的临时邮箱地址。</p>
           </div>
           
-          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 relative">
-            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">2</div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-2">使用该地址注册</h3>
-            <p class="text-gray-600 mb-4">使用生成的临时邮箱地址进行网站注册、订阅或其他需要验证的场景。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
+            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg">2</div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">使用该地址注册</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">使用生成的临时邮箱地址进行网站注册、订阅或其他需要验证的场景。</p>
           </div>
           
-          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 relative">
-            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">3</div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-2">接收和查看邮件</h3>
-            <p class="text-gray-600 mb-4">点击"检查新邮件"按钮或开启自动检查，接收到的邮件将显示在收件箱中。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
+            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg">3</div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">接收和查看邮件</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">点击"检查新邮件"按钮或开启自动检查，接收到的邮件将显示在收件箱中。</p>
           
           </div>
         </div>
@@ -370,77 +376,77 @@
       </section>
 
        <!-- 用户评价部分 -->
-       <section id="testimonials" class="py-12 border-t border-gray-100 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">用户 <span class="text-green-600">评价</span></h2>
-        <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+       <section id="testimonials" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">用户 <span class="text-green-600 dark:text-green-400">评价</span></h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto mb-12">
           来看看我们的用户如何评价 Temp Mail 临时邮箱服务，以及它如何帮助他们保护隐私和提高效率。
         </p>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <!-- 用户评价1 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="text-green-500 mb-4">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="text-green-500 dark:text-green-400 mb-4">
               <UIcon name="i-heroicons-quote-mark" class="size-10" />
             </div>
-            <p class="text-gray-700 text-lg mb-6">
+            <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               Temp Mail 彻底改变了我的在线体验。再也不用担心垃圾邮件了！
             </p>
             <div class="flex items-center">
               <img src="https://i.pravatar.cc/150?img=32" alt="约翰用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900">约翰</h4>
-                <p class="text-gray-500 text-sm">自由职业者</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">约翰</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">自由职业者</p>
               </div>
             </div>
           </div>
           
           <!-- 用户评价2 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="text-green-500 mb-4">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="text-green-500 dark:text-green-400 mb-4">
               <UIcon name="i-heroicons-quote-mark" class="size-10" />
             </div>
-            <p class="text-gray-700 text-lg mb-6">
+            <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               作为开发者，Temp Mail 让我的测试工作变得更加轻松。强烈推荐！
             </p>
             <div class="flex items-center">
               <img src="https://i.pravatar.cc/150?img=59" alt="莎拉用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900">莎拉</h4>
-                <p class="text-gray-500 text-sm">软件工程师</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">莎拉</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">软件工程师</p>
               </div>
             </div>
           </div>
           
           <!-- 用户评价3 -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="text-green-500 mb-4">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="text-green-500 dark:text-green-400 mb-4">
               <UIcon name="i-heroicons-quote-mark" class="size-10" />
             </div>
-            <p class="text-gray-700 text-lg mb-6">
+            <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               简单、快速、高效。Temp Mail 是我见过最好的临时邮箱服务。
             </p>
             <div class="flex items-center">
               <img src="https://i.pravatar.cc/150?img=68" alt="卡洛斯用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900">卡洛斯</h4>
-                <p class="text-gray-500 text-sm">数字营销专家</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">卡洛斯</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">数字营销专家</p>
               </div>
             </div>
           </div>
           
           <!-- 用户评价4（新增） -->
-          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100">
-            <div class="text-green-500 mb-4">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+            <div class="text-green-500 dark:text-green-400 mb-4">
               <UIcon name="i-heroicons-quote-mark" class="size-10" />
             </div>
-            <p class="text-gray-700 text-lg mb-6">
+            <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               保护隐私从未如此简单，Temp Mail 让我在各类网站注册时更有安全感。
             </p>
             <div class="flex items-center">
               <img src="https://i.pravatar.cc/150?img=47" alt="丽娜用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900">丽娜</h4>
-                <p class="text-gray-500 text-sm">网络安全顾问</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">丽娜</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">网络安全顾问</p>
               </div>
             </div>
           </div>
@@ -448,51 +454,51 @@
       </section>
 
       <!-- 常见问题部分 -->
-      <section ref="faqRef" id="faq" class="py-12 border-t border-gray-100 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">常见问题解答</h2>
+      <section ref="faqRef" id="faq" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">常见问题解答</h2>
         
         <div class="max-w-3xl mx-auto space-y-6">
           <!-- FAQ 1 -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">临时邮箱安全吗？</h3>
-            <p class="text-gray-600">是的，我们的临时邮箱服务非常安全。我们不会存储您的个人信息，所有邮件内容都经过安全处理，移除潜在的恶意代码。但请注意，临时邮箱不适合接收敏感或重要信息，因为任何人如果知道邮箱地址都可以查看邮件内容。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">临时邮箱安全吗？</h3>
+            <p class="text-gray-600 dark:text-gray-300">是的，我们的临时邮箱服务非常安全。我们不会存储您的个人信息，所有邮件内容都经过安全处理，移除潜在的恶意代码。但请注意，临时邮箱不适合接收敏感或重要信息，因为任何人如果知道邮箱地址都可以查看邮件内容。</p>
           </div>
           
           <!-- FAQ 2 -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">邮件可以保存多久？</h3>
-            <p class="text-gray-600">临时邮箱中的邮件一般保存24小时，到期后会自动删除。如果您需要保存重要信息，请在过期前手动复制或保存邮件内容。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件可以保存多久？</h3>
+            <p class="text-gray-600 dark:text-gray-300">临时邮箱中的邮件一般保存24小时，到期后会自动删除。如果您需要保存重要信息，请在过期前手动复制或保存邮件内容。</p>
           </div>
           
           <!-- FAQ 3 -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">可以发送邮件吗？</h3>
-            <p class="text-gray-600">目前我们的服务仅支持接收邮件，不支持发送邮件功能。临时邮箱主要用于接收验证码、注册确认等一次性邮件。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">可以发送邮件吗？</h3>
+            <p class="text-gray-600 dark:text-gray-300">目前我们的服务仅支持接收邮件，不支持发送邮件功能。临时邮箱主要用于接收验证码、注册确认等一次性邮件。</p>
           </div>
           
           <!-- FAQ 4 -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">邮件接收需要多长时间？</h3>
-            <p class="text-gray-600">大多数邮件会在几秒到几分钟内收到。如果您在等待重要邮件，建议使用"检查新邮件"按钮或启用自动检查功能，系统会每5秒自动检查一次新邮件。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件接收需要多长时间？</h3>
+            <p class="text-gray-600 dark:text-gray-300">大多数邮件会在几秒到几分钟内收到。如果您在等待重要邮件，建议使用"检查新邮件"按钮或启用自动检查功能，系统会每5秒自动检查一次新邮件。</p>
           </div>
           
           <!-- FAQ 5 -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">为什么有些网站不接受临时邮箱？</h3>
-            <p class="text-gray-600">一些网站和服务为了防止垃圾注册或滥用，会屏蔽临时邮箱域名。这是正常的安全措施，特别是对于金融、社交媒体等重要平台。对于这些服务，我们建议使用您的真实邮箱进行注册。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">为什么有些网站不接受临时邮箱？</h3>
+            <p class="text-gray-600 dark:text-gray-300">一些网站和服务为了防止垃圾注册或滥用，会屏蔽临时邮箱域名。这是正常的安全措施，特别是对于金融、社交媒体等重要平台。对于这些服务，我们建议使用您的真实邮箱进行注册。</p>
           </div>
           
           <!-- FAQ 6 -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">使用临时邮箱有什么限制？</h3>
-            <p class="text-gray-600">我们的临时邮箱服务没有使用次数限制，您可以生成多个邮箱地址。但请注意合理使用，避免滥用服务进行垃圾邮件发送或违法活动。我们保留对滥用行为限制服务的权利。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">使用临时邮箱有什么限制？</h3>
+            <p class="text-gray-600 dark:text-gray-300">我们的临时邮箱服务没有使用次数限制，您可以生成多个邮箱地址。但请注意合理使用，避免滥用服务进行垃圾邮件发送或违法活动。我们保留对滥用行为限制服务的权利。</p>
           </div>
         </div>
         
         <div class="mt-16 text-center">
           <button
             @click="scrollToTop"
-            class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
+            class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
           >
             立即使用临时邮箱
           </button>
@@ -500,39 +506,39 @@
       </section>
 
       <!-- 页脚 -->
-      <footer class="mt-20 pt-10 border-t border-gray-200">
+      <footer class="mt-20 pt-10 border-t border-gray-200 dark:border-gray-700">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div class="md:col-span-2">
             <div class="flex items-center mb-4">
-              <UIcon name="solar:letter-bold" class="h-8 w-8 text-indigo-600" />
-              <span class="ml-2 text-xl font-bold text-indigo-600">临时邮箱</span>
+              <UIcon name="solar:letter-bold" class="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+              <span class="ml-2 text-xl font-bold text-indigo-600 dark:text-indigo-400">临时邮箱</span>
             </div>
-            <p class="text-gray-500 mb-4">提供快速、安全的临时邮箱服务，保护您的隐私，远离垃圾邮件骚扰。</p>
-            <p class="text-gray-500">© {{ new Date().getFullYear() }} 临时邮箱服务。保留所有权利。</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-4">提供快速、安全的临时邮箱服务，保护您的隐私，远离垃圾邮件骚扰。</p>
+            <p class="text-gray-500 dark:text-gray-400">© {{ new Date().getFullYear() }} 临时邮箱服务。保留所有权利。</p>
           </div>
           
           <div>
-            <h3 class="font-semibold text-gray-900 mb-4">服务</h3>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">服务</h3>
             <ul class="space-y-2">
-              <li><a @click="scrollToSection('hero')" class="text-gray-500 hover:text-indigo-600 cursor-pointer">邮箱服务</a></li>
-              <li><a @click="scrollToSection('features')" class="text-gray-500 hover:text-indigo-600 cursor-pointer">功能特点</a></li>
-              <li><a @click="scrollToSection('how-to')" class="text-gray-500 hover:text-indigo-600 cursor-pointer">使用指南</a></li>
-              <li><a @click="scrollToSection('faq')" class="text-gray-500 hover:text-indigo-600 cursor-pointer">常见问题</a></li>
+              <li><a @click="scrollToSection('hero')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">邮箱服务</a></li>
+              <li><a @click="scrollToSection('features')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">功能特点</a></li>
+              <li><a @click="scrollToSection('how-to')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">使用指南</a></li>
+              <li><a @click="scrollToSection('faq')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">常见问题</a></li>
             </ul>
           </div>
           
           <div>
-            <h3 class="font-semibold text-gray-900 mb-4">法律</h3>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">法律</h3>
             <ul class="space-y-2">
-              <li><a href="#" class="text-gray-500 hover:text-indigo-600">隐私政策</a></li>
-              <li><a href="#" class="text-gray-500 hover:text-indigo-600">服务条款</a></li>
-              <li><a href="#" class="text-gray-500 hover:text-indigo-600">免责声明</a></li>
-              <li><a @click="showContactModal" class="text-gray-500 hover:text-indigo-600 cursor-pointer">联系我们</a></li>
+              <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">隐私政策</a></li>
+              <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">服务条款</a></li>
+              <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">免责声明</a></li>
+              <li><a @click="showContactModal" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">联系我们</a></li>
             </ul>
           </div>
         </div>
         
-        <div class="text-center text-sm text-gray-500 pt-6 border-t border-gray-100">
+        <div class="text-center text-sm text-gray-500 dark:text-gray-400 pt-6 border-t border-gray-100 dark:border-gray-700">
           <p>本服务仅用于合法用途，禁止用于发送垃圾邮件或任何违法内容。</p>
         </div>
       </footer>
@@ -563,8 +569,8 @@
         @click.stop
       >
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <UIcon name="solar:user-speak-bold" class="text-indigo-600 size-6" />
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <UIcon name="solar:user-speak-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
             联系我们
           </h3>
           <button @click="isContactModalOpen = false" class="text-gray-500 hover:text-gray-700">
@@ -573,15 +579,15 @@
         </div>
         
         <div class="space-y-4 py-2">
-          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors">
-            <UIcon name="i-heroicons-chat-bubble-left-right" class="text-indigo-600 size-8 flex-shrink-0" />
+          <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
+            <UIcon name="i-heroicons-chat-bubble-left-right" class="text-indigo-600 dark:text-indigo-400 size-8 flex-shrink-0" />
             <div>
-              <div class="font-medium text-gray-900">QQ</div>
-              <div class="text-gray-600 group flex items-center gap-1">
+              <div class="font-medium text-gray-900 dark:text-gray-100">QQ</div>
+              <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
                 <span>2668812066</span>
                 <button 
                   @click="copyText('2668812066')" 
-                  class="ml-2 text-indigo-600 hover:text-indigo-800 opacity-70 hover:opacity-100"
+                  class="ml-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 opacity-70 hover:opacity-100"
                 >
                   <UIcon name="solar:copy-bold" class="size-4" />
                 </button>
@@ -589,15 +595,15 @@
             </div>
           </div>
           
-          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors">
-            <UIcon name="ic:baseline-email" class="text-indigo-600 size-8 flex-shrink-0" />
+          <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
+            <UIcon name="ic:baseline-email" class="text-indigo-600 dark:text-indigo-400 size-8 flex-shrink-0" />
             <div>
-              <div class="font-medium text-gray-900">邮箱</div>
-              <div class="text-gray-600 group flex items-center gap-1">
+              <div class="font-medium text-gray-900 dark:text-gray-100">邮箱</div>
+              <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
                 <span>2668812066@qq.com</span>
                 <button 
                   @click="copyText('2668812066@qq.com')" 
-                  class="ml-2 text-indigo-600 hover:text-indigo-800 opacity-70 hover:opacity-100"
+                  class="ml-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 opacity-70 hover:opacity-100"
                 >
                   <UIcon name="solar:copy-bold" class="size-4" />
                 </button>

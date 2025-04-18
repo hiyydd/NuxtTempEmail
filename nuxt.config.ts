@@ -2,7 +2,12 @@
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui'],
+  modules: [
+    '@nuxt/ui', 
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
+    '@nuxtjs/color-mode'
+  ],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
@@ -43,5 +48,11 @@ export default defineNuxtConfig({
     public: {
       siteUrl: 'https://temp-email.top'
     }
+  },
+  colorMode: {
+    classSuffix: '',
+    preference: 'system',
+    fallback: 'light',
+    storageKey: 'temp-email-color-mode'
   }
 })

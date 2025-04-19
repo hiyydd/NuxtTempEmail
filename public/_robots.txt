@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://temp-email.top/sitemap.xml

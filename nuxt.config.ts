@@ -4,8 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   modules: [
     '@nuxt/ui', 
-    '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
     '@nuxtjs/color-mode'
   ],
   compatibilityDate: '2024-11-01',
@@ -22,7 +20,8 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'format-detection', content: 'telephone=no' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
-        { name: 'theme-color', content: '#4f46e5' }
+        { name: 'theme-color', content: '#4f46e5' },
+        { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/email-logo.png' },

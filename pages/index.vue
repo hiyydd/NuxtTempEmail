@@ -58,31 +58,33 @@
       <!-- 英雄区域 - Hero Section -->
       <section ref="heroRef" id="hero" class="py-4">
         <header class="text-center mb-4 mt-2">
-          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
+          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight" id="main-title">
             快速安全的<span class="text-indigo-600 dark:text-indigo-400">临时邮箱</span><br>保护您的隐私
           </h1>
-          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-center">
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-center" id="main-description">
             无需注册，即可获得一个临时邮箱地址。保护您的真实邮箱免受垃圾邮件的侵扰，适用于测试、注册和一次性使用场景。
           </p>
         </header>
       </section>
 
       <!-- 应用区域 - App Section -->
-      <section ref="appRef" id="app" class="py-2">
+      <section ref="appRef" id="app" class="py-2" aria-labelledby="app-heading">
+        <h2 id="app-heading" class="sr-only">临时邮箱应用</h2>
         <!-- 应用界面包装器 -->
         <div class="space-y-8">
           <!-- 邮箱地址卡片 -->
-          <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100 dark:border-gray-700">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">您的临时邮箱地址</h2>
+          <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100 dark:border-gray-700" aria-labelledby="email-address-heading">
+            <h2 id="email-address-heading" class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">您的临时邮箱地址</h2>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div class="flex-1 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 font-medium text-gray-900 dark:text-gray-100 truncate flex items-center min-h-[42px] select-all group hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
-                <span class="truncate">{{ emailAddress || '等待生成邮箱...' }}</span>
+                <span class="truncate" aria-label="临时邮箱地址">{{ emailAddress || '等待生成邮箱...' }}</span>
               </div>
               <button
                 @click="copyEmail"
                 class="sm:min-h-[42px] w-full sm:w-32 flex items-center justify-center gap-1 px-3 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
+                aria-label="复制邮箱地址到剪贴板"
               >
-                <UIcon name="solar:copy-bold" class="size-5" />
+                <UIcon name="solar:copy-bold" class="size-5" aria-hidden="true" />
                 <span class="text-base">复制</span>
               </button>
             </div>
@@ -92,13 +94,14 @@
                 class="w-full sm:w-auto flex items-center justify-center gap-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                 :disabled="isCreatingEmail"
                 :class="{'opacity-70 cursor-not-allowed': isCreatingEmail}"
+                aria-label="创建新的临时邮箱地址"
               >
                 <span v-if="!isCreatingEmail" class="flex items-center gap-1">
-                  <UIcon name="solar:add-square-bold" class="size-6" />
+                  <UIcon name="solar:add-square-bold" class="size-6" aria-hidden="true" />
                   创建新邮箱
                 </span>
                 <span v-else class="flex items-center justify-center gap-1">
-                  <span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  <span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></span>
                   创建中...
                 </span>
               </button>
@@ -107,13 +110,14 @@
                 class="w-full sm:w-auto flex items-center justify-center gap-1 px-4 py-2.5 border-2 border-indigo-500 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-30"
                 :disabled="isChecking"
                 :class="{'opacity-70 cursor-not-allowed': isChecking}"
+                aria-label="检查新邮件"
               >
                 <span v-if="!isChecking" class="flex items-center gap-1">
-                  <UIcon name="solar:refresh-bold" class="size-6" />
+                  <UIcon name="solar:refresh-bold" class="size-6" aria-hidden="true" />
                   检查新邮件
                 </span>
                 <span v-else class="flex items-center justify-center gap-1">
-                  <span class="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
+                  <span class="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" aria-hidden="true"></span>
                   正在检查邮件
                 </span>
               </button>
@@ -123,10 +127,10 @@
           <!-- 收件箱区域 -->
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- 邮件列表 -->
-            <section class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700">
+            <section class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700" aria-labelledby="inbox-heading">
               <div class="flex justify-between items-center mb-5">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                  <UIcon name="solar:inbox-bold" class="text-indigo-500 dark:text-indigo-400 size-8" />
+                <h2 id="inbox-heading" class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                  <UIcon name="solar:inbox-bold" class="text-indigo-500 dark:text-indigo-400 size-8" aria-hidden="true" />
                   收件箱
                 </h2>
                 <UButton
@@ -136,6 +140,7 @@
                   icon="solar:trash-bin-minimalistic-bold"
                   size="sm"
                   @click="clearEmails"
+                  aria-label="清空收件箱"
                 >
                   清空
                 </UButton>
@@ -172,7 +177,8 @@
             </section>
 
             <!-- 邮件内容 -->
-            <section class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700">
+            <section class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700" aria-labelledby="email-content-heading">
+              <h2 id="email-content-heading" class="sr-only">邮件内容</h2>
               <div v-if="selectedEmail" class="h-full flex flex-col">
                 <div class="border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
                   <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2 break-words">{{ selectedEmail.subject }}</h3>
@@ -209,8 +215,8 @@
       </section>
 
       <!-- 应用场景部分 -->
-      <section id="use-cases" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">Temp Mail 应用场景</h2>
+      <section id="use-cases" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="use-cases-heading">
+        <h2 id="use-cases-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">Temp Mail 应用场景</h2>
         <p class="text-lg text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto mb-12">
           临时邮箱服务适用于各种在线场景，以下是一些常见的使用案例，帮您保护隐私的同时享受网络便利。
         </p>
@@ -517,23 +523,78 @@
             <p class="text-gray-500 dark:text-gray-400">© {{ new Date().getFullYear() }} 临时邮箱服务。保留所有权利。</p>
           </div>
           
+          <!-- 服务导航 -->
           <div>
             <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">服务</h3>
             <ul class="space-y-2">
-              <li><a @click="scrollToSection('hero')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">邮箱服务</a></li>
-              <li><a @click="scrollToSection('features')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">功能特点</a></li>
-              <li><a @click="scrollToSection('how-to')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">使用指南</a></li>
-              <li><a @click="scrollToSection('faq')" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">常见问题</a></li>
+              <li>
+                <a href="#hero" 
+                   @click.prevent="scrollToSection('hero')" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+                   aria-label="临时邮箱服务">
+                  邮箱服务
+                </a>
+              </li>
+              <li>
+                <a href="#features" 
+                   @click.prevent="scrollToSection('features')" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+                   aria-label="功能特点介绍">
+                  功能特点
+                </a>
+              </li>
+              <li>
+                <a href="#how-to" 
+                   @click.prevent="scrollToSection('how-to')" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+                   aria-label="服务使用指南">
+                  使用指南
+                </a>
+              </li>
+              <li>
+                <a href="#faq" 
+                   @click.prevent="scrollToSection('faq')" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+                   aria-label="常见问题解答">
+                  常见问题
+                </a>
+              </li>
             </ul>
           </div>
           
+          <!-- 法律导航 -->
           <div>
             <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">法律</h3>
             <ul class="space-y-2">
-              <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">隐私政策</a></li>
-              <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">服务条款</a></li>
-              <li><a href="#" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">免责声明</a></li>
-              <li><a @click="showContactModal" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">联系我们</a></li>
+              <li>
+                <a href="/privacy" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+                   aria-label="隐私政策详情">
+                  隐私政策
+                </a>
+              </li>
+              <li>
+                <a href="/terms" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+                   aria-label="服务条款详情">
+                  服务条款
+                </a>
+              </li>
+              <li>
+                <a href="/disclaimer" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+                   aria-label="免责声明详情">
+                  免责声明
+                </a>
+              </li>
+              <li>
+                <a href="/contact" 
+                   @click.prevent="showContactModal" 
+                   class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+                   aria-label="联系我们">
+                  联系我们
+                </a>
+              </li>
             </ul>
           </div>
         </div>

@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /*.json$
+Disallow: /*.js$
+Disallow: /*.css$
+
+# 允许抓取主要内容
+Allow: /index
+Allow: /terms
+Allow: /privacy
+
+# 站点地图
+Sitemap: https://temp-email.top/sitemap.xml 

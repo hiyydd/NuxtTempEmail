@@ -726,7 +726,7 @@ useSeoMeta({
   description: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
   ogDescription: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
   ogImage: '/email-logo.png',
-  ogUrl: 'https://your-domain.com',
+  ogUrl: 'https://temp-email.top',
   ogType: 'website',
   ogLocale: 'zh_CN',
   twitterCard: 'summary_large_image',
@@ -742,8 +742,8 @@ useHead({
     lang: 'zh-CN'
   },
   link: [
-    { rel: 'canonical', href: 'https://your-domain.com' },
-    { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    { rel: 'canonical', href: 'https://temp-email.top' },
+    { rel: 'icon', type: 'image/png', href: '/email-logo.png' }
   ],
   meta: [
     { name: 'robots', content: 'index, follow' },

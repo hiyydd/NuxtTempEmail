@@ -13,6 +13,7 @@
           <div class="flex items-center">
             <div class="flex-shrink-0 flex items-center cursor-pointer" @click="scrollToTop">
               <img src="/email-logo.png" alt="临时邮箱 Logo" class="h-10 w-auto" />
+              <span class="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-100">临时邮箱</span>
             </div>
             <!-- 桌面端导航链接 -->
             <div class="hidden md:ml-8 md:flex md:space-x-8">

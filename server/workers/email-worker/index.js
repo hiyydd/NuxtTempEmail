@@ -133,49 +133,86 @@ async function getEmails(request, env) {
     logInfo(`查询邮件，地址: ${normalizedAddress}`);
     
     try {
-      // 直接使用邮箱地址前缀列出所有相关邮件
+      // 获取缓存控制参数
+      const noCache = searchParams.get('no_cache') === 'true';
+      
+      // 设置缓存控制标头
+      const cacheHeaders = {
+        'Content-Type': 'application/json',
+        ...corsHeaders,
+        // 如果请求明确要求不缓存，则禁用缓存
+        ...(noCache ? {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        } : {
+          // 否则允许缓存5秒，提高频繁查询性能
+          'Cache-Control': 'public, max-age=5'
+        })
+      };
+      
+      // 尝试使用并行处理优化查询性能
       logInfo(`开始查询KV，前缀: ${normalizedAddress}:`);
-      const allEmails = await env["temp-email"].list({ prefix: `${normalizedAddress}:` });
-      logInfo(`KV查询结果，找到 ${allEmails.keys.length} 个键`, { keys: allEmails.keys.map(k => k.name) });
       
-      // 处理所有匹配邮件
-      const emails = [];
+      // 一次性列出所有键，限制更高以确保获取完整结果
+      const allEmails = await env["temp-email"].list({ 
+        prefix: `${normalizedAddress}:`,
+        limit: 100 // 提高默认限制
+      });
       
-      for (const key of allEmails.keys) {
-        try {
-          logInfo(`获取邮件内容: ${key.name}`);
-          const emailData = await env["temp-email"].get(key.name);
-          if (emailData) {
-            logInfo(`成功获取邮件内容, 大小: ${emailData.length}`);
-            const parsedEmail = JSON.parse(emailData);
-            // 添加ID，使用时间戳部分
-            const timestamp = key.name.split(':')[1];
-            emails.push({
-              id: timestamp,
-              ...parsedEmail
-            });
-          } else {
-            logError(`未找到邮件内容: ${key.name}`);
-          }
-        } catch (emailError) {
-          logError(`解析邮件失败: ${key.name}`, emailError);
-        }
+      logInfo(`KV查询结果，找到 ${allEmails.keys.length} 个键`);
+      
+      if (allEmails.keys.length === 0) {
+        // 没有邮件时快速返回空数组
+        return new Response(JSON.stringify([]), {
+          headers: cacheHeaders
+        });
       }
       
-      // 按时间排序（最新的在前）
-      emails.sort((a, b) => b.id - a.id);
+      // 使用Promise.all并行获取所有邮件内容
+      const emailPromises = allEmails.keys.map(async (key) => {
+        try {
+          const emailData = await env["temp-email"].get(key.name);
+          if (!emailData) {
+            logError(`未找到邮件内容: ${key.name}`);
+            return null;
+          }
+          
+          const parsedEmail = JSON.parse(emailData);
+          // 解析时间戳作为ID
+          const timestamp = key.name.split(':')[1];
+          // 添加接收时间
+          return {
+            id: timestamp,
+            receivedAt: parseInt(timestamp, 10),
+            ...parsedEmail,
+            // 简化预览，不需要完整内容
+            preview: parsedEmail.text ? parsedEmail.text.slice(0, 100) : (parsedEmail.subject || '无内容')
+          };
+        } catch (emailError) {
+          logError(`解析邮件失败: ${key.name}`, emailError);
+          return null;
+        }
+      });
+      
+      // 等待所有Promise完成
+      const results = await Promise.all(emailPromises);
+      
+      // 过滤掉null值并按时间排序（最新的在前）
+      const emails = results
+        .filter(email => email !== null)
+        .sort((a, b) => b.receivedAt - a.receivedAt);
+      
       logInfo(`返回 ${emails.length} 封邮件`);
       
       return new Response(JSON.stringify(emails), {
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        }
+        headers: cacheHeaders
       });
     } catch (listError) {
       logError(`列出邮件失败`, listError);
       
-      return new Response(JSON.stringify([]), {
+      return new Response(JSON.stringify({ error: '查询邮件失败', details: listError.message }), {
+        status: 500,
         headers: {
           'Content-Type': 'application/json',
           ...corsHeaders

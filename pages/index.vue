@@ -17,9 +17,24 @@
             </div>
             <!-- 桌面端导航链接 -->
             <div class="hidden md:ml-8 md:flex md:space-x-8">
-              <a @click="scrollToSection('features')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer">功能特点</a>
-              <a @click="scrollToSection('how-to')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer">使用说明</a>
-              <a @click="scrollToSection('faq')" class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer">常见问题</a>
+              <a href="#features" 
+                 @click.prevent="scrollToSection('features')" 
+                 class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+                 aria-label="查看功能特点">
+                功能特点
+              </a>
+              <a href="#how-to" 
+                 @click.prevent="scrollToSection('how-to')" 
+                 class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+                 aria-label="查看使用说明">
+                使用说明
+              </a>
+              <a href="#faq" 
+                 @click.prevent="scrollToSection('faq')" 
+                 class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+                 aria-label="查看常见问题">
+                常见问题
+              </a>
             </div>
           </div>
           
@@ -41,13 +56,22 @@
       <!-- 移动菜单 -->
       <div v-show="isMobileMenuOpen" class="md:hidden bg-white dark:bg-gray-800">
         <div class="pt-2 pb-3 space-y-1">
-          <a @click="scrollToSection('features'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer">
+          <a href="#features" 
+             @click.prevent="scrollToSection('features'); isMobileMenuOpen = false" 
+             class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+             aria-label="查看功能特点">
             功能特点
           </a>
-          <a @click="scrollToSection('how-to'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer">
+          <a href="#how-to" 
+             @click.prevent="scrollToSection('how-to'); isMobileMenuOpen = false" 
+             class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+             aria-label="查看使用说明">
             使用说明
           </a>
-          <a @click="scrollToSection('faq'); isMobileMenuOpen = false" class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer">
+          <a href="#faq" 
+             @click.prevent="scrollToSection('faq'); isMobileMenuOpen = false" 
+             class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+             aria-label="查看常见问题">
             常见问题
           </a>
         </div>
@@ -293,97 +317,94 @@
       </section>
 
       <!-- 功能特点部分 -->
-      <section ref="featuresRef" id="features" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">为什么选择我们的临时邮箱服务？</h2>
+      <section ref="featuresRef" id="features" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="features-heading">
+        <h2 id="features-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">为什么选择我们的临时邮箱服务？</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- 功能卡片1：即时可用 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:clock-circle-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
+              <UIcon name="solar:clock-circle-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">即时可用</h3>
             <p class="text-gray-600 dark:text-gray-300">无需注册或登录，一键生成临时邮箱地址，立即开始使用，节省您的宝贵时间。</p>
-          </div>
+          </article>
           
           <!-- 功能卡片2：隐私保护 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:shield-keyhole-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
+              <UIcon name="solar:shield-keyhole-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">隐私保护</h3>
             <p class="text-gray-600 dark:text-gray-300">保护您的真实邮箱地址免受垃圾邮件骚扰，不会泄露您的个人身份信息。</p>
-          </div>
+          </article>
           
           <!-- 功能卡片3：简洁易用 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="openmoji:simple" class="text-indigo-600 dark:text-indigo-400 size-6" />
+              <UIcon name="openmoji:simple" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">简洁易用</h3>
             <p class="text-gray-600 dark:text-gray-300">界面清晰直观，操作简单，适合所有年龄段和技术水平的用户使用。</p>
-          </div>
+          </article>
           
           <!-- 功能卡片4：安全可靠 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:shield-check-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
+              <UIcon name="solar:shield-check-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">安全可靠</h3>
             <p class="text-gray-600 dark:text-gray-300">所有邮件内容都经过安全处理，移除危险代码，确保您的设备安全。</p>
-          </div>
+          </article>
           
           <!-- 功能卡片5：完全免费 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:dollar-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
+              <UIcon name="solar:dollar-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">完全免费</h3>
             <p class="text-gray-600 dark:text-gray-300">我们的临时邮箱服务对所有用户完全免费，没有任何隐藏费用或广告干扰。</p>
-          </div>
+          </article>
           
           <!-- 功能卡片6：自动检查 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
-              <UIcon name="solar:refresh-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
+              <UIcon name="solar:refresh-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">自动检查</h3>
             <p class="text-gray-600 dark:text-gray-300">自动轮询检查新邮件，无需手动刷新页面，即时接收重要信息。</p>
-          </div>
+          </article>
         </div>
-        
       </section>
 
       <!-- 使用说明部分 -->
-      <section ref="howToRef" id="how-to" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">如何使用临时邮箱</h2>
+      <section ref="howToRef" id="how-to" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="how-to-heading">
+        <h2 id="how-to-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">如何使用临时邮箱</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
-            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg">1</div>
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
+            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg" aria-hidden="true">1</div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">生成邮箱地址</h3>
             <p class="text-gray-600 dark:text-gray-300 mb-4">点击"创建新邮箱"按钮，系统会立即为您生成一个随机的临时邮箱地址。</p>
-          </div>
+          </article>
           
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
-            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg">2</div>
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
+            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg" aria-hidden="true">2</div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">使用该地址注册</h3>
             <p class="text-gray-600 dark:text-gray-300 mb-4">使用生成的临时邮箱地址进行网站注册、订阅或其他需要验证的场景。</p>
-          </div>
+          </article>
           
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
-            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg">3</div>
+          <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
+            <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg" aria-hidden="true">3</div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">接收和查看邮件</h3>
             <p class="text-gray-600 dark:text-gray-300 mb-4">点击"检查新邮件"按钮或开启自动检查，接收到的邮件将显示在收件箱中。</p>
-          
-          </div>
+          </article>
         </div>
-        
       </section>
 
        <!-- 用户评价部分 -->
        <section id="testimonials" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">用户 <span class="text-green-600 dark:text-green-400">评价</span></h2>
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">用户 <span class="text-purple-600 dark:text-purple-400">评价</span></h2>
         <p class="text-lg text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto mb-12">
           来看看我们的用户如何评价 Temp Mail 临时邮箱服务，以及它如何帮助他们保护隐私和提高效率。
         </p>
@@ -391,7 +412,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <!-- 用户评价1 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
-            <div class="text-green-500 dark:text-green-400 mb-4">
+            <div class="text-purple-500 dark:text-purple-400 mb-4">
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
@@ -408,7 +429,7 @@
           
           <!-- 用户评价2 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
-            <div class="text-green-500 dark:text-green-400 mb-4">
+            <div class="text-purple-500 dark:text-purple-400 mb-4">
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
@@ -425,7 +446,7 @@
           
           <!-- 用户评价3 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
-            <div class="text-green-500 dark:text-green-400 mb-4">
+            <div class="text-purple-500 dark:text-purple-400 mb-4">
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
@@ -442,7 +463,7 @@
           
           <!-- 用户评价4（新增） -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
-            <div class="text-green-500 dark:text-green-400 mb-4">
+            <div class="text-purple-500 dark:text-purple-400 mb-4">
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
@@ -460,44 +481,56 @@
       </section>
 
       <!-- 常见问题部分 -->
-      <section ref="faqRef" id="faq" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">常见问题解答</h2>
+      <section ref="faqRef" id="faq" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="faq-heading">
+        <h2 id="faq-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">常见问题解答</h2>
         
-        <div class="max-w-3xl mx-auto space-y-6">
+        <div class="max-w-3xl mx-auto space-y-6" itemscope itemtype="https://schema.org/FAQPage">
           <!-- FAQ 1 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">临时邮箱安全吗？</h3>
-            <p class="text-gray-600 dark:text-gray-300">是的，我们的临时邮箱服务非常安全。我们不会存储您的个人信息，所有邮件内容都经过安全处理，移除潜在的恶意代码。但请注意，临时邮箱不适合接收敏感或重要信息，因为任何人如果知道邮箱地址都可以查看邮件内容。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">临时邮箱安全吗？</h3>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">是的，我们的临时邮箱服务非常安全。我们不会存储您的个人信息，所有邮件内容都经过安全处理，移除潜在的恶意代码。但请注意，临时邮箱不适合接收敏感或重要信息，因为任何人如果知道邮箱地址都可以查看邮件内容。</p>
+            </div>
           </div>
           
           <!-- FAQ 2 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件可以保存多久？</h3>
-            <p class="text-gray-600 dark:text-gray-300">临时邮箱中的邮件一般保存24小时，到期后会自动删除。如果您需要保存重要信息，请在过期前手动复制或保存邮件内容。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件可以保存多久？</h3>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">临时邮箱中的邮件一般保存24小时，到期后会自动删除。如果您需要保存重要信息，请在过期前手动复制或保存邮件内容。</p>
+            </div>
           </div>
           
           <!-- FAQ 3 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">可以发送邮件吗？</h3>
-            <p class="text-gray-600 dark:text-gray-300">目前我们的服务仅支持接收邮件，不支持发送邮件功能。临时邮箱主要用于接收验证码、注册确认等一次性邮件。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">可以发送邮件吗？</h3>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">目前我们的服务仅支持接收邮件，不支持发送邮件功能。临时邮箱主要用于接收验证码、注册确认等一次性邮件。</p>
+            </div>
           </div>
           
           <!-- FAQ 4 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件接收需要多长时间？</h3>
-            <p class="text-gray-600 dark:text-gray-300">大多数邮件会在几秒到几分钟内收到。如果您在等待重要邮件，建议使用"检查新邮件"按钮或启用自动检查功能，系统会每5秒自动检查一次新邮件。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件接收需要多长时间？</h3>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">大多数邮件会在几秒到几分钟内收到。如果您在等待重要邮件，建议使用"检查新邮件"按钮或启用自动检查功能，系统会每5秒自动检查一次新邮件。</p>
+            </div>
           </div>
           
           <!-- FAQ 5 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">为什么有些网站不接受临时邮箱？</h3>
-            <p class="text-gray-600 dark:text-gray-300">一些网站和服务为了防止垃圾注册或滥用，会屏蔽临时邮箱域名。这是正常的安全措施，特别是对于金融、社交媒体等重要平台。对于这些服务，我们建议使用您的真实邮箱进行注册。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">为什么有些网站不接受临时邮箱？</h3>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">一些网站和服务为了防止垃圾注册或滥用，会屏蔽临时邮箱域名。这是正常的安全措施，特别是对于金融、社交媒体等重要平台。对于这些服务，我们建议使用您的真实邮箱进行注册。</p>
+            </div>
           </div>
           
           <!-- FAQ 6 -->
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">使用临时邮箱有什么限制？</h3>
-            <p class="text-gray-600 dark:text-gray-300">我们的临时邮箱服务没有使用次数限制，您可以生成多个邮箱地址。但请注意合理使用，避免滥用服务进行垃圾邮件发送或违法活动。我们保留对滥用行为限制服务的权利。</p>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">使用临时邮箱有什么限制？</h3>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">我们的临时邮箱服务没有使用次数限制，您可以生成多个邮箱地址。但请注意合理使用，避免滥用服务进行垃圾邮件发送或违法活动。我们保留对滥用行为限制服务的权利。</p>
+            </div>
           </div>
         </div>
         
@@ -896,29 +929,22 @@ async function generateNewEmail() {
 }
 
 // 获取邮件列表
-async function fetchEmails() {
+async function fetchEmails(skipCache = false) {
   const MAX_RETRIES = 3;
   let retries = 0;
   const WORKER_URL = 'https://email-worker.2668812066.workers.dev';
   while (retries < MAX_RETRIES) {
     try {
-      const url = `${WORKER_URL}/emails?address=${encodeURIComponent(emailAddress.value.trim())}`;
+      // 添加可选的no_cache参数，用于强制刷新
+      const cacheParam = skipCache ? '&no_cache=true' : '';
+      const url = `${WORKER_URL}/emails?address=${encodeURIComponent(emailAddress.value.trim())}${cacheParam}`;
       console.log('发送请求:', url);
       
-      // 创建一个 AbortController 用于超时取消请求
+      // 创建一个 AbortController 用于可能的手动取消请求
       const controller = new AbortController();
       const signal = controller.signal;
       
-      // 设置5秒超时
-      const timeoutId = setTimeout(() => {
-        controller.abort();
-        console.warn('请求超时，已取消');
-      }, 5000);
-      
       const response = await fetch(url, { signal });
-      
-      // 清除超时定时器
-      clearTimeout(timeoutId);
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -942,9 +968,9 @@ async function fetchEmails() {
       
       return; // 成功获取
     } catch (error) {
-      // 检查是否是超时错误
+      // 检查是否是手动取消错误
       if ((error as Error).name === 'AbortError') {
-        console.error('请求超时');
+        console.error('请求被取消');
         // 不再重试，直接进入下一轮检查
         break;
       }
@@ -976,6 +1002,21 @@ async function copyEmail() {
   }
 }
 
+// 刷新邮箱地址后立即检查
+async function checkEmailsAfterRefresh() {
+  // 在生成新邮箱后，先等待2秒让邮件系统初始化
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  // 进行首次检查，跳过缓存
+  await fetchEmails(true);
+  
+  // 如果没有邮件，等待3秒再次检查
+  if (emails.value.length === 0) {
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    await fetchEmails(true);
+  }
+}
+
 // 刷新邮箱地址
 async function refreshEmail() {        
   isCreatingEmail.value = true
@@ -994,6 +1035,11 @@ async function refreshEmail() {
     emails.value = []
     selectedEmail.value = null
     showNotification('已生成新的临时邮箱地址')
+    
+    // 立即检查是否有邮件
+    checkEmailsAfterRefresh().catch(err => {
+      console.error('初始检查失败:', err)
+    });
   } catch (error: any) {
     showNotification('生成新邮箱失败', 'error')
   } finally {
@@ -1010,7 +1056,8 @@ async function checkNewMails() {
   }
   
   try {
-    await fetchEmails()
+    // 手动点击检查邮件时，强制跳过缓存获取最新数据
+    await fetchEmails(true)
   } catch (err) {
     console.error('邮件检查错误:', err);
     
@@ -1103,19 +1150,10 @@ async function clearEmails() {
     const controller = new AbortController();
     const signal = controller.signal;
     
-    // 设置10秒超时
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-      console.warn('清空邮件请求超时，已取消');
-    }, 10000);
-    
     const response = await fetch(url, { 
       method: 'DELETE',
       signal 
     });
-    
-    // 清除超时定时器
-    clearTimeout(timeoutId);
     
     if (!response.ok) {
       const errorText = await response.text();

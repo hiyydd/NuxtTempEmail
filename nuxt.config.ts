@@ -34,12 +34,17 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
-  // 开启SSR以提高SEO效果
-  ssr: true,
   // 路由规则: 对于首页开启预渲染
   nitro: {
     prerender: {
-      routes: ['/']
+      routes: ['/'],
+      // 忽略找不到的页面路径错误
+      ignore: [
+        '/privacy', 
+        '/terms', 
+        '/disclaimer', 
+        '/contact'
+      ]
     }
   },
   // 自定义SEO配置

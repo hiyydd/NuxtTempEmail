@@ -168,7 +168,7 @@
               <div v-else class="flex-1 flex items-center justify-center">
                 <div class="text-center max-w-xs py-6">
                   <div class="flex justify-center mb-4">
-                    <UIcon name="solar:letter-broken" class="text-indigo-300 dark:text-indigo-400 size-16" />
+                    <UIcon name="solar:inbox-linear" class="text-indigo-300 dark:text-indigo-400 size-16" />
                   </div>
                   <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">暂无邮件</h3>
                   <p class="text-gray-500 dark:text-gray-400">创建邮箱后，所有发送到该地址的邮件将显示在这里</p>
@@ -203,7 +203,7 @@
               <div v-else class="h-full flex items-center justify-center">
                 <div class="text-center max-w-xs py-6">
                   <div class="flex justify-center mb-4">
-                    <UIcon name="solar:inbox-paper-broken" class="text-indigo-300 dark:text-indigo-400 size-16" />
+                    <UIcon name="solar:inbox-linear" class="text-indigo-300 dark:text-indigo-400 size-16" />
                   </div>
                   <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">选择邮件</h3>
                   <p class="text-gray-500 dark:text-gray-400">从左侧收件箱选择邮件以查看内容</p>
@@ -392,7 +392,7 @@
           <!-- 用户评价1 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="text-green-500 dark:text-green-400 mb-4">
-              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+              <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               Temp Mail 彻底改变了我的在线体验。再也不用担心垃圾邮件了！
@@ -409,7 +409,7 @@
           <!-- 用户评价2 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="text-green-500 dark:text-green-400 mb-4">
-              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+              <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               作为开发者，Temp Mail 让我的测试工作变得更加轻松。强烈推荐！
@@ -426,7 +426,7 @@
           <!-- 用户评价3 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="text-green-500 dark:text-green-400 mb-4">
-              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+              <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               简单、快速、高效。Temp Mail 是我见过最好的临时邮箱服务。
@@ -443,7 +443,7 @@
           <!-- 用户评价4（新增） -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="text-green-500 dark:text-green-400 mb-4">
-              <UIcon name="i-heroicons-quote-mark" class="size-10" />
+              <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
               保护隐私从未如此简单，Temp Mail 让我在各类网站注册时更有安全感。
@@ -567,28 +567,31 @@
             <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">法律</h3>
             <ul class="space-y-2">
               <li>
-                <a href="/privacy" 
+                <a href="#" 
+                   @click.prevent="scrollToSection('hero')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
                    aria-label="隐私政策详情">
                   隐私政策
                 </a>
               </li>
               <li>
-                <a href="/terms" 
+                <a href="#" 
+                   @click.prevent="scrollToSection('hero')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
                    aria-label="服务条款详情">
                   服务条款
                 </a>
               </li>
               <li>
-                <a href="/disclaimer" 
+                <a href="#" 
+                   @click.prevent="scrollToSection('hero')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
                    aria-label="免责声明详情">
                   免责声明
                 </a>
               </li>
               <li>
-                <a href="/contact" 
+                <a href="#" 
                    @click.prevent="showContactModal" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
                    aria-label="联系我们">

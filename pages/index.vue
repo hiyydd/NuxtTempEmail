@@ -12,8 +12,7 @@
         <div class="flex justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0 flex items-center cursor-pointer" @click="scrollToTop">
-              <UIcon name="solar:letter-bold" class="text-indigo-600 dark:text-indigo-400 size-12" />
-              <span class="ml-2 text-xl font-bold text-indigo-600 dark:text-indigo-400">临时邮箱</span>
+              <img src="/email-logo.png" alt="临时邮箱 Logo" class="h-10 w-auto" />
             </div>
             <!-- 桌面端导航链接 -->
             <div class="hidden md:ml-8 md:flex md:space-x-8">

@@ -321,6 +321,106 @@ async function clearEmails(request, env) {
   }
 }
 
+/**
+ * 清空 KV 存储中的所有邮件
+ * 处理 DELETE 请求，删除KV存储中的所有数据
+ */
+async function clearAllEmails(request, env) {
+  try {
+    // 检查 KV 绑定是否存在
+    if (!env || !env["temp-email"]) {
+      logError('KV 绑定不存在: temp-email', { env: !!env });
+      return new Response(JSON.stringify({ error: 'KV 绑定不存在', details: 'temp-email binding not found' }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    }
+
+    logInfo(`准备清空所有邮件`);
+
+    let allKeys = [];
+    let cursor = null;
+    let count = 0;
+
+    // 循环获取所有 key，因为 list 可能有数量限制
+    do {
+      const listResult = await env["temp-email"].list({ cursor: cursor });
+      allKeys = allKeys.concat(listResult.keys);
+      cursor = listResult.list_complete ? null : listResult.cursor;
+    } while (cursor);
+
+    logInfo(`查询结果，找到 ${allKeys.length} 个待删除键`);
+
+    if (allKeys.length === 0) {
+      return new Response(JSON.stringify({
+        success: true,
+        message: "KV 存储中没有需要删除的数据",
+        count: 0
+      }), {
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      });
+    }
+
+    const now = Date.now();
+    const oneDayAgo = now - (24 * 60 * 60 * 1000); // Timestamp 24 hours ago
+    let deletedCount = 0;
+    const deletePromises = [];
+
+    allKeys.forEach(key => {
+      const parts = key.name.split(':');
+      // Ensure there's a part after the last colon which should be the timestamp
+      if (parts.length > 1) {
+        const timestampStr = parts[parts.length - 1];
+        const timestamp = parseInt(timestampStr, 10);
+        // Check if parsing was successful and if the timestamp is older than one day ago
+        if (!isNaN(timestamp) && timestamp < oneDayAgo) {
+          logInfo(`删除过期键: ${key.name}`);
+          deletePromises.push(env["temp-email"].delete(key.name));
+          deletedCount++;
+        } else if (isNaN(timestamp)) {
+           logError(`无法将时间戳部分解析为数字: ${key.name}`);
+        }
+        // Optionally log keys that are kept
+        // else { logInfo(`保留键: ${key.name}`); }
+      } else {
+        logError(`无法解析键名以获取时间戳: ${key.name}`);
+      }
+    });
+
+    // Wait for all delete operations to complete
+    await Promise.all(deletePromises);
+
+    logInfo(`成功删除 ${deletedCount} 个过期键`);
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: `成功删除 ${deletedCount} 个1天前的键`,
+      count: deletedCount
+    }), {
+      headers: {
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
+    });
+
+  } catch (error) {
+    logError(`清空所有邮件失败`, error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
+    });
+  }
+}
+
 async function handleRequest(request, env) {
   // 检查 env 对象是否存在
   if (!env) {
@@ -343,8 +443,12 @@ async function handleRequest(request, env) {
 
   try {
     // 处理 DELETE 请求清空邮件
-    if (request.method === 'DELETE' && path === '/emails/clear') {
-      return clearEmails(request, env);
+    if (request.method === 'DELETE') {
+      if (path === '/emails/clear') {
+        return clearEmails(request, env);
+      } else if (path === '/emails/clear-all') { // 新增清空所有邮件的路由
+        return clearAllEmails(request, env);
+      }
     }
 
     // 其他请求方法
@@ -380,10 +484,28 @@ async function handleRequest(request, env) {
 export default {
   async fetch(request, env, ctx) {
     return handleRequest(request, env);
+  },
+
+  // 添加 scheduled 事件处理程序以响应 Cron Triggers
+  async scheduled(event, env, ctx) {
+    logInfo(`Cron Trigger 启动: ${event.cron}`);
+    try {
+      // 调用 clearAllEmails 函数清理过期邮件
+      // 注意：scheduled 事件没有 request 对象，所以第一个参数传 null 或一个模拟对象
+      const result = await clearAllEmails(null, env);
+      // 可以选择性地记录清理结果
+      const resultBody = await result.json();
+      logInfo('定时清理任务完成', resultBody);
+    } catch (error) {
+      logError('定时清理任务失败', error);
+    }
   }
 };
 
 // 保留原有的事件监听器，以兼容旧版本
+// 注意：对于模块 Worker，这个监听器通常不是必需的，
+// 但保留它可以提供向后兼容性或在某些部署场景下有用。
+// 如果确定只使用模块格式，可以考虑移除。
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request, event.env));
 });

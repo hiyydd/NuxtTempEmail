@@ -50,7 +50,8 @@ export default defineNuxtConfig({
   // 自定义SEO配置
   runtimeConfig: {
     public: {
-      siteUrl: 'https://temp-email.top'
+      siteUrl: 'https://temp-email.top',
+      workerUrl: 'https://workers.temp-email.top'
     }
   },
   colorMode: {

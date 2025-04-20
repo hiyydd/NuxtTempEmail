@@ -932,7 +932,9 @@ async function generateNewEmail() {
 async function fetchEmails(skipCache = false) {
   const MAX_RETRIES = 3;
   let retries = 0;
-  const WORKER_URL = 'https://email-worker.2668812066.workers.dev';
+  const config = useRuntimeConfig();
+  // debugger
+  const WORKER_URL = config.public.workerUrl;
   while (retries < MAX_RETRIES) {
     try {
       // 添加可选的no_cache参数，用于强制刷新
@@ -1144,7 +1146,7 @@ async function clearEmails() {
   
   // 调用Worker API删除KV存储中的邮件
   try {
-    const WORKER_URL = 'https://email-worker.2668812066.workers.dev';
+    const WORKER_URL = config.public.workerUrl;
     const url = `${WORKER_URL}/emails/clear?address=${encodeURIComponent(emailAddress.value.trim())}`;
     
     const controller = new AbortController();

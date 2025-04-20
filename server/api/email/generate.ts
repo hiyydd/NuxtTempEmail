@@ -1,7 +1,8 @@
 import { defineEventHandler, createError } from 'h3';
 
 // 尝试两种方法获取邮箱地址
-const WORKER_URL = 'https://email-worker.2668812066.workers.dev';
+const config = useRuntimeConfig();
+const WORKER_URL = config.public.workerUrl;
 
 export default defineEventHandler(async () => {
   // 先尝试通过 Worker 获取

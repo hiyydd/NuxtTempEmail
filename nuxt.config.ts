@@ -26,6 +26,14 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/png', href: '/email-logo.png' },
         { rel: 'apple-touch-icon', href: '/email-logo.png' }
+      ],
+      script: [
+        {
+          src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5158791103395695",
+          crossorigin: "anonymous",
+          async: true
+        }
+        // 示例：{ src: 'https://example.com/script.js', async: true }
       ]
     }
   },

@@ -23,5 +23,6 @@ function toggleColorMode() {
 <style scoped>
 .theme-switcher {
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 </style> 

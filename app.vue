@@ -15,6 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import Clarity from '@microsoft/clarity';
+
 // 获取网站配置
 const config = useRuntimeConfig()
 const siteUrl = 'https://temp-email.top'
@@ -73,6 +75,12 @@ useHead({
     { property: 'og:locale', content: 'zh_CN' }
   ]
 })
+
+onMounted(() => {
+  const projectId = "r7gss20yxc"
+  Clarity.init(projectId);
+})
+
 </script>
 
 <style>

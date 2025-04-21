@@ -4,7 +4,7 @@
       :icon="colorMode.value === 'dark' ? 'i-heroicons-sun' : 'i-heroicons-moon'"
       :color="colorMode.value === 'dark' ? 'yellow' : 'indigo'"
       :variant="colorMode.value === 'dark' ? 'solid' : 'outline'"
-      class="theme-switcher"
+      class="theme-switcher cursor-pointer"
       @click="toggleColorMode"
     >
       {{ colorMode.value === 'dark' ? '切换到浅色' : '切换到深色' }}
@@ -23,6 +23,5 @@ function toggleColorMode() {
 <style scoped>
 .theme-switcher {
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 </style> 

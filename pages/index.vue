@@ -12,7 +12,8 @@
         <div class="flex justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0 flex items-center cursor-pointer" @click="scrollToTop">
-              <img src="/email-logo.png" alt="临时邮箱 Logo" class="h-10 w-auto" />
+              <!-- <img src="/email-logo.png" alt="临时邮箱 Logo" class="h-10 w-auto" /> -->
+              <UIcon name="ic:twotone-email" class="h-12 w-12" style="color: #8e67f6" />
               <span class="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-100">临时邮箱</span>
             </div>
             <!-- 桌面端导航链接 -->

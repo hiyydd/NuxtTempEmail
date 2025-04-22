@@ -108,7 +108,7 @@
           <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100 dark:border-gray-700" aria-labelledby="email-address-heading">
             <h2 id="email-address-heading" class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">{{ $t('app.emailCard.title') }}</h2>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <div class="flex-1 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 font-medium text-gray-900 dark:text-gray-100 truncate flex items-center min-h-[42px] select-all group hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+              <div @click="copyEmail" class="flex-1 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 font-medium text-gray-900 dark:text-gray-100 truncate flex items-center min-h-[42px] select-all group hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
                 <span class="truncate" :aria-label="$t('app.emailCard.title')">{{ emailAddress || $t('app.emailCard.placeholder') }}</span>
               </div>
               <button
@@ -326,7 +326,7 @@
 
       <!-- 功能特点部分 -->
       <section ref="featuresRef" id="features" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="features-heading">
-        <h2 id="features-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">为什么选择我们的临时邮箱服务？</h2>
+        <h2 id="features-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">{{ $t('features.title') }}</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- 功能卡片1：即时可用 -->
@@ -334,8 +334,8 @@
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
               <UIcon name="solar:clock-circle-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">即时可用</h3>
-            <p class="text-gray-600 dark:text-gray-300">无需注册或登录，一键生成临时邮箱地址，立即开始使用，节省您的宝贵时间。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('features.instant.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ $t('features.instant.description') }}</p>
           </article>
           
           <!-- 功能卡片2：隐私保护 -->
@@ -343,8 +343,8 @@
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
               <UIcon name="solar:shield-keyhole-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">隐私保护</h3>
-            <p class="text-gray-600 dark:text-gray-300">保护您的真实邮箱地址免受垃圾邮件骚扰，不会泄露您的个人身份信息。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('features.privacy.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ $t('features.privacy.description') }}</p>
           </article>
           
           <!-- 功能卡片3：简洁易用 -->
@@ -352,8 +352,8 @@
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
               <UIcon name="openmoji:simple" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">简洁易用</h3>
-            <p class="text-gray-600 dark:text-gray-300">界面清晰直观，操作简单，适合所有年龄段和技术水平的用户使用。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('features.simple.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ $t('features.simple.description') }}</p>
           </article>
           
           <!-- 功能卡片4：安全可靠 -->
@@ -361,8 +361,8 @@
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
               <UIcon name="solar:shield-check-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">安全可靠</h3>
-            <p class="text-gray-600 dark:text-gray-300">所有邮件内容都经过安全处理，移除危险代码，确保您的设备安全。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('features.secure.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ $t('features.secure.description') }}</p>
           </article>
           
           <!-- 功能卡片5：完全免费 -->
@@ -370,8 +370,8 @@
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
               <UIcon name="solar:dollar-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">完全免费</h3>
-            <p class="text-gray-600 dark:text-gray-300">我们的临时邮箱服务对所有用户完全免费，没有任何隐藏费用或广告干扰。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('features.free.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ $t('features.free.description') }}</p>
           </article>
           
           <!-- 功能卡片6：自动检查 -->
@@ -379,42 +379,44 @@
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
               <UIcon name="solar:refresh-bold" class="text-indigo-600 dark:text-indigo-400 size-6" aria-hidden="true" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">自动检查</h3>
-            <p class="text-gray-600 dark:text-gray-300">自动轮询检查新邮件，无需手动刷新页面，即时接收重要信息。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ $t('features.auto.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ $t('features.auto.description') }}</p>
           </article>
         </div>
       </section>
 
       <!-- 使用说明部分 -->
       <section ref="howToRef" id="how-to" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="how-to-heading">
-        <h2 id="how-to-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">如何使用临时邮箱</h2>
+        <h2 id="how-to-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">{{ $t('howto.title') }}</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
             <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg" aria-hidden="true">1</div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">生成邮箱地址</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">点击"创建新邮箱"按钮，系统会立即为您生成一个随机的临时邮箱地址。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">{{ $t('howto.step1.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ $t('howto.step1.description') }}</p>
           </article>
           
           <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
             <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg" aria-hidden="true">2</div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">使用该地址注册</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">使用生成的临时邮箱地址进行网站注册、订阅或其他需要验证的场景。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">{{ $t('howto.step2.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ $t('howto.step2.description') }}</p>
           </article>
           
           <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
             <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg" aria-hidden="true">3</div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">接收和查看邮件</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">点击"检查新邮件"按钮或开启自动检查，接收到的邮件将显示在收件箱中。</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">{{ $t('howto.step3.title') }}</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ $t('howto.step3.description') }}</p>
           </article>
         </div>
       </section>
 
        <!-- 用户评价部分 -->
-       <section id="testimonials" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">用户 <span class="text-purple-600 dark:text-purple-400">评价</span></h2>
+       <section id="testimonials" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="testimonials-heading">
+        <h2 id="testimonials-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">
+          {{ $t('testimonials.titlePrefix') }}<span class="text-purple-600 dark:text-purple-400">{{ $t('testimonials.titleHighlight') }}</span>
+        </h2>
         <p class="text-lg text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto mb-12">
-          来看看我们的用户如何评价 Temp Mail 临时邮箱服务，以及它如何帮助他们保护隐私和提高效率。
+          {{ $t('testimonials.description') }}
         </p>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
@@ -424,13 +426,13 @@
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
-              Temp Mail 彻底改变了我的在线体验。再也不用担心垃圾邮件了！
+              {{ $t('testimonials.user1.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=32" alt="约翰用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <img src="https://i.pravatar.cc/150?img=32" :alt="$t('testimonials.user1.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900 dark:text-gray-100">约翰</h4>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">自由职业者</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user1.name') }}</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user1.profession') }}</p>
               </div>
             </div>
           </div>
@@ -441,13 +443,13 @@
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
-              作为开发者，Temp Mail 让我的测试工作变得更加轻松。强烈推荐！
+              {{ $t('testimonials.user2.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=59" alt="莎拉用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <img src="https://i.pravatar.cc/150?img=59" :alt="$t('testimonials.user2.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900 dark:text-gray-100">莎拉</h4>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">软件工程师</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user2.name') }}</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user2.profession') }}</p>
               </div>
             </div>
           </div>
@@ -458,13 +460,13 @@
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
-              简单、快速、高效。Temp Mail 是我见过最好的临时邮箱服务。
+              {{ $t('testimonials.user3.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=68" alt="卡洛斯用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <img src="https://i.pravatar.cc/150?img=68" :alt="$t('testimonials.user3.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900 dark:text-gray-100">卡洛斯</h4>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">数字营销专家</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user3.name') }}</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user3.profession') }}</p>
               </div>
             </div>
           </div>
@@ -475,13 +477,13 @@
               <UIcon name="heroicons:chat-bubble-left-right" class="size-10" />
             </div>
             <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
-              保护隐私从未如此简单，Temp Mail 让我在各类网站注册时更有安全感。
+              {{ $t('testimonials.user4.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=47" alt="丽娜用户头像" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <img src="https://i.pravatar.cc/150?img=47" :alt="$t('testimonials.user4.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
-                <h4 class="font-semibold text-gray-900 dark:text-gray-100">丽娜</h4>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">网络安全顾问</p>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user4.name') }}</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user4.profession') }}</p>
               </div>
             </div>
           </div>
@@ -490,54 +492,54 @@
 
       <!-- 常见问题部分 -->
       <section ref="faqRef" id="faq" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="faq-heading">
-        <h2 id="faq-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">常见问题解答</h2>
+        <h2 id="faq-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">{{ $t('faq.title') }}</h2>
         
         <div class="max-w-3xl mx-auto space-y-6" itemscope itemtype="https://schema.org/FAQPage">
           <!-- FAQ 1 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">临时邮箱安全吗？</h3>
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ $t('faq.q1.question') }}</h3>
             <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" class="text-gray-600 dark:text-gray-300">是的，我们的临时邮箱服务非常安全。我们不会存储您的个人信息，所有邮件内容都经过安全处理，移除潜在的恶意代码。但请注意，临时邮箱不适合接收敏感或重要信息，因为任何人如果知道邮箱地址都可以查看邮件内容。</p>
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">{{ $t('faq.q1.answer') }}</p>
             </div>
           </div>
           
           <!-- FAQ 2 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件可以保存多久？</h3>
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ $t('faq.q2.question') }}</h3>
             <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" class="text-gray-600 dark:text-gray-300">临时邮箱中的邮件一般保存24小时，到期后会自动删除。如果您需要保存重要信息，请在过期前手动复制或保存邮件内容。</p>
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">{{ $t('faq.q2.answer') }}</p>
             </div>
           </div>
           
           <!-- FAQ 3 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">可以发送邮件吗？</h3>
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ $t('faq.q3.question') }}</h3>
             <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" class="text-gray-600 dark:text-gray-300">目前我们的服务仅支持接收邮件，不支持发送邮件功能。临时邮箱主要用于接收验证码、注册确认等一次性邮件。</p>
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">{{ $t('faq.q3.answer') }}</p>
             </div>
           </div>
           
           <!-- FAQ 4 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">邮件接收需要多长时间？</h3>
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ $t('faq.q4.question') }}</h3>
             <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" class="text-gray-600 dark:text-gray-300">大多数邮件会在几秒到几分钟内收到。如果您在等待重要邮件，建议使用"检查新邮件"按钮或启用自动检查功能，系统会每5秒自动检查一次新邮件。</p>
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">{{ $t('faq.q4.answer') }}</p>
             </div>
           </div>
           
           <!-- FAQ 5 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">为什么有些网站不接受临时邮箱？</h3>
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ $t('faq.q5.question') }}</h3>
             <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" class="text-gray-600 dark:text-gray-300">一些网站和服务为了防止垃圾注册或滥用，会屏蔽临时邮箱域名。这是正常的安全措施，特别是对于金融、社交媒体等重要平台。对于这些服务，我们建议使用您的真实邮箱进行注册。</p>
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">{{ $t('faq.q5.answer') }}</p>
             </div>
           </div>
           
           <!-- FAQ 6 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">使用临时邮箱有什么限制？</h3>
+            <h3 itemprop="name" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ $t('faq.q6.question') }}</h3>
             <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-              <p itemprop="text" class="text-gray-600 dark:text-gray-300">我们的临时邮箱服务没有使用次数限制，您可以生成多个邮箱地址。但请注意合理使用，避免滥用服务进行垃圾邮件发送或违法活动。我们保留对滥用行为限制服务的权利。</p>
+              <p itemprop="text" class="text-gray-600 dark:text-gray-300">{{ $t('faq.q6.answer') }}</p>
             </div>
           </div>
         </div>
@@ -547,7 +549,7 @@
             @click="scrollToTop"
             class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
           >
-            立即使用临时邮箱
+            {{ $t('cta.useNow') }}
           </button>
         </div>
       </section>
@@ -558,46 +560,46 @@
           <div class="md:col-span-2">
             <div class="flex items-center mb-4">
               <UIcon name="solar:letter-bold" class="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-              <span class="ml-2 text-xl font-bold text-indigo-600 dark:text-indigo-400">临时邮箱</span>
+              <span class="ml-2 text-xl font-bold text-indigo-600 dark:text-indigo-400">{{ $t('appName') }}</span>
             </div>
-            <p class="text-gray-500 dark:text-gray-400 mb-4">提供快速、安全的临时邮箱服务，保护您的隐私，远离垃圾邮件骚扰。</p>
-            <p class="text-gray-500 dark:text-gray-400">© {{ new Date().getFullYear() }} 临时邮箱服务。保留所有权利。</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-4">{{ $t('footer.description') }}</p>
+            <p class="text-gray-500 dark:text-gray-400">© {{ new Date().getFullYear() }} {{ $t('appName') }} {{ $t('footer.serviceSuffix') }} {{ $t('footer.rights') }}</p>
           </div>
           
           <!-- 服务导航 -->
           <div>
-            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">服务</h3>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ $t('footer.nav.service') }}</h3>
             <ul class="space-y-2">
               <li>
                 <a href="#hero" 
                    @click.prevent="scrollToSection('hero')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
-                   aria-label="临时邮箱服务">
-                  邮箱服务
+                   :aria-label="$t('footer.nav.emailService')">
+                  {{ $t('footer.nav.emailService') }}
                 </a>
               </li>
               <li>
                 <a href="#features" 
                    @click.prevent="scrollToSection('features')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
-                   aria-label="功能特点介绍">
-                  功能特点
+                   :aria-label="$t('nav.features')">
+                  {{ $t('nav.features') }}
                 </a>
               </li>
               <li>
                 <a href="#how-to" 
                    @click.prevent="scrollToSection('how-to')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
-                   aria-label="服务使用指南">
-                  使用指南
+                   :aria-label="$t('nav.howto')">
+                  {{ $t('nav.howto') }}
                 </a>
               </li>
               <li>
                 <a href="#faq" 
                    @click.prevent="scrollToSection('faq')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
-                   aria-label="常见问题解答">
-                  常见问题
+                   :aria-label="$t('nav.faq')">
+                  {{ $t('nav.faq') }}
                 </a>
               </li>
             </ul>
@@ -605,38 +607,38 @@
           
           <!-- 法律导航 -->
           <div>
-            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">法律</h3>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ $t('footer.nav.legal') }}</h3>
             <ul class="space-y-2">
               <li>
                 <a href="#" 
                    @click.prevent="scrollToSection('hero')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
-                   aria-label="隐私政策详情">
-                  隐私政策
+                   :aria-label="$t('footer.nav.privacy')">
+                  {{ $t('footer.nav.privacy') }}
                 </a>
               </li>
               <li>
                 <a href="#" 
                    @click.prevent="scrollToSection('hero')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
-                   aria-label="服务条款详情">
-                  服务条款
+                   :aria-label="$t('footer.nav.terms')">
+                  {{ $t('footer.nav.terms') }}
                 </a>
               </li>
               <li>
                 <a href="#" 
                    @click.prevent="scrollToSection('hero')" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
-                   aria-label="免责声明详情">
-                  免责声明
+                   :aria-label="$t('footer.nav.disclaimer')">
+                  {{ $t('footer.nav.disclaimer') }}
                 </a>
               </li>
               <li>
                 <a href="#" 
                    @click.prevent="showContactModal" 
                    class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
-                   aria-label="联系我们">
-                  联系我们
+                   :aria-label="$t('footer.nav.contact')">
+                  {{ $t('footer.nav.contact') }}
                 </a>
               </li>
             </ul>
@@ -644,7 +646,7 @@
         </div>
         
         <div class="text-center text-sm text-gray-500 dark:text-gray-400 pt-6 border-t border-gray-100 dark:border-gray-700">
-          <p>本服务仅用于合法用途，禁止用于发送垃圾邮件或任何违法内容。</p>
+          <p>{{ $t('footer.warning') }}</p>
         </div>
       </footer>
     </div>
@@ -724,6 +726,7 @@
 <script setup lang="ts">
 // 导入语言切换组件
 // import LanguageSwitcher from '../components/LanguageSwitcher.vue'
+const { t } = useI18n();
 
 // 定义页面元数据
 definePageMeta({
@@ -1010,9 +1013,9 @@ async function fetchEmails(skipCache = false) {
 async function copyEmail() {
   try {
     await navigator.clipboard.writeText(emailAddress.value)
-    showNotification('邮箱地址已复制到剪贴板')
+    showNotification( t('copySuccess'))
   } catch (err) {
-    showNotification('复制失败，请手动复制', 'error')
+    // showNotification('复制失败，请手动复制', 'error')
   }
 }
 

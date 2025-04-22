@@ -35,6 +35,7 @@
 
 <script setup>
 const { locale, locales } = useI18n();
+
 const isOpen = ref(false);
 
 const currentLanguage = computed(() => {

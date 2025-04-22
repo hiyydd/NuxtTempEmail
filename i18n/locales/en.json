@@ -79,6 +79,33 @@
       "description": "Developers can use temporary emails for multi-user testing without creating multiple real accounts. Simplify the testing process and improve development efficiency."
     }
   },
+  "features": {
+    "title": "Why Choose Our Temporary Email Service?",
+    "instant": {
+      "title": "Instantly Available",
+      "description": "No registration or login required. Generate a temporary email address with one click and start using it immediately, saving your valuable time."
+    },
+    "privacy": {
+      "title": "Privacy Protection",
+      "description": "Protect your real email address from spam and avoid revealing your personal identity information."
+    },
+    "simple": {
+      "title": "Simple to Use",
+      "description": "Clear and intuitive interface, easy to operate, suitable for users of all ages and technical levels."
+    },
+    "secure": {
+      "title": "Safe and Reliable",
+      "description": "All email content is securely processed, with dangerous code removed to ensure your device's safety."
+    },
+    "free": {
+      "title": "Completely Free",
+      "description": "Our temporary email service is completely free for all users, with no hidden fees or intrusive advertisements."
+    },
+    "auto": {
+      "title": "Automatic Checking",
+      "description": "Automatically polls for new emails, no need to manually refresh the page, receive important information instantly."
+    }
+  },
   "copySuccess": "Email address copied!",
   "copySuccessGeneric": "Copied to clipboard",
   "copyError": "Copy failed, please copy manually",
@@ -100,18 +127,72 @@
     "twitterDescription": "Use our free temporary email service to get a secure disposable email address without registration, protecting your privacy from spam.",
     "keywords": "temp mail, temporary email, disposable email, anonymous email, privacy protection, spam filter, email registration, verification email, test email"
   },
-  "features": {
-    "title": "Why Choose Our Temporary Email Service?"
-  },
   "howto": {
-    "title": "How to Use Temporary Email"
+    "title": "How to Use Temporary Email",
+    "step1": {
+      "title": "Generate Email Address",
+      "description": "Click the \"Create New Email\" button, and the system will immediately generate a random temporary email address for you."
+    },
+    "step2": {
+      "title": "Use the Address to Register",
+      "description": "Use the generated temporary email address for website registration, subscriptions, or other verification scenarios."
+    },
+    "step3": {
+      "title": "Receive and View Emails",
+      "description": "Click the \"Check New Emails\" button or enable auto-check, and received emails will be displayed in your inbox."
+    }
   },
   "testimonials": {
-    "title": "User Testimonials",
-    "description": "See what our users say about Temp Mail temporary email service and how it helps them protect privacy and improve efficiency."
+    "titlePrefix": "User ",
+    "titleHighlight": "Testimonials",
+    "description": "See what our users say about Temp Mail temporary email service and how it helps them protect privacy and improve efficiency.",
+    "user1": {
+      "comment": "Temp Mail has completely changed my online experience. No more spam worries!",
+      "name": "John",
+      "profession": "Freelancer"
+    },
+    "user2": {
+      "comment": "As a developer, Temp Mail makes my testing work much easier. Highly recommended!",
+      "name": "Sarah",
+      "profession": "Software Engineer"
+    },
+    "user3": {
+      "comment": "Simple, fast, and efficient. Temp Mail is the best temporary email service I've ever used.",
+      "name": "Carlos",
+      "profession": "Digital Marketer"
+    },
+    "user4": {
+      "comment": "Protecting privacy has never been easier. Temp Mail makes me feel more secure when registering on various websites.",
+      "name": "Lina",
+      "profession": "Cybersecurity Consultant"
+    }
   },
   "faq": {
-    "title": "Frequently Asked Questions"
+    "title": "Frequently Asked Questions",
+    "q1": {
+      "question": "Is temporary email secure?",
+      "answer": "Yes, our temporary email service is very secure. We do not store your personal information, and all email content is securely processed to remove potentially malicious code. However, please note that temporary email is not suitable for receiving sensitive or important information, as anyone who knows the email address can view the emails."
+    },
+    "q2": {
+      "question": "How long are emails stored?",
+      "answer": "Emails in the temporary inbox are generally stored for 24 hours and are automatically deleted afterward. If you need to save important information, please copy or save the email content manually before it expires."
+    },
+    "q3": {
+      "question": "Can I send emails?",
+      "answer": "Currently, our service only supports receiving emails and does not support sending emails. Temporary email is primarily used for receiving verification codes, registration confirmations, and other one-time emails."
+    },
+    "q4": {
+      "question": "How long does it take to receive emails?",
+      "answer": "Most emails are received within a few seconds to a few minutes. If you are waiting for an important email, we recommend using the \"Check New Emails\" button or enabling the auto-check feature, which checks for new emails every 5 seconds."
+    },
+    "q5": {
+      "question": "Why do some websites not accept temporary emails?",
+      "answer": "Some websites and services block temporary email domains to prevent spam registrations or abuse. This is a normal security measure, especially for important platforms like financial or social media sites. For these services, we recommend using your real email address for registration."
+    },
+    "q6": {
+      "question": "Are there any limitations to using temporary email?",
+      "answer": "There are no limits on the number of times you can use our temporary email service; you can generate multiple email addresses. However, please use the service reasonably and avoid abusing it for sending spam or engaging in illegal activities. We reserve the right to restrict service for abusive behavior."
+    }
   },
   "cta": {
     "useNow": "Use Temporary Email Now"
@@ -120,6 +201,7 @@
     "description": "Providing fast, secure temporary email services to protect your privacy and keep spam away.",
     "rights": "All rights reserved.",
     "warning": "This service is for lawful purposes only. Sending spam or illegal content is prohibited.",
+    "serviceSuffix": "Service.",
     "nav": {
       "service": "Service",
       "emailService": "Email Service",

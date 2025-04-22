@@ -905,32 +905,12 @@ onMounted(() => {
     refreshEmail()
   }
   
-  // 添加滚动监听，根据滚动位置更新当前部分
-  window.addEventListener('scroll', handleScroll)
-  document.addEventListener('visibilitychange', handleVisibilityChange)
 })
 
 onUnmounted(() => {
-  // 移除滚动监听
-  window.removeEventListener('scroll', handleScroll)
   // 清除邮件检查定时器
   stopAutoCheck()
-  document.removeEventListener('visibilitychange', handleVisibilityChange)
 })
-
-// 处理滚动，自动更新当前部分
-function handleScroll() {
-  // 由于我们已经移除了菜单高亮，这个函数可以简化或移除
-  // 如果将来需要基于滚动位置执行其他操作，可以在此处添加
-}
-
-function handleVisibilityChange() {
-  if (document.visibilityState === 'hidden') {
-    stopAutoCheck()
-  } else if (document.visibilityState === 'visible') {
-    startAutoCheck()
-  }
-}
 
 // 获取新的临时邮箱地址
 async function generateNewEmail() {
@@ -1009,11 +989,14 @@ async function fetchEmails(skipCache = false) {
   }
 }
 
-// 复制邮箱地址
+// 复制邮箱地址并开始自动轮询邮件
 async function copyEmail() {
   try {
     await navigator.clipboard.writeText(emailAddress.value)
     showNotification( t('copySuccess'))
+    
+    // 复制成功后自动开始轮询邮件，传入true表示是自动触发的轮询
+    startAutoCheck(true)
   } catch (err) {
     // showNotification('复制失败，请手动复制', 'error')
   }
@@ -1086,7 +1069,12 @@ async function checkNewMails() {
 }
 
 // 开始自动检查邮件
-function startAutoCheck() {
+function startAutoCheck(isAuto = false) {
+  // 如果已经在检查中，先停止之前的检查
+  if (isChecking.value) {
+    stopAutoCheck()
+  }
+  
   isChecking.value = true
   
   // 立即执行一次检查
@@ -1111,12 +1099,18 @@ function startAutoCheck() {
   // 设置2分钟后自动停止检查
   autoCheckEndTimer.value = window.setTimeout(() => {
     stopAutoCheck()
-    showNotification('自动检查已完成')
+    // 只有在手动检查时才显示通知，自动检查时不显示
+    if (!isAuto) {
+      showNotification(t('app.emailCard.autoCheckComplete', '自动检查已完成'))
+    }
   }, 120000) // 120秒 = 2分钟
 }
 
 // 停止自动检查
 function stopAutoCheck() {
+  // 重置检查状态
+  isChecking.value = false
+  
   // 清除检查邮件定时器
   if (autoCheckTimer.value !== null) {
     clearInterval(autoCheckTimer.value)

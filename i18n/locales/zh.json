@@ -143,8 +143,29 @@
     }
   },
   "testimonials": {
-    "title": "用户评价",
-    "description": "来看看我们的用户如何评价 Temp Mail 临时邮箱服务，以及它如何帮助他们保护隐私和提高效率。"
+    "titlePrefix": "用户",
+    "titleHighlight": "评价",
+    "description": "来看看我们的用户如何评价 Temp Mail 临时邮箱服务，以及它如何帮助他们保护隐私和提高效率。",
+    "user1": {
+      "comment": "Temp Mail 完全改变了我的在线体验。不用再担心垃圾邮件了！",
+      "name": "约翰",
+      "profession": "自由职业者"
+    },
+    "user2": {
+      "comment": "作为一名开发者，Temp Mail 让我的测试工作变得更加简单。强烈推荐！",
+      "name": "莎拉",
+      "profession": "软件工程师"
+    },
+    "user3": {
+      "comment": "简单、快速、高效。Temp Mail 是我用过的最好的临时邮箱服务。",
+      "name": "卡洛斯",
+      "profession": "数字营销专家"
+    },
+    "user4": {
+      "comment": "保护隐私从未如此简单。Temp Mail 让我在各种网站注册时感到更加安全。",
+      "name": "丽娜",
+      "profession": "网络安全顾问"
+    }
   },
   "faq": {
     "title": "常见问题解答",
@@ -203,4 +224,4 @@
       "address": "266881206com"
     }
   }
-} 
+}

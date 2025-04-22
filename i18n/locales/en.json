@@ -1,0 +1,145 @@
+{
+  "welcome": "Welcome to Temp Email Service",
+  "description": "Free and secure temporary email address.",
+  "actions": {
+    "refresh": "Refresh",
+    "copy": "Copy",
+    "delete": "Delete"
+  },
+  "theme": {
+    "light": "Switch to Light",
+    "dark": "Switch to Dark"
+  },
+  "appName": "Temp Email",
+  "nav": {
+    "features": "Features",
+    "howto": "How To",
+    "faq": "FAQ"
+  },
+  "hero": {
+    "title": "Fast & Secure Temporary Email Protect Your Privacy",
+    "titleHtml": "Fast & Secure Temporary Email Protect Your Privacy",
+    "description": "Get a temporary email address without registration. Protect your real email from spam, suitable for testing, registration, and one-time use scenarios."
+  },
+  "app": {
+    "emailCard": {
+      "title": "Your Temporary Email Address",
+      "placeholder": "Waiting for email generation...",
+      "buttons": {
+        "create": "Create New Email",
+        "creating": "Creating...",
+        "check": "Check New Emails",
+        "checking": "Checking emails..."
+      }
+    },
+    "inbox": {
+      "title": "Inbox",
+      "buttons": {
+        "clear": "Clear"
+      },
+      "empty": {
+        "title": "No Emails Yet",
+        "description": "Once you create an email, messages sent to it will appear here."
+      }
+    },
+    "content": {
+      "empty": {
+        "title": "Select an Email",
+        "description": "Select an email from the inbox on the left to view its content."
+      },
+      "heading": "Email Content"
+    },
+    "heading": "Temporary Email App"
+  },
+  "useCases": {
+    "title": "Temp Mail Use Cases",
+    "description": "Temporary email services are suitable for various online scenarios. Here are some common use cases to help you protect your privacy while enjoying the convenience of the internet.",
+    "shopping": {
+      "title": "Online Shopping",
+      "description": "Use temporary email when registering on e-commerce websites to avoid receiving constant promotional emails. Keep your primary mailbox clean, only receiving truly important information."
+    },
+    "social": {
+      "title": "Social Media Registration",
+      "description": "Protect your real identity while safely exploring various social platforms. Avoid personal data leaks and unnecessary social email notifications."
+    },
+    "forum": {
+      "title": "Forum Participation",
+      "description": "Freely express your opinions on various online forums and communities without worrying about privacy leaks. Maintain anonymity while participating in meaningful discussions."
+    },
+    "trial": {
+      "title": "Free Trial Services",
+      "description": "Register for trial versions of various online services without worrying about subscription reminders. When the trial period ends, you won't receive any promotional emails."
+    },
+    "verification": {
+      "title": "One-time Verification",
+      "description": "Receive one-time verification codes or confirmation emails, such as public Wi-Fi login. Quickly and easily complete the authentication process without leaving any traces."
+    },
+    "testing": {
+      "title": "Software Testing",
+      "description": "Developers can use temporary emails for multi-user testing without creating multiple real accounts. Simplify the testing process and improve development efficiency."
+    }
+  },
+  "copySuccess": "Email address copied!",
+  "copySuccessGeneric": "Copied to clipboard",
+  "copyError": "Copy failed, please copy manually",
+  "clearingInbox": "Clearing inbox...",
+  "clearSuccess": "Inbox cleared",
+  "clearError": "Failed to clear inbox, please try again later",
+  "emailCreatedSuccess": "New email created successfully",
+  "emailCreateError": "Failed to create new email",
+  "checkError": "Failed to check emails",
+  "invalidDataFormat": "Received email data format is incorrect",
+  "newEmailReceived": "Received {count} new email | Received {count} new emails",
+  "autoCheckStopped": "Auto-check stopped",
+  "seo": {
+    "title": "Temp Mail - Free, Secure Disposable Email Service",
+    "ogTitle": "Temp Mail - Free, Secure Disposable Email Service",
+    "description": "Use our free temporary email service to get a secure disposable email address without registration, protecting your privacy from spam.",
+    "ogDescription": "Use our free temporary email service to get a secure disposable email address without registration, protecting your privacy from spam.",
+    "twitterTitle": "Temp Mail - Free, Secure Disposable Email Service",
+    "twitterDescription": "Use our free temporary email service to get a secure disposable email address without registration, protecting your privacy from spam.",
+    "keywords": "temp mail, temporary email, disposable email, anonymous email, privacy protection, spam filter, email registration, verification email, test email"
+  },
+  "features": {
+    "title": "Why Choose Our Temporary Email Service?"
+  },
+  "howto": {
+    "title": "How to Use Temporary Email"
+  },
+  "testimonials": {
+    "title": "User Testimonials",
+    "description": "See what our users say about Temp Mail temporary email service and how it helps them protect privacy and improve efficiency."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions"
+  },
+  "cta": {
+    "useNow": "Use Temporary Email Now"
+  },
+  "footer": {
+    "description": "Providing fast, secure temporary email services to protect your privacy and keep spam away.",
+    "rights": "All rights reserved.",
+    "warning": "This service is for lawful purposes only. Sending spam or illegal content is prohibited.",
+    "nav": {
+      "service": "Service",
+      "emailService": "Email Service",
+      "legal": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "disclaimer": "Disclaimer",
+      "contact": "Contact Us",
+      "language": "Language"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "qq": {
+      "label": "QQ",
+      "number": "2668812066"
+    },
+    "email": {
+      "label": "Email",
+      "address": "2668812066"
+    }
+  }
+} 

@@ -2,10 +2,7 @@
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  modules: [
-    '@nuxt/ui', 
-    '@nuxtjs/color-mode'
-  ],
+  modules: ['@nuxt/ui', '@nuxtjs/color-mode', '@nuxtjs/i18n'],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
@@ -67,5 +64,22 @@ export default defineNuxtConfig({
     preference: 'system',
     fallback: 'light',
     storageKey: 'temp-email-color-mode'
+  },
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+        name: 'English',
+        file: 'en.json'
+      },
+      {
+        code: 'zh',
+        iso: 'zh-CN',
+        name: '中文',
+        file: 'zh.json'
+      }
+    ],
+    defaultLocale: 'zh',
   }
 })

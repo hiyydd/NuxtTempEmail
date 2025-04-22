@@ -14,33 +14,34 @@
             <div class="flex-shrink-0 flex items-center cursor-pointer" @click="scrollToTop">
               <!-- <img src="/email-logo.png" alt="临时邮箱 Logo" class="h-10 w-auto" /> -->
               <UIcon name="ic:twotone-email" class="h-12 w-12" style="color: #8e67f6" />
-              <span class="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-100">临时邮箱</span>
+              <span class="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-100">{{ $t('appName') }}</span>
             </div>
             <!-- 桌面端导航链接 -->
             <div class="hidden md:ml-8 md:flex md:space-x-8">
               <a href="#features" 
                  @click.prevent="scrollToSection('features')" 
                  class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer"
-                 aria-label="查看功能特点">
-                功能特点
+                 :aria-label="$t('nav.features')">
+                {{ $t('nav.features') }}
               </a>
               <a href="#how-to" 
                  @click.prevent="scrollToSection('how-to')" 
                  class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer"
-                 aria-label="查看使用说明">
-                使用说明
+                 :aria-label="$t('nav.howto')">
+                {{ $t('nav.howto') }}
               </a>
               <a href="#faq" 
                  @click.prevent="scrollToSection('faq')" 
                  class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer"
-                 aria-label="查看常见问题">
-                常见问题
+                 :aria-label="$t('nav.faq')">
+                {{ $t('nav.faq') }}
               </a>
             </div>
           </div>
           
-          <!-- 添加主题切换按钮 -->
+          <!-- 添加主题切换按钮和语言切换按钮 -->
           <div class="flex items-center">
+            <LanguageSwitcher class="mr-2" />
             <ThemeSwitcher class="mr-4" />
             
             <!-- 移动导航按钮 -->
@@ -60,21 +61,28 @@
           <a href="#features" 
              @click.prevent="scrollToSection('features'); isMobileMenuOpen = false" 
              class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
-             aria-label="查看功能特点">
-            功能特点
+             :aria-label="$t('nav.features')">
+            {{ $t('nav.features') }}
           </a>
           <a href="#how-to" 
              @click.prevent="scrollToSection('how-to'); isMobileMenuOpen = false" 
              class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
-             aria-label="查看使用说明">
-            使用说明
+             :aria-label="$t('nav.howto')">
+            {{ $t('nav.howto') }}
           </a>
           <a href="#faq" 
              @click.prevent="scrollToSection('faq'); isMobileMenuOpen = false" 
              class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
-             aria-label="查看常见问题">
-            常见问题
+             :aria-label="$t('nav.faq')">
+            {{ $t('nav.faq') }}
           </a>
+          <!-- 在移动菜单中添加语言切换 -->
+          <div class="pl-3 pr-4 py-2">
+            <div class="flex items-center">
+              <span class="text-lg font-medium text-gray-500 dark:text-gray-300 mr-2">{{ $t('footer.nav.language', '语言') }}</span>
+              <LanguageSwitcher />
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -83,11 +91,10 @@
       <!-- 英雄区域 - Hero Section -->
       <section ref="heroRef" id="hero" class="py-4">
         <header class="text-center mb-4 mt-2">
-          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight" id="main-title">
-            快速安全的<span class="text-indigo-600 dark:text-indigo-400">临时邮箱</span><br>保护您的隐私
+          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight" id="main-title" v-html="$t('hero.titleHtml')">
           </h1>
           <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-center" id="main-description">
-            无需注册，即可获得一个临时邮箱地址。保护您的真实邮箱免受垃圾邮件的侵扰，适用于测试、注册和一次性使用场景。
+            {{ $t('hero.description') }}
           </p>
         </header>
       </section>
@@ -99,18 +106,18 @@
         <div class="space-y-8">
           <!-- 邮箱地址卡片 -->
           <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100 dark:border-gray-700" aria-labelledby="email-address-heading">
-            <h2 id="email-address-heading" class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">您的临时邮箱地址</h2>
+            <h2 id="email-address-heading" class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">{{ $t('app.emailCard.title') }}</h2>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div class="flex-1 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 font-medium text-gray-900 dark:text-gray-100 truncate flex items-center min-h-[42px] select-all group hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
-                <span class="truncate" aria-label="临时邮箱地址">{{ emailAddress || '等待生成邮箱...' }}</span>
+                <span class="truncate" :aria-label="$t('app.emailCard.title')">{{ emailAddress || $t('app.emailCard.placeholder') }}</span>
               </div>
               <button
                 @click="copyEmail"
                 class="sm:min-h-[42px] w-full sm:w-32 flex items-center justify-center gap-1 px-3 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
-                aria-label="复制邮箱地址到剪贴板"
+                :aria-label="$t('actions.copy')"
               >
                 <UIcon name="solar:copy-bold" class="size-5" aria-hidden="true" />
-                <span class="text-base">复制</span>
+                <span class="text-base">{{ $t('actions.copy') }}</span>
               </button>
             </div>
             <div class="flex flex-col sm:flex-row gap-3 pt-1">
@@ -119,15 +126,15 @@
                 class="w-full sm:w-auto flex items-center justify-center gap-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                 :disabled="isCreatingEmail"
                 :class="{'opacity-70 cursor-not-allowed': isCreatingEmail}"
-                aria-label="创建新的临时邮箱地址"
+                :aria-label="$t('app.emailCard.buttons.create')"
               >
                 <span v-if="!isCreatingEmail" class="flex items-center gap-1">
                   <UIcon name="solar:add-square-bold" class="size-6" aria-hidden="true" />
-                  创建新邮箱
+                  {{ $t('app.emailCard.buttons.create') }}
                 </span>
                 <span v-else class="flex items-center justify-center gap-1">
                   <span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></span>
-                  创建中...
+                  {{ $t('app.emailCard.buttons.creating') }}
                 </span>
               </button>
               <button
@@ -135,15 +142,15 @@
                 class="w-full sm:w-auto flex items-center justify-center gap-1 px-4 py-2.5 border-2 border-indigo-500 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-30"
                 :disabled="isChecking"
                 :class="{'opacity-70 cursor-not-allowed': isChecking}"
-                aria-label="检查新邮件"
+                :aria-label="$t('app.emailCard.buttons.check')"
               >
                 <span v-if="!isChecking" class="flex items-center gap-1">
                   <UIcon name="solar:refresh-bold" class="size-6" aria-hidden="true" />
-                  检查新邮件
+                  {{ $t('app.emailCard.buttons.check') }}
                 </span>
                 <span v-else class="flex items-center justify-center gap-1">
                   <span class="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" aria-hidden="true"></span>
-                  正在检查邮件
+                  {{ $t('app.emailCard.buttons.checking') }}
                 </span>
               </button>
             </div>
@@ -156,7 +163,7 @@
               <div class="flex justify-between items-center mb-5">
                 <h2 id="inbox-heading" class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                   <UIcon name="solar:inbox-bold" class="text-indigo-500 dark:text-indigo-400 size-8" aria-hidden="true" />
-                  收件箱
+                  {{ $t('app.inbox.title') }}
                 </h2>
                 <UButton
                   v-if="emails.length > 0"
@@ -165,9 +172,9 @@
                   icon="solar:trash-bin-minimalistic-bold"
                   size="sm"
                   @click="clearEmails"
-                  aria-label="清空收件箱"
+                  :aria-label="$t('app.inbox.buttons.clear')"
                 >
-                  清空
+                  {{ $t('app.inbox.buttons.clear') }}
                 </UButton>
               </div>
               <UScrollbar v-if="emails.length > 0" class="flex-1 -mx-2 px-2">
@@ -195,15 +202,15 @@
                   <div class="flex justify-center mb-4">
                     <UIcon name="solar:inbox-linear" class="text-indigo-300 dark:text-indigo-400 size-16" />
                   </div>
-                  <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">暂无邮件</h3>
-                  <p class="text-gray-500 dark:text-gray-400">创建邮箱后，所有发送到该地址的邮件将显示在这里</p>
+                  <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">{{ $t('app.inbox.empty.title') }}</h3>
+                  <p class="text-gray-500 dark:text-gray-400">{{ $t('app.inbox.empty.description') }}</p>
                 </div>
               </div>
             </section>
 
             <!-- 邮件内容 -->
             <section class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700" aria-labelledby="email-content-heading">
-              <h2 id="email-content-heading" class="sr-only">邮件内容</h2>
+              <h2 id="email-content-heading" class="sr-only">{{ $t('app.content.heading') }}</h2>
               <div v-if="selectedEmail" class="h-full flex flex-col">
                 <div class="border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
                   <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2 break-words">{{ selectedEmail.subject }}</h3>
@@ -230,8 +237,8 @@
                   <div class="flex justify-center mb-4">
                     <UIcon name="solar:inbox-linear" class="text-indigo-300 dark:text-indigo-400 size-16" />
                   </div>
-                  <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">选择邮件</h3>
-                  <p class="text-gray-500 dark:text-gray-400">从左侧收件箱选择邮件以查看内容</p>
+                  <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">{{ $t('app.content.empty.title') }}</h3>
+                  <p class="text-gray-500 dark:text-gray-400">{{ $t('app.content.empty.description') }}</p>
                 </div>
               </div>
             </section>
@@ -241,9 +248,9 @@
 
       <!-- 应用场景部分 -->
       <section id="use-cases" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="use-cases-heading">
-        <h2 id="use-cases-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">Temp Mail 应用场景</h2>
+        <h2 id="use-cases-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">{{ $t('useCases.title') }}</h2>
         <p class="text-lg text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto mb-12">
-          临时邮箱服务适用于各种在线场景，以下是一些常见的使用案例，帮您保护隐私的同时享受网络便利。
+          {{ $t('useCases.description') }}
         </p>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -252,9 +259,9 @@
             <div class="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
               <UIcon name="solar:cart-large-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">网络购物</h3>
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">{{ $t('useCases.shopping.title') }}</h3>
             <p class="text-gray-600 dark:text-gray-300">
-              在电商网站注册时使用临时邮箱，避免不断收到促销邮件。保持您的主邮箱整洁，只接收真正重要的信息。
+              {{ $t('useCases.shopping.description') }}
             </p>
           </div>
           
@@ -263,9 +270,9 @@
             <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
               <UIcon name="solar:users-group-rounded-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">社交媒体注册</h3>
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">{{ $t('useCases.social.title') }}</h3>
             <p class="text-gray-600 dark:text-gray-300">
-              保护您的真实身份，同时安全地探索各种社交平台。避免个人数据泄露和不必要的社交邮件通知。
+              {{ $t('useCases.social.description') }}
             </p>
           </div>
           
@@ -274,9 +281,9 @@
             <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
               <UIcon name="solar:chat-round-dots-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">论坛参与</h3>
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">{{ $t('useCases.forum.title') }}</h3>
             <p class="text-gray-600 dark:text-gray-300">
-              在各类在线论坛和社区自由发表意见，无需担心隐私泄露。保持匿名性的同时参与有意义的讨论。
+              {{ $t('useCases.forum.description') }}
             </p>
           </div>
         </div>
@@ -287,9 +294,9 @@
             <div class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
               <UIcon name="i-heroicons-gift" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">免费试用服务</h3>
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">{{ $t('useCases.trial.title') }}</h3>
             <p class="text-gray-600 dark:text-gray-300">
-              注册各种在线服务的试用版，无需担心订阅提醒。当试用期结束后，您不会收到任何促销电子邮件。
+              {{ $t('useCases.trial.description') }}
             </p>
           </div>
           
@@ -298,9 +305,9 @@
             <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
               <UIcon name="ic:outline-check-box" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">一次性验证</h3>
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">{{ $t('useCases.verification.title') }}</h3>
             <p class="text-gray-600 dark:text-gray-300">
-              接收一次性验证码或确认邮件，例如公共 Wi-Fi 登录。快速简单地完成身份验证过程，不留任何痕迹。
+              {{ $t('useCases.verification.description') }}
             </p>
           </div>
           
@@ -309,9 +316,9 @@
             <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
               <UIcon name="solar:code-bold" class="text-indigo-600 dark:text-indigo-400 size-8" />
             </div>
-            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">软件测试</h3>
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3 text-center">{{ $t('useCases.testing.title') }}</h3>
             <p class="text-gray-600 dark:text-gray-300">
-              开发人员可以使用临时邮箱进行多用户测试，无需创建多个真实账户。简化测试流程，提高开发效率。
+              {{ $t('useCases.testing.description') }}
             </p>
           </div>
         </div>
@@ -715,6 +722,9 @@
 </template>
 
 <script setup lang="ts">
+// 导入语言切换组件
+// import LanguageSwitcher from '../components/LanguageSwitcher.vue'
+
 // 定义页面元数据
 definePageMeta({
   title: '临时邮箱服务'
@@ -781,6 +791,8 @@ const notification = reactive({
   message: '',
   type: 'success' as 'success' | 'error'
 })
+
+const config = useRuntimeConfig();
 
 // 导航和落地页相关
 const currentSection = ref('hero') // 'hero', 'app', 'features', 'how-to', 'faq'
@@ -933,7 +945,6 @@ async function generateNewEmail() {
 async function fetchEmails(skipCache = false) {
   const MAX_RETRIES = 3;
   let retries = 0;
-  const config = useRuntimeConfig();
   // debugger
   const WORKER_URL = config.public.workerUrl;
   while (retries < MAX_RETRIES) {

@@ -7,7 +7,7 @@
       class="theme-switcher cursor-pointer"
       @click="toggleColorMode"
     >
-      {{ colorMode.value === 'dark' ? '切换到浅色' : '切换到深色' }}
+      {{ colorMode.value === 'dark' ? $t('theme.light') : $t('theme.dark') }}
     </UButton>
   </div>
 </template>

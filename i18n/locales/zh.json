@@ -197,6 +197,11 @@
   "cta": {
     "useNow": "立即使用临时邮箱"
   },
+  "contactUs": {
+    "title": "联系我们",
+    "qq": "QQ",
+    "email": "邮箱"
+  },
   "footer": {
     "description": "提供快速、安全的临时邮箱服务，保护您的隐私，远离垃圾邮件骚扰。",
     "rights": "保留所有权利。",

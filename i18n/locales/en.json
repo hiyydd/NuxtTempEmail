@@ -197,6 +197,11 @@
   "cta": {
     "useNow": "Use Temporary Email Now"
   },
+  "contactUs": {
+    "title": "Contact Us",
+    "qq": "QQ",
+    "email": "Email"
+  },
   "footer": {
     "description": "Providing fast, secure temporary email services to protect your privacy and keep spam away.",
     "rights": "All rights reserved.",
@@ -224,4 +229,4 @@
       "address": "2668812066"
     }
   }
-} 
+}

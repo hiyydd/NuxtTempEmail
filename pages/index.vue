@@ -678,7 +678,7 @@
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             <UIcon name="solar:user-speak-bold" class="text-indigo-600 dark:text-indigo-400 size-6" />
-            联系我们
+            {{ $t('contactUs.title') }}
           </h3>
           <button @click="isContactModalOpen = false" class="text-gray-500 hover:text-gray-700">
             <UIcon name="solar:close-circle-bold" class="size-6" />
@@ -689,7 +689,7 @@
           <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
             <UIcon name="i-heroicons-chat-bubble-left-right" class="text-indigo-600 dark:text-indigo-400 size-8 flex-shrink-0" />
             <div>
-              <div class="font-medium text-gray-900 dark:text-gray-100">QQ</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">{{ $t('contactUs.qq') }}</div>
               <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
                 <span>2668812066</span>
                 <button 
@@ -705,7 +705,7 @@
           <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
             <UIcon name="ic:baseline-email" class="text-indigo-600 dark:text-indigo-400 size-8 flex-shrink-0" />
             <div>
-              <div class="font-medium text-gray-900 dark:text-gray-100">邮箱</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">{{ $t('contactUs.email') }}</div>
               <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
                 <span>2668812066@qq.com</span>
                 <button 
@@ -912,18 +912,6 @@ onUnmounted(() => {
   stopAutoCheck()
 })
 
-// 获取新的临时邮箱地址
-async function generateNewEmail() {
-  try {
-    const response = await fetch('/api/email/generate')
-    const data = await response.json()
-    return data.address
-  } catch (error) {
-    console.error('Error generating email:', error)
-    throw error
-  }
-}
-
 // 获取邮件列表
 async function fetchEmails(skipCache = false) {
   const MAX_RETRIES = 3;
@@ -995,7 +983,8 @@ async function copyEmail() {
     await navigator.clipboard.writeText(emailAddress.value)
     showNotification( t('copySuccess'))
     
-    // 复制成功后自动开始轮询邮件，传入true表示是自动触发的轮询
+    // 复制成功后自动开始轮询邮件，传入true表示是自动触发的轮询,等待2秒再开始检查
+    await new Promise(resolve => setTimeout(resolve, 2000));
     startAutoCheck(true)
   } catch (err) {
     // showNotification('复制失败，请手动复制', 'error')

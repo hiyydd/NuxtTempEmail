@@ -49,7 +49,7 @@
     <SchemaOrg />
     
     <!-- 导航栏 -->
-    <nav class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
+    <nav class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm fixed top-0 left-0 right-0 z-50 border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
@@ -129,7 +129,7 @@
       </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 pt-24">
       <!-- 英雄区域 - Hero Section -->
       <section ref="heroRef" id="hero" class="py-4">
         <header class="text-center mb-4 mt-2">
@@ -1004,14 +1004,9 @@ async function fetchEmails(skipCache = false) {
         break;
       }
       
-      console.error('获取邮件失败:', error);
       retries++;
       
       if (retries >= MAX_RETRIES) {
-        // 只在界面手动点击检查时显示错误通知，自动轮询时不显示
-        if (!isChecking.value) {
-          showNotification('获取邮件失败，请稍后重试', 'error');
-        }
         break;
       }
       
@@ -1031,7 +1026,6 @@ async function copyEmail() {
     await new Promise(resolve => setTimeout(resolve, 2000));
     startAutoCheck(true)
   } catch (err) {
-    // showNotification('复制失败，请手动复制', 'error')
   }
 }
 
@@ -1067,14 +1061,14 @@ async function refreshEmail() {
     
     emails.value = []
     selectedEmail.value = null
-    showNotification('已生成新的临时邮箱地址')
+    showNotification(t('app.emailCard.notifications.created', '已生成新的临时邮箱地址'))
     
     // 立即检查是否有邮件
     checkEmailsAfterRefresh().catch(err => {
       console.error('初始检查失败:', err)
     });
   } catch (error: any) {
-    showNotification('生成新邮箱失败', 'error')
+    showNotification(t('app.emailCard.notifications.createFailed', '生成新邮箱失败'), 'error')
   } finally {
     isCreatingEmail.value = false
   }
@@ -1083,7 +1077,7 @@ async function refreshEmail() {
 // 检查新邮件
 async function checkNewMails() {
   if (!emailAddress.value) {
-    showNotification('请先创建邮箱地址', 'error')
+    showNotification(t('app.emailCard.notifications.createFirst', '请先创建邮箱地址'), 'error')
     stopAutoCheck()
     return
   }
@@ -1092,11 +1086,8 @@ async function checkNewMails() {
     // 手动点击检查邮件时，强制跳过缓存获取最新数据
     await fetchEmails(true)
   } catch (err) {
-    console.error('邮件检查错误:', err);
-    
-    // 仅在手动检查邮件时显示错误提示，自动轮询时不显示
     if (!isChecking.value) {
-      showNotification('检查邮件失败', 'error')
+      showNotification(t('app.emailCard.notifications.checkFailed', '检查邮件失败'), 'error')
     }
   }
 }
@@ -1184,7 +1175,7 @@ async function clearEmails() {
   selectedEmail.value = null;
   
   // 显示正在处理的通知
-  showNotification('正在清空收件箱...', 'success');
+  showNotification(t('app.inbox.notifications.clearing', '正在清空收件箱...'), 'success');
   
   // 调用Worker API删除KV存储中的邮件
   try {
@@ -1209,7 +1200,7 @@ async function clearEmails() {
     console.log('清空邮件返回数据:', data);
     
     // 成功清空
-    showNotification('收件箱已清空', 'success');
+    showNotification(t('app.inbox.notifications.cleared', '收件箱已清空'), 'success');
   } catch (error) {
     console.error('清空邮件失败:', error);
     
@@ -1220,7 +1211,7 @@ async function clearEmails() {
     }
     
     // 显示错误通知
-    showNotification('清空邮件失败，请稍后重试', 'error');
+    showNotification(t('app.inbox.notifications.clearFailed', '清空邮件失败，请稍后重试'), 'error');
   }
 }
 
@@ -1271,9 +1262,9 @@ function showContactModal() {
 async function copyText(text: string) {
   try {
     await navigator.clipboard.writeText(text)
-    showNotification('已复制到剪贴板')
+    showNotification(t('app.notifications.copySuccess', '已复制到剪贴板'))
   } catch (err) {
-    showNotification('复制失败，请手动复制', 'error')
+    showNotification(t('app.notifications.copyFailed', '复制失败，请手动复制'), 'error')
   }
 }
 </script>

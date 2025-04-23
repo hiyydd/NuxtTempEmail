@@ -1,2 +1,86 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+/* 网格背景图案 */
+.bg-grid-gray-200 {
+  background-image: linear-gradient(to right, rgba(229, 231, 235, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(229, 231, 235, 0.1) 1px, transparent 1px);
+}
+
+.bg-grid-gray-800 {
+  background-image: linear-gradient(to right, rgba(31, 41, 55, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(31, 41, 55, 0.1) 1px, transparent 1px);
+}
+
+.bg-grid-indigo-200 {
+  background-image: linear-gradient(to right, rgba(199, 210, 254, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(199, 210, 254, 0.1) 1px, transparent 1px);
+}
+
+.bg-grid-indigo-800 {
+  background-image: linear-gradient(to right, rgba(55, 48, 163, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(55, 48, 163, 0.1) 1px, transparent 1px);
+}
+
+/* 动画延迟类 */
+.animation-delay-700 {
+  animation-delay: 0.7s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-1200 {
+  animation-delay: 1.2s;
+}
+
+.animation-delay-1500 {
+  animation-delay: 1.5s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-2500 {
+  animation-delay: 2.5s;
+}
+
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+
+.animation-delay-3500 {
+  animation-delay: 3.5s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animation-delay-5000 {
+  animation-delay: 5s;
+}
+
+/* 波浪动画 */
+@keyframes wave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-wave {
+  animation: wave 15s linear infinite;
+}
+
+/* Blob 动画 */
+@keyframes blob {
+  0% { transform: scale(1); }
+  33% { transform: scale(1.1); }
+  66% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}

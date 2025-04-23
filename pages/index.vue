@@ -1,13 +1,55 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative">
+  <div class="min-h-screen relative overflow-hidden bg-gradient-to-b from-gray-50 via-indigo-50/10 to-gray-100 dark:from-gray-900 dark:via-indigo-900/10 dark:to-gray-800">
+    <!-- 背景装饰元素 -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <!-- 右上角装饰 -->
+      <div class="absolute -right-24 top-1/4 w-72 h-72 bg-purple-600/20 dark:bg-purple-400/20 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
+      <!-- 左下角装饰 -->
+      <div class="absolute left-1/3 bottom-0 w-80 h-80 bg-emerald-600/20 dark:bg-emerald-400/20 rounded-full blur-3xl animate-blob"></div>
+      <!-- 中部装饰 - 加强 -->
+      <div class="absolute right-1/4 top-1/2 w-64 h-64 bg-orange-600/20 dark:bg-orange-400/20 rounded-full blur-3xl animate-blob animation-delay-3000"></div>
+      <!-- 新增装饰元素 - 右下角 -->
+      <div class="absolute right-10 bottom-10 w-72 h-72 bg-pink-600/15 dark:bg-pink-400/15 rounded-full blur-3xl animate-blob animation-delay-5000"></div>
+      <!-- 新增装饰元素 - 中上部 -->
+      <div class="absolute left-1/2 top-20 w-48 h-48 bg-blue-600/15 dark:bg-blue-400/15 rounded-full blur-3xl animate-blob animation-delay-1500"></div>
+      
+      <!-- 中部文字区域隐形效果加强 - 添加额外的辉光效果 -->
+      <div class="absolute left-1/2 top-1/3 -translate-x-1/2 w-[90%] max-w-3xl h-72 bg-indigo-300/10 dark:bg-indigo-700/10 rounded-[50%] blur-3xl"></div>
+      <div class="absolute left-1/2 top-1/3 -translate-x-1/2 w-[70%] max-w-2xl h-48 bg-purple-300/10 dark:bg-purple-600/10 rounded-[50%] blur-3xl"></div>
+      
+      <!-- 细微的网格图案 - 基础网格，增加不透明度和大小 -->
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(229,231,235,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(229,231,235,0.15)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(31,41,55,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(31,41,55,0.15)_1px,transparent_1px)] bg-[size:20px_20px] opacity-40"></div>
+      
+      <!-- 顶部两侧区域细微网格图案 - 左侧 -->
+      <div class="absolute top-0 left-0 w-1/3 h-96 bg-[linear-gradient(to_right,rgba(199,210,254,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(199,210,254,0.2)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(79,70,229,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(79,70,229,0.2)_1px,transparent_1px)] bg-[size:12px_12px] opacity-50 -rotate-6 origin-top-left"></div>
+      
+      <!-- 顶部两侧区域细微网格图案 - 右侧 -->
+      <div class="absolute top-0 right-0 w-1/3 h-96 bg-[linear-gradient(to_right,rgba(199,210,254,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(199,210,254,0.2)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(79,70,229,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(79,70,229,0.2)_1px,transparent_1px)] bg-[size:12px_12px] opacity-50 rotate-6 origin-top-right"></div>
+      
+      <!-- 圆点效果已移除 -->
+      
+      <!-- 邮件图标装饰元素 - 新增 -->
+      <div class="absolute right-full top-1/4 opacity-5 dark:opacity-10">
+        <UIcon name="ic:twotone-email" class="h-64 w-64 text-indigo-500" />
+      </div>
+      <div class="absolute left-full bottom-1/4 opacity-5 dark:opacity-10">
+        <UIcon name="ic:twotone-email" class="h-64 w-64 text-indigo-500" />
+      </div>
+      
+      <!-- 新增的波浪效果装饰 -->
+      <div class="absolute bottom-0 left-0 right-0 h-32 opacity-30 dark:opacity-20 overflow-hidden">
+        <div class="w-[200%] h-full bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-indigo-500/30 animate-wave"></div>
+      </div>
+      
+      <!-- 新增的顶部微妙光带效果 -->
+      <div class="absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent"></div>
+    </div>
+    
     <!-- 结构化数据 -->
     <SchemaOrg />
     
-    <!-- 背景动效 Canvas -->
-    <!-- <canvas ref="backgroundCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas> -->
-    
     <!-- 导航栏 -->
-    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
+    <nav class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
@@ -91,7 +133,9 @@
       <!-- 英雄区域 - Hero Section -->
       <section ref="heroRef" id="hero" class="py-4">
         <header class="text-center mb-4 mt-2">
-          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight" id="main-title" v-html="$t('hero.titleHtml')">
+          <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight" id="main-title">
+            {{ $t('hero.titlePart1') }}<span class="text-indigo-600 dark:text-indigo-400">{{ $t('hero.titlePart2') }}</span><br>
+            {{ $t('hero.titlePart3') }}
           </h1>
           <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-center" id="main-description">
             {{ $t('hero.description') }}
@@ -138,7 +182,7 @@
                 </span>
               </button>
               <button
-                @click="startAutoCheck"
+                @click="startAutoCheck()"
                 class="w-full sm:w-auto flex items-center justify-center gap-1 px-4 py-2.5 border-2 border-indigo-500 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-30"
                 :disabled="isChecking"
                 :class="{'opacity-70 cursor-not-allowed': isChecking}"

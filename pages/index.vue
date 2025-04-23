@@ -131,8 +131,8 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 pt-24">
       <!-- 英雄区域 - Hero Section -->
-      <section ref="heroRef" id="hero" class="py-4">
-        <header class="text-center mb-4 mt-2">
+      <section ref="heroRef" id="hero" class="py-4 pt-12 sm:pt-16">
+        <header class="text-center mb-4 mt-6 sm:mt-8">
           <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight" id="main-title">
             {{ $t('hero.titlePart1') }}<span class="text-indigo-600 dark:text-indigo-400">{{ $t('hero.titlePart2') }}</span><br>
             {{ $t('hero.titlePart3') }}

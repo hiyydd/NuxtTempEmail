@@ -83,8 +83,11 @@
           
           <!-- 添加主题切换按钮和语言切换按钮 -->
           <div class="flex items-center">
-            <LanguageSwitcher class="mr-2" />
-            <ThemeSwitcher class="mr-4" />
+            <!-- 在桌面端显示语言和主题切换按钮 -->
+            <div class="hidden md:flex md:items-center">
+              <LanguageSwitcher class="mr-2" />
+              <ThemeSwitcher class="mr-4" />
+            </div>
             
             <!-- 移动导航按钮 -->
             <div class="md:hidden">
@@ -118,11 +121,15 @@
              :aria-label="$t('nav.faq')">
             {{ $t('nav.faq') }}
           </a>
-          <!-- 在移动菜单中添加语言切换 -->
+          <!-- 在移动菜单中添加语言切换和主题切换 -->
           <div class="pl-3 pr-4 py-2">
-            <div class="flex items-center">
+            <div class="flex items-center mb-3">
               <span class="text-lg font-medium text-gray-500 dark:text-gray-300 mr-2">{{ $t('footer.nav.language', '语言') }}</span>
               <LanguageSwitcher />
+            </div>
+            <div class="flex items-center">
+              <span class="text-lg font-medium text-gray-500 dark:text-gray-300 mr-2">{{ $t('footer.nav.theme', '主题') }}</span>
+              <ThemeSwitcher />
             </div>
           </div>
         </div>

@@ -138,7 +138,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 pt-24">
       <!-- 英雄区域 - Hero Section -->
-      <section ref="heroRef" id="hero" class="py-4 pt-12 sm:pt-16">
+      <section ref="heroRef" id="hero" class="py-4 pt-12 sm:pt-16" data-aos="fade-up" data-aos-duration="800">
         <header class="text-center mb-4 mt-6 sm:mt-8">
           <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight" id="main-title">
             {{ $t('hero.titlePart1') }}<span class="text-indigo-600 dark:text-indigo-400">{{ $t('hero.titlePart2') }}</span><br>
@@ -151,12 +151,12 @@
       </section>
 
       <!-- 应用区域 - App Section -->
-      <section ref="appRef" id="app" class="py-2" aria-labelledby="app-heading">
+      <section ref="appRef" id="app" class="py-2" aria-labelledby="app-heading" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
         <h2 id="app-heading" class="sr-only">临时邮箱应用</h2>
         <!-- 应用界面包装器 -->
         <div class="space-y-8">
           <!-- 邮箱地址卡片 -->
-          <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100 dark:border-gray-700" aria-labelledby="email-address-heading">
+          <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 sm:p-8 space-y-5 border border-gray-100 dark:border-gray-700" aria-labelledby="email-address-heading" data-aos="fade-up" data-aos-duration="600">
             <h2 id="email-address-heading" class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">{{ $t('app.emailCard.title') }}</h2>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div @click="copyEmail" class="flex-1 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 font-medium text-gray-900 dark:text-gray-100 truncate flex items-center min-h-[42px] select-all group hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
@@ -208,7 +208,7 @@
           </section>
 
           <!-- 收件箱区域 -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
             <!-- 邮件列表 -->
             <section class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 h-[550px] flex flex-col border border-gray-100 dark:border-gray-700" aria-labelledby="inbox-heading">
               <div class="flex justify-between items-center mb-5">
@@ -298,13 +298,13 @@
       </section>
 
       <!-- 应用场景部分 -->
-      <section id="use-cases" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="use-cases-heading">
+      <section id="use-cases" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="use-cases-heading" data-aos="fade-up" data-aos-duration="800">
         <h2 id="use-cases-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">{{ $t('useCases.title') }}</h2>
         <p class="text-lg text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto mb-12">
           {{ $t('useCases.description') }}
         </p>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           <!-- 网络购物 -->
           <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mb-5 mx-auto">
@@ -376,10 +376,10 @@
       </section>
 
       <!-- 功能特点部分 -->
-      <section ref="featuresRef" id="features" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="features-heading">
+      <section ref="featuresRef" id="features" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="features-heading" data-aos="fade-up" data-aos-duration="800">
         <h2 id="features-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">{{ $t('features.title') }}</h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           <!-- 功能卡片1：即时可用 -->
           <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700">
             <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center mb-4">
@@ -437,10 +437,10 @@
       </section>
 
       <!-- 使用说明部分 -->
-      <section ref="howToRef" id="how-to" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="how-to-heading">
+      <section ref="howToRef" id="how-to" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="how-to-heading" data-aos="fade-up" data-aos-duration="800">
         <h2 id="how-to-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">{{ $t('howto.title') }}</h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           <article class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 relative">
             <div class="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-lg" aria-hidden="true">1</div>
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-2">{{ $t('howto.step1.title') }}</h3>
@@ -542,7 +542,7 @@
       </section>
 
       <!-- 常见问题部分 -->
-      <section ref="faqRef" id="faq" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="faq-heading">
+      <section ref="faqRef" id="faq" class="py-12 border-t border-gray-100 dark:border-gray-700 mt-8" aria-labelledby="faq-heading" data-aos="fade-up" data-aos-duration="800">
         <h2 id="faq-heading" class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">{{ $t('faq.title') }}</h2>
         
         <div class="max-w-3xl mx-auto space-y-6" itemscope itemtype="https://schema.org/FAQPage">
@@ -776,7 +776,8 @@
 
 <script setup lang="ts">
 // 导入语言切换组件
-// import LanguageSwitcher from '../components/LanguageSwitcher.vue'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 const { t } = useI18n();
 
 // 定义页面元数据
@@ -1274,4 +1275,18 @@ async function copyText(text: string) {
     showNotification(t('app.notifications.copyFailed', '复制失败，请手动复制'), 'error')
   }
 }
+// 初始化AOS动画库
+onMounted(() => {
+  // 初始化AOS动画库
+  AOS.init({
+    // 全局设置
+    offset: 120, // 元素与窗口底部的距离触发点
+    duration: 800, // 动画持续时间
+    easing: 'ease-in-out', // 动画曲线
+    delay: 0, // 动画延迟时间
+    once: true, // 动画是否只播放一次
+    mirror: true, // 滚动时是否镜像动画
+    anchorPlacement: 'top-bottom', // 定义元素位置与窗口位置的触发点
+  });
+});
 </script>

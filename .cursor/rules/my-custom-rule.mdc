@@ -23,6 +23,7 @@ alwaysApply: false
     - 选择最简单的解决方案来满足用户需求。
 
     ### 编写代码时：
+    - 包管理器使用bun而不是npm
     - 使用Vue 3的Composition API进行开发，合理使用setup语法糖。
     - 遵循Vue.js的最佳实践和设计模式，如单文件组件(SFC)。
     - 利用Vue Router进行路由管理，实现页面导航和路由守卫。

@@ -21,10 +21,10 @@
       <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(229,231,235,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(229,231,235,0.15)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(31,41,55,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(31,41,55,0.15)_1px,transparent_1px)] bg-[size:20px_20px] opacity-40"></div>
       
       <!-- 顶部两侧区域细微网格图案 - 左侧 -->
-      <div class="absolute top-0 left-0 w-1/3 h-96 bg-[linear-gradient(to_right,rgba(199,210,254,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(199,210,254,0.2)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(79,70,229,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(79,70,229,0.2)_1px,transparent_1px)] bg-[size:12px_12px] opacity-50 -rotate-6 origin-top-left"></div>
+      <div class="absolute top-0 left-0 w-1/3 h-96 bg-[linear-gradient(to_right,rgba(199,210,254,0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(199,210,254,0.25)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(79,70,229,0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(79,70,229,0.25)_1px,transparent_1px)] bg-[size:24px_24px] opacity-60 -rotate-6 origin-top-left"></div>
       
       <!-- 顶部两侧区域细微网格图案 - 右侧 -->
-      <div class="absolute top-0 right-0 w-1/3 h-96 bg-[linear-gradient(to_right,rgba(199,210,254,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(199,210,254,0.2)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(79,70,229,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(79,70,229,0.2)_1px,transparent_1px)] bg-[size:12px_12px] opacity-50 rotate-6 origin-top-right"></div>
+      <div class="absolute top-0 right-0 w-1/3 h-96 bg-[linear-gradient(to_right,rgba(199,210,254,0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(199,210,254,0.25)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(79,70,229,0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(79,70,229,0.25)_1px,transparent_1px)] bg-[size:24px_24px] opacity-60 rotate-6 origin-top-right"></div>
       
       <!-- 圆点效果已移除 -->
       

@@ -1,0 +1,54 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 临时邮箱应用功能指南
+
+## 核心功能
+- 生成随机临时邮箱地址
+- 实时接收和显示电子邮件
+- 查看电子邮件详情
+- 支持多语言（中文和英文）
+- 支持明暗主题切换
+
+## 技术实现
+- 前端使用Nuxt 3和Vue 3构建
+- UI组件使用@nuxt/ui库
+- 通过Cloudflare Workers作为后端服务
+- 使用WebSocket实现邮件实时接收
+- 国际化使用@nuxtjs/i18n模块
+
+## 业务流程
+1. 用户访问网站自动生成临时邮箱地址
+2. 用户可以复制邮箱地址用于注册或接收验证码
+3. 服务监听该邮箱地址的邮件
+4. 收到新邮件时，通过WebSocket推送到客户端
+5. 客户端实时显示邮件列表和详情
+
+## 组件交互
+- 主页面([pages/index.vue](mdc:pages/index.vue))包含邮箱生成、邮件列表和邮件详情视图
+- 主题切换组件([components/ThemeSwitcher.vue](mdc:components/ThemeSwitcher.vue))控制明暗主题
+- 语言切换组件([components/LanguageSwitcher.vue](mdc:components/LanguageSwitcher.vue))切换中英文
+- SEO组件([components/SchemaOrg.vue](mdc:components/SchemaOrg.vue))提供结构化数据
+
+## 数据流
+- 临时邮箱地址存储在客户端localStorage中
+- 邮件数据通过WebSocket从服务器获取
+- 多语言文本从i18n目录的JSON文件中读取
+- 主题偏好保存在客户端cookie中
+
+## API端点
+- WebSocket连接：`${config.public.workerUrl}/ws`
+- 邮件数据API：`${config.public.workerUrl}/api/mail`
+
+## 安全考虑
+- 临时邮箱内容仅存储在客户端，不保存在服务器
+- 临时邮箱地址定期失效，增加安全性
+- 邮件内容自动过滤潜在的XSS攻击
+
+## 用户体验优化
+- 响应式设计适配各种设备
+- 邮件到达时的通知提醒
+- 复制邮箱地址的一键操作
+- 支持自定义邮箱前缀

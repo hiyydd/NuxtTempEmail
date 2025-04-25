@@ -1,23 +1,14 @@
 name = "email-routing-worker"
-type = "javascript"
 main = "index.js"
 
 compatibility_date = "2024-01-01"
 workers_dev = true
 
-# KV Namespace binding - 必须与 email-worker 使用相同的 KV
-kv_namespaces = [
-  { binding = "temp-email", id = "24945969b1da45bc80a18e4acdf94e9a" }
-]
+# D1数据库绑定
+[[d1_databases]]
+binding = "DB"
+database_name = "temp_email_db"
+database_id = "0a1989cd-6f62-4aed-a6d1-31801c927c2c"
 
 [build]
-command = "npm run build"
-
-[build.upload]
-format = "service-worker"
-
-# Email routing rules
-[[email_routing]]
-pattern = "*@220901.xyz"
-action = "forward"
-destination = "email-worker"
+command = "npm run build" 

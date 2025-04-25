@@ -1,0 +1,58 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Nuxt开发最佳实践
+
+## Composition API指南
+- 使用`<script setup lang="ts">`进行组件开发
+- 使用`defineProps`和`defineEmits`处理组件属性和事件
+- 使用`ref`、`reactive`、`computed`和`watch`管理响应式状态
+- 在Nuxt中，无需手动导入`useHead`、`useRoute`等Nuxt自带的组合式函数
+
+## 页面和路由
+- 页面文件放在`pages`目录下会自动生成路由
+- 使用目录结构创建嵌套路由和动态路由
+- 使用`useRoute`访问当前路由信息
+- 使用`useRouter`进行编程式导航
+
+## 组件开发
+- 遵循单一职责原则，每个组件只负责一个功能
+- 组件命名使用PascalCase
+- 组件属性使用kebab-case传递
+- 尽量使用`@nuxt/ui`提供的UI组件库
+- 组件入口文件自动注册，无需手动导入
+
+## 数据获取
+- 使用`useFetch`、`useAsyncData`获取数据
+- 对于非SSR的数据，可以使用`useLazyFetch`
+- 使用`useCookie`管理客户端cookie数据
+- 在服务器端和客户端共享数据时，使用`useState`
+
+## 国际化 (i18n)
+- 翻译文件存放在`i18n/locales`目录下
+- 使用`useI18n().t('key')`获取翻译文本
+- 支持参数替换和复数形式
+
+## SEO优化
+- 使用`useHead`和`useSeoMeta`设置页面元数据
+- 为每个页面设置唯一的标题和描述
+- 使用`SchemaOrg`组件添加结构化数据
+
+## 性能优化
+- 使用组件懒加载减少初始加载时间
+- 使用`<ClientOnly>`包装仅客户端渲染的组件
+- 合理设置`keep-alive`缓存组件状态
+- 使用虚拟列表处理大量数据渲染
+
+## 错误处理
+- 创建`error.vue`文件自定义错误页面
+- 使用`throw createError({ statusCode: 404, message: '页面不存在' })`抛出错误
+- 使用`showError`函数处理运行时错误
+
+## 样式管理
+- 使用Tailwind CSS进行样式管理
+- 全局样式放在`assets/css`目录下
+- 组件特定样式使用`<style scoped>`
+- 使用CSS变量实现主题切换

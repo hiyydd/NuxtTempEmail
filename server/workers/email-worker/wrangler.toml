@@ -10,6 +10,11 @@ kv_namespaces = [
   { binding = "temp-email", id = "24945969b1da45bc80a18e4acdf94e9a" }
 ]
 
+# D1数据库绑定 - 共用同一个D1实例
+[[d1_databases]]
+binding = "DB"
+database_name = "temp_email_db"
+database_id = "0a1989cd-6f62-4aed-a6d1-31801c927c2c"
 
 [vars]
 WORKER_URL = "https://email-worker.2668812066.workers.dev"

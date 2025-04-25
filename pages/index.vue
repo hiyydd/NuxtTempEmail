@@ -956,6 +956,18 @@ onMounted(() => {
     // 如果本地没有存储邮件地址，则创建一个新的
     refreshEmail()
   }
+
+  // 初始化AOS动画库
+  AOS.init({
+    // 全局设置
+    offset: 120, // 元素与窗口底部的距离触发点
+    duration: 800, // 动画持续时间
+    easing: 'ease-in-out', // 动画曲线
+    delay: 0, // 动画延迟时间
+    once: true, // 动画是否只播放一次
+    mirror: true, // 滚动时是否镜像动画
+    anchorPlacement: 'top-bottom', // 定义元素位置与窗口位置的触发点
+  });
   
 })
 
@@ -1275,18 +1287,5 @@ async function copyText(text: string) {
     showNotification(t('app.notifications.copyFailed', '复制失败，请手动复制'), 'error')
   }
 }
-// 初始化AOS动画库
-onMounted(() => {
-  // 初始化AOS动画库
-  AOS.init({
-    // 全局设置
-    offset: 120, // 元素与窗口底部的距离触发点
-    duration: 800, // 动画持续时间
-    easing: 'ease-in-out', // 动画曲线
-    delay: 0, // 动画延迟时间
-    once: true, // 动画是否只播放一次
-    mirror: true, // 滚动时是否镜像动画
-    anchorPlacement: 'top-bottom', // 定义元素位置与窗口位置的触发点
-  });
-});
+
 </script>

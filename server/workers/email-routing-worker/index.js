@@ -110,6 +110,7 @@ export default {
       }
       
       // 保存完整的邮件信息
+      const timestamp = Date.now();
       const email = {
         from: fromAddress,
         to: message.to,
@@ -119,58 +120,67 @@ export default {
         htmlContent: htmlContent,
         hasAttachments: attachments.length > 0,
         attachmentsCount: attachments.length,
-        receivedAt: Date.now()
+        receivedAt: timestamp
       };
-
-      // 保存到 KV
-      if (env["temp-email"]) {
-        const timestamp = Date.now();
-        const emailAddress = message.to.toLowerCase().trim();
-        const emailKey = `${emailAddress}:${timestamp}`;
-        
-        // 保存邮件
-        await env["temp-email"].put(emailKey, JSON.stringify(email), {
-          expirationTtl: 86400 // 24小时过期
-        });
-        
-        console.log('成功保存邮件到KV, 键:', emailKey);
-        return new Response('邮件保存成功', { status: 200 });
-      } else {
-        throw new Error('KV绑定不存在: temp-email');
-      }
-    } catch (error) {
-      console.error('邮件处理失败:', error);
       
-      // 尝试最简单的处理方式，保存最基本的邮件信息
-      try {
-        if (env["temp-email"]) {
-          const basicEmail = {
-            from: message.from || 'unknown',
-            to: message.to || 'unknown',
-            subject: '(处理失败)',
-            content: '邮件处理过程中出错: ' + error.message,
-            receivedAt: Date.now(),
-            processingError: error.message
+      const emailAddress = message.to.toLowerCase().trim();
+      
+      // 只保存到D1数据库
+      if (env.DB) {
+        try {
+          // 准备数据库字段
+          const sqlData = {
+            email_address: emailAddress,
+            sender: fromAddress,
+            subject: parsedEmail.subject || '(无主题)',
+            content: htmlContent || textContent || '(无内容)',
+            text_content: textContent,
+            html_content: htmlContent,
+            has_attachments: attachments.length > 0 ? 1 : 0, // SQLite布尔值转为0/1
+            attachments_count: attachments.length,
+            received_at: timestamp,
+            processing_error: null,
+            created_at: timestamp
           };
           
-          const timestamp = Date.now();
-          const emailAddress = (message.to || 'error').toLowerCase().trim();
-          const emailKey = `${emailAddress}:${timestamp}:error`;
+          // 构建INSERT语句
+          const stmt = env.DB.prepare(`
+            INSERT INTO emails (
+              email_address, sender, subject, content, 
+              text_content, html_content, has_attachments, 
+              attachments_count, received_at, processing_error, created_at
+            ) VALUES (
+              ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            )
+          `).bind(
+            sqlData.email_address,
+            sqlData.sender,
+            sqlData.subject,
+            sqlData.content,
+            sqlData.text_content,
+            sqlData.html_content,
+            sqlData.has_attachments,
+            sqlData.attachments_count,
+            sqlData.received_at,
+            sqlData.processing_error,
+            sqlData.created_at
+          );
           
-          await env["temp-email"].put(emailKey, JSON.stringify(basicEmail), {
-            expirationTtl: 86400 // 24小时过期
-          });
-          
-          console.log('保存了基本错误信息到KV');
+          // 执行插入操作
+          const result = await stmt.run();
+          console.log('成功保存邮件到D1, ID:', result.meta?.last_row_id);
+          return new Response(`邮件已成功保存到数据库，ID: ${result.meta?.last_row_id}`, { status: 200 });
+        } catch (d1Error) {
+          console.error('保存到D1失败:', d1Error);
+          return new Response(`保存邮件失败: ${d1Error.message}`, { status: 500 });
         }
-      } catch (e) {
-        console.error('保存基本错误信息也失败了:', e);
+      } else {
+        console.error('D1数据库绑定不存在');
+        return new Response('D1数据库绑定不存在', { status: 500 });
       }
-      
-      return new Response(`邮件处理失败: ${error.message}`, { 
-        status: 500,
-        headers: { 'Content-Type': 'text/plain' }
-      });
+    } catch (error) {
+      console.error('处理邮件时出错:', error);
+      return new Response(`处理邮件失败: ${error.message}`, { status: 500 });
     }
   }
 };

@@ -5,12 +5,7 @@ main = "index.js"
 compatibility_date = "2024-01-01"
 workers_dev = true
 
-# KV Namespace binding
-kv_namespaces = [
-  { binding = "temp-email", id = "24945969b1da45bc80a18e4acdf94e9a" }
-]
-
-# D1数据库绑定 - 共用同一个D1实例
+# D1数据库绑定
 [[d1_databases]]
 binding = "DB"
 database_name = "temp_email_db"
@@ -20,7 +15,6 @@ database_id = "0a1989cd-6f62-4aed-a6d1-31801c927c2c"
 WORKER_URL = "https://email-worker.2668812066.workers.dev"
 EMAIL_DOMAIN = "220901.xyz"
 
-
 [build]
 command = "npm run build"
 
@@ -28,4 +22,4 @@ command = "npm run build"
 format = "service-worker"
 
 [triggers]
-crons = ["0 */8 * * *"] # Clean up expired emails every 8 hours
+crons = ["0 0 * * *"] # Clean up expired emails every 24 hours

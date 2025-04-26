@@ -228,8 +228,9 @@
                   {{ $t('app.inbox.buttons.clear') }}
                 </UButton>
               </div>
-              <UScrollbar v-if="emails.length > 0" class="flex-1 -mx-2 px-2">
-                <ul class="space-y-2">
+              <!-- 使用标准滚动条 -->
+              <div v-if="emails.length > 0" class="flex-1 overflow-y-auto">
+                <ul class="space-y-2 p-2"> <!-- Padding保留在ul上 -->
                   <li
                     v-for="email in emails"
                     :key="email.id"
@@ -247,7 +248,7 @@
                     <div class="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">{{ email.preview }}</div>
                   </li>
                 </ul>
-              </UScrollbar>
+              </div>
               <div v-else class="flex-1 flex items-center justify-center">
                 <div class="text-center max-w-xs py-6">
                   <div class="flex justify-center mb-4">
@@ -778,9 +779,11 @@
 // 导入语言切换组件
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-const { t } = useI18n();
 
+// @ts-ignore
+const { t } = useI18n();
 // 定义页面元数据
+// @ts-ignore
 definePageMeta({
   title: '临时邮箱服务'
 })
@@ -909,19 +912,43 @@ function scrollToSection(section: string): void {
   }
 }
 
-// 简单的HTML净化函数
+// 增强的HTML净化函数
 function sanitizeHtml(html: string): string {
-  // 移除脚本和危险属性
+  if (!html) return '';
+  
+  // 移除scripts, styles, links, iframes, objects, embeds和其他危险元素
   let sanitized = html
+    // 移除脚本标签
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    // 移除样式标签
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    // 移除link标签，特别是CSS链接
+    .replace(/<link\b[^>]*rel\s*=\s*["']?stylesheet["']?[^>]*>/gi, '')
+    // 移除iframe标签
     .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    // 移除object标签
     .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    // 移除embed标签
     .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
-    .replace(/javascript:/gi, '')
-    .replace(/onerror=/gi, '')
-    .replace(/onclick=/gi, '')
-    .replace(/onload=/gi, '')
-    .replace(/onmouseover=/gi, '');
+    // 移除form标签
+    .replace(/<form\b[^<]*(?:(?!<\/form>)<[^<]*)*<\/form>/gi, '')
+    // 移除base标签
+    .replace(/<base\b[^>]*>/gi, '')
+    // 移除meta标签
+    .replace(/<meta\b[^>]*>/gi, '')
+    // 移除所有javascript:伪协议
+    .replace(/javascript:/gi, 'nojavascript:')
+    // 移除所有data:伪协议
+    .replace(/data:/gi, 'nodata:')
+    // 移除所有vbscript:伪协议
+    .replace(/vbscript:/gi, 'novbscript:')
+    // 移除所有on*事件处理属性
+    .replace(/\son\w+\s*=\s*(['"])?[^'"]*\1/gi, '')
+    // 移除特定危险属性
+    .replace(/\sformaction\s*=\s*(['"])?[^'"]*\1/gi, '')
+    .replace(/\sxlink:href\s*=\s*(['"])?[^'"]*\1/gi, '')
+    // 移除内联style属性 - 这是关键部分
+    .replace(/\sstyle\s*=\s*(['"])[^'"]*\1/gi, '');
   
   return sanitized;
 }

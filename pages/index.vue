@@ -815,13 +815,13 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="flex flex-col items-center">
               <div class="bg-white p-3 rounded-lg shadow-md mb-3">
-                <img src="https://env-00jxh249dkrd.normal.cloudstatic.cn/wx_20250430155250.png" alt="微信赞赏码" class="w-[350px] h-[350px] object-cover" />
+                <img src="/wx_20250430155250.png" alt="微信赞赏码" class="w-[350px] h-[350px] object-cover" />
               </div>
               <p class="text-base text-gray-500 dark:text-gray-400">{{ $t('donate.wechat', $i18n.locale === 'en' ? 'WeChat Pay' : '微信支付') }}</p>
             </div>
             <div class="flex flex-col items-center">
               <div class="bg-white p-3 rounded-lg shadow-md mb-3">
-                <img src="https://env-00jxh249dkrd.normal.cloudstatic.cn/zfb_20250430155312.png" alt="支付宝赞赏码" class="w-[350px] h-[350px] object-cover" />
+                <img src="/zfb_20250430155312.png" alt="支付宝赞赏码" class="w-[350px] h-[350px] object-cover" />
               </div>
               <p class="text-base text-gray-500 dark:text-gray-400">{{ $t('donate.alipay', $i18n.locale === 'en' ? 'Alipay' : '支付宝') }}</p>
             </div>

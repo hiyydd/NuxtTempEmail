@@ -78,6 +78,13 @@
                  :aria-label="$t('nav.faq')">
                 {{ $t('nav.faq') }}
               </a>
+              <a href="#" 
+                 @click.prevent="showDonateModal" 
+                 class="inline-flex items-center px-1 pt-1 text-lg font-medium text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+                 :aria-label="$t('nav.donate', '支持作者')">
+                <UIcon name="solar:heart-bold" class="text-red-500 dark:text-red-400 size-5 mr-1" />
+                {{ $t('nav.donate', $i18n.locale === 'en' ? 'Support Author' : '支持作者') }}
+              </a>
             </div>
           </div>
           
@@ -120,6 +127,12 @@
              class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
              :aria-label="$t('nav.faq')">
             {{ $t('nav.faq') }}
+          </a>
+          <a href="#" 
+             @click.prevent="showDonateModal(); isMobileMenuOpen = false" 
+             class="block pl-3 pr-4 py-2 text-lg font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white cursor-pointer"
+             :aria-label="$t('nav.donate', '支持作者')">
+            {{ $t('nav.donate', '支持作者') }}
           </a>
           <!-- 在移动菜单中添加语言切换和主题切换 -->
           <div class="pl-3 pr-4 py-2">
@@ -498,7 +511,7 @@
               {{ $t('testimonials.user2.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=59" :alt="$t('testimonials.user2.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <img src="https://i.pravatar.cc/150?img=59" :alt="$t('testimonials.user2.name')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user2.name') }}</h4>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user2.profession') }}</p>
@@ -772,11 +785,66 @@
         </div>
       </div>
     </div>
+
+    <!-- 赞赏码模态框 -->
+    <div v-if="isDonateModalOpen" class="fixed inset-0 z-50">
+      <!-- 半透明阴影遮罩 -->
+      <div
+        class="absolute inset-0 pointer-events-auto"
+        style="background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.45) 100%); backdrop-filter: blur(2px); transition: background 0.3s;"
+        @click="isDonateModalOpen = false"
+      ></div>
+      <!-- 弹窗内容 -->
+      <div class="relative z-10 flex items-center justify-center min-h-screen">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 max-w-[850px] w-full m-4 border-2 border-gray-200 dark:border-gray-700"
+          @click.stop
+        >
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <UIcon name="solar:heart-bold" class="text-red-500 dark:text-red-400 size-6" />
+              {{ $t('donate.title', $i18n.locale === 'en' ? 'Support Author' : '支持作者') }}
+            </h3>
+            <button @click="isDonateModalOpen = false" class="text-gray-500 hover:text-gray-700">
+              <UIcon name="solar:close-circle-bold" class="size-9" />
+            </button>
+          </div>
+          <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 text-center max-w-2xl mx-auto">
+            {{ $t('donate.description', $i18n.locale === 'en' ? 'If you find this tool helpful, consider buying the author a coffee. Thank you for your support!' : '如果您觉得这个工具对您有帮助，可以考虑请作者喝杯咖啡，感谢您的支持！') }}
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col items-center">
+              <div class="bg-white p-3 rounded-lg shadow-md mb-3">
+                <img src="https://env-00jxh249dkrd.normal.cloudstatic.cn/wx_20250430155250.png" alt="微信赞赏码" class="w-[350px] h-[350px] object-cover" />
+              </div>
+              <p class="text-base text-gray-500 dark:text-gray-400">{{ $t('donate.wechat', $i18n.locale === 'en' ? 'WeChat Pay' : '微信支付') }}</p>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="bg-white p-3 rounded-lg shadow-md mb-3">
+                <img src="https://env-00jxh249dkrd.normal.cloudstatic.cn/zfb_20250430155312.png" alt="支付宝赞赏码" class="w-[350px] h-[350px] object-cover" />
+              </div>
+              <p class="text-base text-gray-500 dark:text-gray-400">{{ $t('donate.alipay', $i18n.locale === 'en' ? 'Alipay' : '支付宝') }}</p>
+            </div>
+          </div>
+          <div class="text-center mt-8">
+            <p class="text-lg font-bold text-red-600 dark:text-red-400 tracking-wide">
+              <template v-if="$i18n.locale === 'en'">
+                We solemnly promise: For a better user experience, <span class="underline">no ads will ever be added</span> to this site! Thank you for your trust and support!
+              </template>
+              <template v-else>
+                本站郑重承诺：为了给您营造更好的体验，<span class="underline">永不添加任何广告</span>！感谢您的信任与支持！
+              </template>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // 导入语言切换组件
+// @ts-ignore
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -869,6 +937,7 @@ const sanitizedHtml = ref('')
 
 // 模态框状态
 const isContactModalOpen = ref(false)
+const isDonateModalOpen = ref(false)
 
 // 滚动到指定部分
 function scrollToSection(section: string): void {
@@ -1303,6 +1372,11 @@ function formatDate(timestamp: number | string): string {
 // 显示联系我们模态框
 function showContactModal() {
   isContactModalOpen.value = true
+}
+
+// 显示赞赏码模态框
+function showDonateModal() {
+  isDonateModalOpen.value = true
 }
 
 // 复制文本

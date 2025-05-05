@@ -713,6 +713,9 @@
         <div class="text-center text-sm text-gray-500 dark:text-gray-400 pt-6 border-t border-gray-100 dark:border-gray-700">
           <p>{{ $t('footer.warning') }}</p>
         </div>
+        <a href="https://similarlabs.com/?ref=embed" target="_blank" style="cursor: pointer;">
+          <img src="https://similarlabs.com/similarlabs-embed-badge-light.svg" alt="SimilarLabs Embed Badge" />
+        </a>
       </footer>
     </div>
 

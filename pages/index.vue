@@ -506,7 +506,9 @@
               {{ $t('testimonials.user1.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=32" :alt="$t('testimonials.user1.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mr-4">
+                <UIcon name="system-uicons:user" class="size-7 text-purple-600 dark:text-purple-400" />
+              </div>
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user1.name') }}</h4>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user1.profession') }}</p>
@@ -523,7 +525,9 @@
               {{ $t('testimonials.user2.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=59" :alt="$t('testimonials.user2.name')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mr-4">
+                <UIcon name="system-uicons:user" class="size-7 text-indigo-600 dark:text-indigo-400" />
+              </div>
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user2.name') }}</h4>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user2.profession') }}</p>
@@ -540,7 +544,9 @@
               {{ $t('testimonials.user3.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=68" :alt="$t('testimonials.user3.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mr-4">
+                <UIcon name="system-uicons:user" class="size-7 text-emerald-600 dark:text-emerald-400" />
+              </div>
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user3.name') }}</h4>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user3.profession') }}</p>
@@ -557,7 +563,9 @@
               {{ $t('testimonials.user4.comment') }}
             </p>
             <div class="flex items-center">
-              <img src="https://i.pravatar.cc/150?img=47" :alt="$t('testimonials.user4.name') + ' ' + $t('userAvatarAlt')" class="w-12 h-12 rounded-full mr-4" width="48" height="48" loading="lazy">
+              <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4">
+                <UIcon name="system-uicons:user" class="size-7 text-blue-600 dark:text-blue-400" />
+              </div>
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ $t('testimonials.user4.name') }}</h4>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $t('testimonials.user4.profession') }}</p>

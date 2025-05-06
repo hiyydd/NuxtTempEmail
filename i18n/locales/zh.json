@@ -14,7 +14,8 @@
   "nav": {
     "features": "功能特点",
     "howto": "使用说明",
-    "faq": "常见问题"
+    "faq": "常见问题",
+    "donors": "捐赠墙"
   },
   "hero": {
     "title": "快速安全的临时邮箱保护您的隐私",
@@ -231,5 +232,11 @@
       "label": "邮箱",
       "address": "266881206com"
     }
+  },
+  "donors": {
+    "titlePrefix": "感谢",
+    "titleHighlight": "支持者",
+    "description": "衷心感谢以下支持者的慷慨捐赠，您的支持是我们不断改进的动力！",
+    "becomeDonor": "成为支持者"
   }
 }

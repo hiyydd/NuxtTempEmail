@@ -14,7 +14,8 @@
   "nav": {
     "features": "Features",
     "howto": "How To",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "donors": "Supporters"
   },
   "hero": {
     "title": "Fast & Secure Temporary Email Protect Your Privacy",
@@ -231,5 +232,11 @@
       "label": "Email",
       "address": "2668812066"
     }
+  },
+  "donors": {
+    "titlePrefix": "Thank Our ",
+    "titleHighlight": "Supporters",
+    "description": "Heartfelt thanks to the following supporters for their generous donations. Your support is our motivation to keep improving!",
+    "becomeDonor": "Become a Supporter"
   }
 }

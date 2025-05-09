@@ -56,7 +56,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: 'https://temp-email.top',
-      workerUrl: 'https://workers.temp-email.top'
+      workerUrl: 'https://email-worker.2668812066.workers.dev'
     }
   },
   colorMode: {

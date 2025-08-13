@@ -54,7 +54,7 @@
         <div class="flex justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0 flex items-center cursor-pointer" @click="scrollToTop">
-              <!-- <img src="/email-logo.png" alt="临时邮箱 Logo" class="h-10 w-auto" /> -->
+              <!-- <img src="/email-logo.png" alt="巨天临时邮箱 Logo" class="h-10 w-auto" /> -->
               <UIcon name="ic:twotone-email" class="h-12 w-12" style="color: #8e67f6" />
               <span class="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-100">{{ $t('appName') }}</span>
             </div>
@@ -820,7 +820,7 @@
             <div>
               <div class="font-medium text-gray-900 dark:text-gray-100">{{ $t('contactUs.qq') }}</div>
               <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
-                <span>2668812066</span>
+                <span>2977862232</span>
                 <button 
                   @click="copyText('2977862232')" 
                   class="ml-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 opacity-70 hover:opacity-100"
@@ -836,7 +836,7 @@
             <div>
               <div class="font-medium text-gray-900 dark:text-gray-100">{{ $t('contactUs.email') }}</div>
               <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
-                <span>2668812066@qq.com</span>
+                <span>2977862232@qq.com</span>
                 <button 
                   @click="copyText('2977862232@qq.com')" 
                   class="ml-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 opacity-70 hover:opacity-100"
@@ -924,8 +924,8 @@ definePageMeta({
 useSeoMeta({
   title: '巨天临时邮箱 - 免费、安全的一次性电子邮箱服务',
   ogTitle: '巨天临时邮箱 - 免费、安全的一次性电子邮箱服务',
-  description: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
-  ogDescription: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
+  description: '使用巨天的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
+  ogDescription: '使用巨天的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
   ogImage: '/email-logo.png',
   ogUrl: 'https://temp-email.top',
   ogType: 'website',

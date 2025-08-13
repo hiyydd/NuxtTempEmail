@@ -177,7 +177,7 @@
 
       <!-- 应用区域 - App Section -->
       <section ref="appRef" id="app" class="py-2" aria-labelledby="app-heading" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-        <h2 id="app-heading" class="sr-only">临时邮箱应用</h2>
+        <h2 id="app-heading" class="sr-only">巨天临时邮箱应用</h2>
         <!-- 应用界面包装器 -->
         <div class="space-y-8">
           <!-- 邮箱地址卡片 -->
@@ -822,7 +822,7 @@
               <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
                 <span>2668812066</span>
                 <button 
-                  @click="copyText('2668812066')" 
+                  @click="copyText('2977862232')" 
                   class="ml-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 opacity-70 hover:opacity-100"
                 >
                   <UIcon name="solar:copy-bold" class="size-4" />
@@ -838,7 +838,7 @@
               <div class="text-gray-600 dark:text-gray-400 group flex items-center gap-1">
                 <span>2668812066@qq.com</span>
                 <button 
-                  @click="copyText('2668812066@qq.com')" 
+                  @click="copyText('2977862232@qq.com')" 
                   class="ml-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 opacity-70 hover:opacity-100"
                 >
                   <UIcon name="solar:copy-bold" class="size-4" />
@@ -885,7 +885,7 @@
             </div>
             <div class="flex flex-col items-center">
               <div class="bg-white p-3 rounded-lg shadow-md mb-3">
-                <img src="/zfb_20250430155312.png" alt="支付宝赞赏码" class="w-[350px] h-[350px] object-cover" />
+                <img src="/zfb_20250430155312.png" alt="微信赞赏码" class="w-[350px] h-[350px] object-cover" />
               </div>
               <p class="text-base text-gray-500 dark:text-gray-400">{{ $t('donate.alipay', $i18n.locale === 'en' ? 'Alipay' : '支付宝') }}</p>
             </div>
@@ -922,8 +922,8 @@ definePageMeta({
 
 // 首页特定的SEO设置
 useSeoMeta({
-  title: '临时邮箱 - 免费、安全的一次性电子邮箱服务',
-  ogTitle: '临时邮箱 - 免费、安全的一次性电子邮箱服务',
+  title: '巨天临时邮箱 - 免费、安全的一次性电子邮箱服务',
+  ogTitle: '巨天临时邮箱 - 免费、安全的一次性电子邮箱服务',
   description: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
   ogDescription: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
   ogImage: '/email-logo.png',
@@ -931,10 +931,10 @@ useSeoMeta({
   ogType: 'website',
   ogLocale: 'zh_CN',
   twitterCard: 'summary_large_image',
-  twitterTitle: '临时邮箱 - 免费、安全的一次性电子邮箱服务',
+  twitterTitle: '巨天临时邮箱 - 免费、安全的一次性电子邮箱服务',
   twitterDescription: '使用我们的免费临时邮箱服务，无需注册即可获得一个安全的一次性邮箱地址，保护您的隐私免受垃圾邮件骚扰。',
   twitterImage: '/email-logo.png',
-  keywords: '临时邮箱,一次性邮箱,匿名邮箱,隐私保护,垃圾邮件过滤',
+  keywords: '巨天临时邮箱,巨天一次性邮箱,匿名邮箱,隐私保护,垃圾邮件过滤',
 })
 
 // 使用useHead添加其他标签
